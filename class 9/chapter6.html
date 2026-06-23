@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 6 — How Forces Affect Motion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-primary:#0a0b0f;--bg-secondary:#0f1117;--bg-card:#13151c;
+  --bg-glass:rgba(255,255,255,0.03);--bg-glass-hover:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.08);--border-bright:rgba(255,255,255,0.15);
+  --neon-blue:#4f9eff;--neon-purple:#9b6dff;--neon-teal:#00d4a8;
+  --neon-pink:#ff6bac;--neon-amber:#ffb547;--neon-green:#3dd68c;
+  --neon-ch6:#4f9eff;
+  --text-primary:#f0f2ff;--text-secondary:#8b90a8;--text-muted:#4a4f6a;
+  --font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);font-size:15px;line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg-secondary)}::-webkit-scrollbar-thumb{background:var(--neon-ch6);border-radius:3px}
+
+/* ── NAV ── */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,11,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;gap:2rem;height:56px}
+.nav-logo{font-family:var(--font-display);font-weight:700;font-size:15px;color:var(--neon-ch6);letter-spacing:0.5px;white-space:nowrap}
+.nav-links{display:flex;gap:0.25rem;overflow-x:auto;scrollbar-width:none;flex:1}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-link{font-size:12px;font-weight:500;color:var(--text-secondary);padding:6px 12px;border-radius:var(--radius-sm);white-space:nowrap;cursor:pointer;transition:all 0.2s;text-decoration:none;border:none;background:none}
+.nav-link:hover{color:var(--text-primary);background:var(--bg-glass-hover)}
+.nav-link.active{color:var(--neon-ch6);background:rgba(79,158,255,0.1)}
+.main{padding-top:56px}
+
+/* ── HERO ── */
+.hero{position:relative;overflow:hidden;min-height:520px;display:flex;align-items:center;padding:5rem 2rem 4rem;background:var(--bg-secondary)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(79,158,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(79,158,255,0.04) 1px,transparent 1px);background-size:40px 40px}
+.hero-glow-1{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(79,158,255,0.1) 0%,transparent 70%);top:-200px;right:-200px}
+.hero-glow-2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(155,109,255,0.08) 0%,transparent 70%);bottom:-150px;left:100px}
+.hero-content{position:relative;z-index:2;max-width:900px;margin:0 auto;width:100%}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--neon-ch6);background:rgba(79,158,255,0.1);border:1px solid rgba(79,158,255,0.2);padding:6px 14px;border-radius:100px;margin-bottom:1.5rem}
+.hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-ch6);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero-title{font-family:var(--font-display);font-size:clamp(2rem,5vw,3.5rem);font-weight:700;line-height:1.15;margin-bottom:1.5rem}
+.hero-title .line1{display:block;color:var(--text-primary)}
+.hero-title .line2{display:block;background:linear-gradient(135deg,var(--neon-ch6),var(--neon-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:16px;color:var(--text-secondary);max-width:600px;margin-bottom:2rem;line-height:1.8}
+.hero-badges{display:flex;flex-wrap:wrap;gap:10px}
+.hero-badge{font-size:12px;font-weight:500;padding:6px 14px;border-radius:100px;border:1px solid}
+.badge-blue{color:var(--neon-blue);border-color:rgba(79,158,255,0.3);background:rgba(79,158,255,0.08)}
+.badge-purple{color:var(--neon-purple);border-color:rgba(155,109,255,0.3);background:rgba(155,109,255,0.08)}
+.badge-teal{color:var(--neon-teal);border-color:rgba(0,212,168,0.3);background:rgba(0,212,168,0.08)}
+.badge-pink{color:var(--neon-pink);border-color:rgba(255,107,172,0.3);background:rgba(255,107,172,0.08)}
+.badge-amber{color:var(--neon-amber);border-color:rgba(255,181,71,0.3);background:rgba(255,181,71,0.08)}
+.badge-green{color:var(--neon-green);border-color:rgba(61,214,140,0.3);background:rgba(61,214,140,0.08)}
+.badge-sky{color:var(--neon-ch6);border-color:rgba(79,158,255,0.3);background:rgba(79,158,255,0.08)}
+
+/* ── LAYOUT ── */
+.section{padding:4rem 2rem;max-width:1100px;margin:0 auto}
+.full-bg{background:var(--bg-secondary)}
+.full-bg .section{max-width:none;padding-left:max(2rem,calc(50vw - 550px));padding-right:max(2rem,calc(50vw - 550px))}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border-bright),transparent)}
+
+/* ── SECTION HEADERS ── */
+.sec-header{margin-bottom:2.5rem}
+.sec-tag{font-family:var(--font-mono);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon-ch6);margin-bottom:0.75rem}
+.sec-title{font-family:var(--font-display);font-size:1.75rem;font-weight:700;color:var(--text-primary);margin-bottom:0.5rem}
+.sec-subtitle{font-size:14px;color:var(--text-secondary)}
+
+/* ── OBJ CARDS ── */
+.obj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+.obj-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;display:flex;gap:1rem;align-items:flex-start;transition:border-color 0.2s,background 0.2s}
+.obj-card:hover{border-color:var(--border-bright);background:var(--bg-glass-hover)}
+.obj-num{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch6);background:rgba(79,158,255,0.1);border:1px solid rgba(79,158,255,0.2);min-width:28px;height:28px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;margin-top:2px}
+.obj-text{font-size:13px;color:var(--text-secondary);line-height:1.6}
+.obj-text strong{color:var(--text-primary);font-weight:500}
+
+/* ── CONCEPT CARDS ── */
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem}
+.concept-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;position:relative;overflow:hidden;transition:all 0.3s}
+.concept-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent-start,var(--neon-ch6)),var(--accent-end,var(--neon-purple)))}
+.concept-card:hover{border-color:var(--border-bright);transform:translateY(-2px);background:var(--bg-glass-hover)}
+.concept-icon{font-size:28px;margin-bottom:1rem}
+.concept-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary);margin-bottom:0.5rem}
+.concept-body{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.concept-card.sky{--accent-start:#4f9eff;--accent-end:#9b6dff}
+.concept-card.blue{--accent-start:#4f9eff;--accent-end:#9b6dff}
+.concept-card.teal{--accent-start:#00d4a8;--accent-end:#4f9eff}
+.concept-card.purple{--accent-start:#9b6dff;--accent-end:#ff6bac}
+.concept-card.pink{--accent-start:#ff6bac;--accent-end:#ffb547}
+.concept-card.amber{--accent-start:#ffb547;--accent-end:#00d4a8}
+.concept-card.green{--accent-start:#3dd68c;--accent-end:#00d4a8}
+
+/* ── HIGHLIGHT BOX ── */
+.highlight-box{background:rgba(79,158,255,0.05);border:1px solid rgba(79,158,255,0.18);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin:1.25rem 0}
+.highlight-box p{font-size:13px;color:var(--text-secondary);line-height:1.75;margin:0}
+.highlight-box strong{color:var(--text-primary);font-weight:500}
+
+/* ── FLOW ── */
+.flow-chain{display:flex;align-items:center;gap:0;flex-wrap:wrap}
+.flow-node{flex:1;min-width:120px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem 0.75rem;text-align:center}
+.flow-node-icon{font-size:1.75rem;margin-bottom:0.4rem}
+.flow-node-title{font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:0.2rem}
+.flow-node-sub{font-size:11px;color:var(--text-secondary)}
+.flow-arrow{color:var(--neon-ch6);font-size:1.25rem;padding:0 4px;flex-shrink:0}
+.flow-node.highlight{border-color:rgba(79,158,255,0.4);background:rgba(79,158,255,0.05)}
+
+/* ── EXAMPLE CARDS ── */
+.example-card{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--neon-ch6);border-radius:0 var(--radius-lg) var(--radius-lg) 0;padding:1.5rem;margin-bottom:1.25rem}
+.example-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.example-num{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch6);background:rgba(79,158,255,0.1);border:1px solid rgba(79,158,255,0.25);padding:3px 10px;border-radius:100px}
+.example-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary)}
+.example-emoji{font-size:1.5rem}
+.example-question{font-size:13px;color:var(--text-secondary);margin-bottom:1rem;font-style:italic;padding:10px 14px;background:rgba(255,255,255,0.02);border-radius:var(--radius-sm);border:1px solid var(--border)}
+.example-answer-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon-ch6);margin-bottom:0.5rem;font-weight:600}
+.example-answer{font-size:13px;color:var(--text-secondary);line-height:1.7}
+
+/* ── ACTIVITY CARDS ── */
+.activity-card{background:linear-gradient(135deg,rgba(79,158,255,0.06),rgba(155,109,255,0.06));border:1px solid rgba(79,158,255,0.2);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.25rem}
+.activity-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.activity-badge{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch6);background:rgba(79,158,255,0.12);border:1px solid rgba(79,158,255,0.3);padding:4px 12px;border-radius:100px}
+.activity-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary)}
+.activity-body{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.think-prompts{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem}
+.think-prompt{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text-secondary);padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);border:1px solid var(--border)}
+.think-prompt-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-ch6);margin-top:5px;flex-shrink:0}
+
+/* ── PONDER ── */
+.ponder-card{background:rgba(255,181,71,0.05);border:1px solid rgba(255,181,71,0.2);border-radius:var(--radius-lg);padding:1.5rem;margin:1.5rem 0}
+.ponder-header{display:flex;align-items:center;gap:10px;margin-bottom:0.75rem}
+.ponder-icon{font-size:1.25rem}
+.ponder-label{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-amber);text-transform:uppercase;letter-spacing:1.5px}
+.ponder-q{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.ponder-q strong{color:var(--neon-amber);font-weight:500}
+
+/* ── CURIOSITY ── */
+.curiosity-card{background:var(--bg-card);border:1px solid rgba(79,158,255,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.curiosity-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba(79,158,255,0.05) 0%,transparent 50%);pointer-events:none}
+.curiosity-glyph{position:absolute;right:1.5rem;top:1.25rem;font-size:3rem;opacity:0.08}
+.curiosity-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch6);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.curiosity-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-ch6)}
+.curiosity-title{font-family:var(--font-display);font-size:1.15rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.curiosity-body{font-size:13px;color:var(--text-secondary);line-height:1.75;position:relative}
+.curiosity-highlight{color:var(--neon-ch6);font-weight:500}
+
+/* ── BEYOND ── */
+.beyond-card{background:rgba(155,109,255,0.04);border:1px solid rgba(155,109,255,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.beyond-card::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(155,109,255,0.06) 0%,transparent 70%);pointer-events:none}
+.beyond-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-purple);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.beyond-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-purple)}
+.beyond-title{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.beyond-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+.beyond-highlight{color:var(--neon-purple);font-weight:500}
+
+/* ── BRIDGING ── */
+.bridging-card{background:rgba(61,214,140,0.04);border:1px solid rgba(61,214,140,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.bridging-card::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(61,214,140,0.05) 0%,transparent 70%);pointer-events:none}
+.bridging-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-green);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.bridging-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-green)}
+.bridging-title{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.bridging-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+.bridging-highlight{color:var(--neon-green);font-weight:500}
+
+/* ── TRIPLE GRID ── */
+.triple-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.triple-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;transition:all 0.3s;position:relative;overflow:hidden}
+.triple-card:hover{transform:translateY(-4px);border-color:var(--card-accent)}
+.triple-card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,var(--card-glow,rgba(79,158,255,0.05)) 0%,transparent 70%);pointer-events:none}
+.triple-card.c1{--card-accent:var(--neon-ch6);--card-glow:rgba(79,158,255,0.06)}
+.triple-card.c2{--card-accent:var(--neon-purple);--card-glow:rgba(155,109,255,0.06)}
+.triple-card.c3{--card-accent:var(--neon-teal);--card-glow:rgba(0,212,168,0.06)}
+.triple-label{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:100px;border:1px solid;display:inline-block;margin-bottom:1rem;font-weight:600}
+.triple-card.c1 .triple-label{color:var(--neon-ch6);border-color:rgba(79,158,255,0.3);background:rgba(79,158,255,0.1)}
+.triple-card.c2 .triple-label{color:var(--neon-purple);border-color:rgba(155,109,255,0.3);background:rgba(155,109,255,0.1)}
+.triple-card.c3 .triple-label{color:var(--neon-teal);border-color:rgba(0,212,168,0.3);background:rgba(0,212,168,0.1)}
+.triple-icon{font-size:2.5rem;margin-bottom:0.75rem;display:block}
+.triple-title{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:0.5rem}
+.triple-card.c1 .triple-title{color:var(--neon-ch6)}
+.triple-card.c2 .triple-title{color:var(--neon-purple)}
+.triple-card.c3 .triple-title{color:var(--neon-teal)}
+.triple-desc{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:1rem}
+.triple-example{font-size:11px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;color:var(--text-secondary);font-style:italic}
+
+/* ── EQUATION BOX ── */
+.eq-box{background:var(--bg-card);border:1px solid rgba(79,158,255,0.25);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;position:relative;overflow:hidden;margin-bottom:1rem}
+.eq-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon-ch6),var(--neon-purple))}
+.eq-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch6);font-weight:600;margin-bottom:0.75rem}
+.eq-formula{font-family:var(--font-mono);font-size:1.4rem;font-weight:700;color:var(--text-primary);margin-bottom:0.5rem;letter-spacing:1px}
+.eq-explain{font-size:12px;color:var(--text-secondary);line-height:1.6}
+.eq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+
+/* ── LAW PANEL ── */
+.law-panel{border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.law-panel.law1{background:rgba(79,158,255,0.05);border:1px solid rgba(79,158,255,0.25)}
+.law-panel.law2{background:rgba(155,109,255,0.05);border:1px solid rgba(155,109,255,0.25)}
+.law-panel.law3{background:rgba(0,212,168,0.05);border:1px solid rgba(0,212,168,0.25)}
+.law-panel.law1::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch6),var(--neon-purple))}
+.law-panel.law2::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-purple),var(--neon-pink))}
+.law-panel.law3::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-teal),var(--neon-ch6))}
+.law-number{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-bottom:0.5rem}
+.law-panel.law1 .law-number{color:var(--neon-ch6)}
+.law-panel.law2 .law-number{color:var(--neon-purple)}
+.law-panel.law3 .law-number{color:var(--neon-teal)}
+.law-name{font-family:var(--font-display);font-size:1.4rem;font-weight:700;color:var(--text-primary);margin-bottom:1rem}
+.law-statement{font-size:14px;color:var(--text-primary);line-height:1.8;font-style:italic;padding:1rem 1.25rem;border-radius:var(--radius-md);margin-bottom:1rem}
+.law-panel.law1 .law-statement{background:rgba(79,158,255,0.07);border-left:3px solid var(--neon-ch6)}
+.law-panel.law2 .law-statement{background:rgba(155,109,255,0.07);border-left:3px solid var(--neon-purple)}
+.law-panel.law3 .law-statement{background:rgba(0,212,168,0.07);border-left:3px solid var(--neon-teal)}
+.law-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+
+/* ── COMPARE TABLE ── */
+.compare-wrap{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;margin-bottom:1.5rem}
+.compare-table{width:100%;border-collapse:collapse;font-size:13px}
+.compare-table th{font-family:var(--font-display);font-size:12px;font-weight:600;padding:14px 20px;text-align:left;border-bottom:1px solid var(--border)}
+.compare-table th.th-a{color:var(--neon-ch6);background:rgba(79,158,255,0.05)}
+.compare-table th.th-b{color:var(--neon-purple);background:rgba(155,109,255,0.05)}
+.compare-table th.th-feat{color:var(--text-muted)}
+.compare-table td{padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text-secondary);vertical-align:top}
+.compare-table tr:hover td{background:var(--bg-glass-hover)}
+.compare-table td.td-a{color:var(--neon-ch6)}
+.compare-table td.td-b{color:var(--neon-purple)}
+
+/* ── STAT ROW ── */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin:2rem 0}
+.stat-block{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:1.25rem 1rem;text-align:center}
+.stat-value{font-family:var(--font-display);font-size:1.75rem;font-weight:700;background:linear-gradient(135deg,var(--neon-ch6),var(--neon-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.25rem}
+.stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px}
+
+/* ── NOTE BOX ── */
+.note-box{background:rgba(255,181,71,0.05);border:1px solid rgba(255,181,71,0.2);border-left:3px solid var(--neon-amber);border-radius:0 var(--radius-md) var(--radius-md) 0;padding:1rem 1.25rem;margin:1rem 0;font-size:13px;color:var(--text-secondary);line-height:1.7}
+.note-box strong{color:var(--neon-amber);font-weight:600}
+
+/* ── SCIENTIST SPOTLIGHT ── */
+.scientist-card{background:var(--bg-card);border:1px solid rgba(155,109,255,0.25);border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.scientist-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-purple),var(--neon-pink))}
+.scientist-card::after{content:'';position:absolute;top:0;right:0;width:250px;height:250px;background:radial-gradient(circle,rgba(155,109,255,0.07) 0%,transparent 65%);pointer-events:none}
+.scientist-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-purple);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.scientist-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-purple)}
+.scientist-name{font-family:var(--font-display);font-size:1.4rem;font-weight:700;color:var(--text-primary);margin-bottom:0.25rem}
+.scientist-role{font-size:13px;color:var(--neon-purple);margin-bottom:1rem;font-weight:500}
+.scientist-body{font-size:13px;color:var(--text-secondary);line-height:1.8}
+.scientist-highlight{color:var(--neon-purple);font-weight:500}
+
+/* ── KEY TERM PILL ── */
+.key-term{display:inline-block;font-family:var(--font-mono);font-size:11px;font-weight:600;padding:2px 10px;border-radius:100px;background:rgba(79,158,255,0.1);border:1px solid rgba(79,158,255,0.25);color:var(--neon-ch6);margin:2px}
+
+/* ── KNOWLEDGE PANEL ── */
+.know-panel{background:var(--bg-card);border:1px solid rgba(79,158,255,0.25);border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.know-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch6),var(--neon-purple),var(--neon-teal))}
+.know-panel::after{content:'';position:absolute;top:0;right:0;width:300px;height:300px;background:radial-gradient(circle,rgba(79,158,255,0.06) 0%,transparent 60%);pointer-events:none}
+
+/* ── THINK SCIENTIST ── */
+.think-scientist-card{background:rgba(79,158,255,0.04);border:1px solid rgba(79,158,255,0.2);border-radius:var(--radius-xl);padding:1.75rem;margin-bottom:1.5rem}
+.think-scientist-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch6);font-weight:600;margin-bottom:0.75rem}
+.think-scientist-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+
+/* ── MISCONCEPTION ── */
+.misconception-card{background:rgba(255,107,172,0.04);border:1px solid rgba(255,107,172,0.2);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin:1rem 0}
+.misconception-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-pink);font-weight:600;margin-bottom:0.5rem}
+.misconception-body{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.misconception-body strong{color:var(--neon-pink);font-weight:500}
+
+/* ── CLOSING ── */
+.closing-banner{text-align:center;padding:5rem 2rem;position:relative;overflow:hidden;background:var(--bg-secondary)}
+.closing-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(79,158,255,0.1) 0%,transparent 60%)}
+.closing-title{font-family:var(--font-display);font-size:clamp(1.5rem,4vw,2.5rem);font-weight:700;color:var(--text-primary);margin-bottom:1rem;position:relative}
+.closing-title span{background:linear-gradient(135deg,var(--neon-ch6),var(--neon-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.closing-sub{font-size:15px;color:var(--text-secondary);max-width:500px;margin:0 auto;position:relative}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .triple-grid{grid-template-columns:1fr}
+  .top-nav{padding:0 1rem}
+  .eq-grid{grid-template-columns:1fr}
+}
+@media(max-width:540px){.flow-chain{flex-direction:column}.flow-arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav class="top-nav">
+  <div class="nav-logo">⚡ Exploration · Gr.9 · Ch.6</div>
+  <div class="nav-links">
+    <a class="nav-link" href="#objectives">Objectives</a>
+    <a class="nav-link" href="#force-concept">The Concept of Force</a>
+    <a class="nav-link" href="#balanced">Balanced &amp; Unbalanced</a>
+    <a class="nav-link" href="#friction">Friction</a>
+    <a class="nav-link" href="#first-law">Newton's 1st Law</a>
+    <a class="nav-link" href="#second-law">Newton's 2nd Law</a>
+    <a class="nav-link" href="#third-law">Newton's 3rd Law</a>
+    <a class="nav-link" href="#systems">System of Objects</a>
+    <a class="nav-link" href="#scientists">Scientists</a>
+    <a class="nav-link" href="#examples">Worked Examples</a>
+    <a class="nav-link" href="#summary">Summary</a>
+  </div>
+</nav>
+
+<div class="main">
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      Grade 9 · Chapter 6 · Physics
+    </div>
+    <h1 class="hero-title">
+      <span class="line1">How Forces</span>
+      <span class="line2">Affect Motion</span>
+    </h1>
+    <p class="hero-desc">Why does a canoe move forward when the paddler pushes water backwards? Why does a heavier cart need more force to accelerate? The answers lie in Newton's three laws — the bedrock of classical mechanics that explain motion from falling apples to rocket launches.</p>
+    <div class="hero-badges">
+      <span class="hero-badge badge-blue">⚡ Force &amp; Net Force</span>
+      <span class="hero-badge badge-purple">🧲 Friction</span>
+      <span class="hero-badge badge-teal">🏛️ Newton's 3 Laws</span>
+      <span class="hero-badge badge-pink">F = ma</span>
+      <span class="hero-badge badge-amber">🚀 Action-Reaction</span>
+      <span class="hero-badge badge-green">🛸 Systems of Objects</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ OBJECTIVES ══ -->
+<section class="section" id="objectives">
+  <div class="sec-header">
+    <div class="sec-tag">Learning Objectives</div>
+    <h2 class="sec-title">What You Will Master</h2>
+    <p class="sec-subtitle">By the end of this chapter you should be able to confidently do all of the following</p>
+  </div>
+  <div class="obj-grid">
+    <div class="obj-card"><div class="obj-num">01</div><div class="obj-text"><strong>Define force</strong> as a vector quantity and identify its SI unit (newton, N); understand how measuring force magnitude and direction are both essential</div></div>
+    <div class="obj-card"><div class="obj-num">02</div><div class="obj-text"><strong>Calculate net force</strong> when multiple forces act in the same or opposite directions on an object; distinguish balanced from unbalanced forces</div></div>
+    <div class="obj-card"><div class="obj-num">03</div><div class="obj-text"><strong>Explain friction</strong> — why it arises, how its magnitude varies with surface type, and its role in bringing moving objects to rest</div></div>
+    <div class="obj-card"><div class="obj-num">04</div><div class="obj-text"><strong>State and apply Newton's First Law</strong> — an object at rest stays at rest and a moving object stays moving unless a net force acts; understand the concept of inertia</div></div>
+    <div class="obj-card"><div class="obj-num">05</div><div class="obj-text"><strong>Use F = ma</strong> (Newton's Second Law) to solve problems involving force, mass and acceleration; connect g = 9.8 m s⁻² to gravitational force F = mg</div></div>
+    <div class="obj-card"><div class="obj-num">06</div><div class="obj-text"><strong>State and apply Newton's Third Law</strong> — forces always come in equal and opposite action-reaction pairs acting on two different objects</div></div>
+    <div class="obj-card"><div class="obj-num">07</div><div class="obj-text"><strong>Analyse systems of objects</strong> — treat connected objects as a single system, distinguish internal forces from external forces, and find system acceleration using a = F/(m₁+m₂)</div></div>
+    <div class="obj-card"><div class="obj-num">08</div><div class="obj-text"><strong>Relate Newton's Laws to everyday situations</strong> — airbags, catching a cricket ball, rocket launches, walking, rowing, and Chandrayaan-3's soft landing</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ THE CONCEPT OF FORCE ══ -->
+<div class="full-bg" id="force-concept">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 6.1 · Foundations</div>
+    <h2 class="sec-title">The Concept of Force</h2>
+    <p class="sec-subtitle">Force is the cause behind every change in motion — and it always has both a magnitude and a direction</p>
+  </div>
+
+  <div class="know-panel">
+    <div style="position:relative;z-index:1">
+      <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch6);font-weight:600;margin-bottom:1rem">What a Force Can Do</div>
+      <div class="concept-grid">
+        <div style="display:flex;gap:0.75rem;align-items:flex-start">
+          <span style="font-size:1.5rem;flex-shrink:0">⚽</span>
+          <div><div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:0.25rem">Set an object in motion</div><div style="font-size:12px;color:var(--text-secondary)">A ball at rest starts moving when you kick it — force changes it from zero to non-zero velocity</div></div>
+        </div>
+        <div style="display:flex;gap:0.75rem;align-items:flex-start">
+          <span style="font-size:1.5rem;flex-shrink:0">🏏</span>
+          <div><div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:0.25rem">Change speed or direction</div><div style="font-size:12px;color:var(--text-secondary)">A cricket bat's force on the ball changes its speed and direction of motion simultaneously</div></div>
+        </div>
+        <div style="display:flex;gap:0.75rem;align-items:flex-start">
+          <span style="font-size:1.5rem;flex-shrink:0">🍋</span>
+          <div><div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:0.25rem">Change the shape</div><div style="font-size:12px;color:var(--text-secondary)">Squeezing a lemon with your fingers applies force that deforms its shape</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="concept-grid" style="margin-top:1.5rem">
+    <div class="concept-card blue">
+      <div class="concept-icon">📐</div>
+      <div class="concept-title">Force is a Vector Quantity</div>
+      <div class="concept-body">Like displacement, velocity and acceleration, force requires <strong style="color:var(--neon-ch6)">both magnitude (how strong) and direction (which way)</strong>. Changing either the magnitude or the direction — or both — changes the effect of the force on the object.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">⚖️</div>
+      <div class="concept-title">SI Unit: The Newton (N)</div>
+      <div class="concept-body">The SI unit of force is the <strong style="color:var(--neon-purple)">newton</strong> — written in small case (newton, not Newton) but symbolised with capital N. One newton is the force that produces 1 m s⁻² acceleration on a 1 kg object.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🌡️</div>
+      <div class="concept-title">Measuring Force</div>
+      <div class="concept-body">A <strong style="color:var(--neon-teal)">spring balance</strong> measures force magnitude. It measures not just weight (gravitational force) but any force you apply to the spring. The stretch of the spring indicates the force.</div>
+    </div>
+  </div>
+
+  <div class="curiosity-card" style="margin-top:1.5rem">
+    <div class="curiosity-glyph">🔬</div>
+    <div class="curiosity-tag">Threads of Curiosity</div>
+    <div class="curiosity-title">The Scale of Forces in Nature</div>
+    <div class="curiosity-body">In everyday life, the smallest force we can directly feel is around <span class="curiosity-highlight">millinewtons (10⁻³ N)</span> — like a gentle touch. But scientists can measure forces far smaller: down to <span class="curiosity-highlight">yoctonewtons (10⁻²⁴ N)</span> in specialised experiments (as of 2026). That's a trillion trillion times smaller than what you can feel! Holding a 100 g object in your palm requires your palm to push up with about 1 N upward — that's what one newton of force feels like.</div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ BALANCED & UNBALANCED FORCES ══ -->
+<section class="section" id="balanced">
+  <div class="sec-header">
+    <div class="sec-tag">Section 6.2 · Net Force</div>
+    <h2 class="sec-title">Balanced and Unbalanced Forces</h2>
+    <p class="sec-subtitle">When multiple forces act on one object, what matters is the NET force — their combined effect</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:2rem">
+    <div style="background:var(--bg-card);border:1px solid rgba(79,158,255,0.3);border-radius:var(--radius-xl);padding:1.5rem;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch6),var(--neon-purple))"></div>
+      <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch6);font-weight:600;margin-bottom:0.75rem">Balanced Forces</div>
+      <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--neon-ch6);margin-bottom:0.75rem">Net Force = Zero</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1rem">Two forces are <strong style="color:var(--text-primary)">equal in magnitude but opposite in direction</strong>. The object does not accelerate — it either stays at rest or continues at constant velocity.</div>
+      <div style="display:flex;flex-direction:column;gap:0.5rem">
+        <div style="font-size:12px;padding:8px 12px;background:rgba(79,158,255,0.07);border:1px solid rgba(79,158,255,0.2);border-radius:var(--radius-sm);color:var(--text-secondary)">🪢 Tug of war — both teams pull equally → rope doesn't move</div>
+        <div style="font-size:12px;padding:8px 12px;background:rgba(79,158,255,0.07);border:1px solid rgba(79,158,255,0.2);border-radius:var(--radius-sm);color:var(--text-secondary)">🏋️ Weightlifter holding barbell steady — gravity balanced by lift force</div>
+        <div style="font-size:12px;padding:8px 12px;background:rgba(79,158,255,0.07);border:1px solid rgba(79,158,255,0.2);border-radius:var(--radius-sm);color:var(--text-secondary)">🏀 Ball floating on water — gravity balanced by buoyant force</div>
+      </div>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid rgba(255,107,172,0.3);border-radius:var(--radius-xl);padding:1.5rem;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-pink),var(--neon-amber))"></div>
+      <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-pink);font-weight:600;margin-bottom:0.75rem">Unbalanced Forces</div>
+      <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--neon-pink);margin-bottom:0.75rem">Net Force ≠ Zero</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1rem">Forces are <strong style="color:var(--text-primary)">unequal in magnitude or not perfectly opposite</strong>. A non-zero net force acts — the object accelerates in the direction of the net force.</div>
+      <div style="display:flex;flex-direction:column;gap:0.5rem">
+        <div style="font-size:12px;padding:8px 12px;background:rgba(255,107,172,0.07);border:1px solid rgba(255,107,172,0.2);border-radius:var(--radius-sm);color:var(--text-secondary)">🪢 One team pulls harder → rope moves toward stronger team</div>
+        <div style="font-size:12px;padding:8px 12px;background:rgba(255,107,172,0.07);border:1px solid rgba(255,107,172,0.2);border-radius:var(--radius-sm);color:var(--text-secondary)">🚗 Two people push stalled car → net force = sum of both pushes</div>
+        <div style="font-size:12px;padding:8px 12px;background:rgba(255,107,172,0.07);border:1px solid rgba(255,107,172,0.2);border-radius:var(--radius-sm);color:var(--text-secondary)">📦 Applied force &gt; friction → box accelerates and moves</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>Net Force Rules:</strong> When two forces act on the same object — (1) Same direction: net force = sum of magnitudes, direction = same as both. (2) Opposite directions: net force = difference of magnitudes, direction = toward the larger force. (3) Equal and opposite: net force = zero, object doesn't accelerate.</p>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <span class="example-num">Example 6.1</span>
+      <span class="example-emoji">📦</span>
+      <span class="example-title">Three Force Scenarios on One Block</span>
+    </div>
+    <div class="example-question">Forces of 10 N and 6 N act on a block lying on a table. Find the net force magnitude and direction in three cases: (a) both rightward, (b) 10 N right + 6 N left, (c) 6 N right + 10 N left.</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">
+      <strong style="color:var(--neon-ch6)">(a) Same direction (both right):</strong> Net force = 10 + 6 = <strong style="color:var(--neon-ch6)">16 N, rightward</strong><br><br>
+      <strong style="color:var(--neon-purple)">(b) Opposite, 10 N right + 6 N left:</strong> Net force = 10 − 6 = <strong style="color:var(--neon-purple)">4 N, rightward</strong> (direction of larger force)<br><br>
+      <strong style="color:var(--neon-pink)">(c) Opposite, 6 N right + 10 N left:</strong> Net force = 10 − 6 = <strong style="color:var(--neon-pink)">4 N, leftward</strong> (direction of larger force)
+    </div>
+  </div>
+
+  <div class="note-box"><strong>Key Note:</strong> Multiple forces may act on an object simultaneously, but its motion depends only on the net (resultant) force. Forces do not act on individual atoms — the single net force governs the entire object's motion.</div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>1.</strong> A weightlifter lifts a barbell. List two forces acting on the barbell. Are they balanced if she keeps it steady?<br>
+      <strong>2.</strong> In an arm-wrestling match, at the instant the arms tilt forward, are the forces balanced? Which player exerted the larger force?
+    </div>
+  </div>
+
+  <div class="beyond-card">
+    <div class="beyond-tag">Ready to Go Beyond — Non-parallel Forces</div>
+    <div class="beyond-title">Forces at an Angle and Rotational Effects</div>
+    <div class="beyond-body">The net force rules above apply only when forces are parallel or anti-parallel. When forces act at angles to each other, you need <span class="beyond-highlight">vector addition</span> to find the resultant — you'll learn this in higher grades. Also, when equal and opposite forces are applied to the two ends of an extended object (like a handlebar or a tap), they cause the object to <span class="beyond-highlight">rotate</span> rather than translate — this is called a torque or turning effect, also covered in higher grades.</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ FRICTION ══ -->
+<div class="full-bg" id="friction">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 6.3 · Friction</div>
+    <h2 class="sec-title">The Force of Friction — Always Present, Often Overlooked</h2>
+    <p class="sec-subtitle">Friction opposes motion between surfaces in contact — its magnitude depends on the nature of those surfaces</p>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card blue">
+      <div class="concept-icon">📦</div>
+      <div class="concept-title">What Friction Does</div>
+      <div class="concept-body">Friction acts <strong style="color:var(--neon-ch6)">opposite to the direction of motion</strong> (or intended motion). When you push a box, friction pushes back. When you stop pushing, friction is the only force remaining — it decelerates and stops the object.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🌐</div>
+      <div class="concept-title">Forces on a Pushed Object</div>
+      <div class="concept-body">Four forces act on a box being pushed on a floor: <strong style="color:var(--neon-purple)">Applied force</strong> (forward), <strong style="color:var(--neon-purple)">Friction</strong> (backward), <strong style="color:var(--neon-purple)">Gravitational force / weight</strong> (downward), <strong style="color:var(--neon-purple)">Normal force</strong> (upward from surface). Weight and normal force are balanced; applied force and friction compete.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🏄</div>
+      <div class="concept-title">Friction Depends on Surface</div>
+      <div class="concept-body">The force of friction is <strong style="color:var(--neon-teal)">different for different surfaces</strong>. Rough surfaces (wood) have higher friction; smooth surfaces (polished marble) have lower friction. Lower friction → slower deceleration → object travels farther before stopping.</div>
+    </div>
+  </div>
+
+  <!-- Activity 6.1 -->
+  <div class="activity-card" style="margin-top:1.5rem">
+    <div class="activity-header">
+      <span class="activity-badge">🔬 Activity 6.1</span>
+      <span class="activity-title">Investigating Friction — Rubber Band &amp; Coins on Different Surfaces</span>
+    </div>
+    <div class="activity-body">Stack four ₹10 coins and launch them with a rubber band stretched to the same point (mark C) on different surfaces: wooden table, laminated table, polished marble or tile floor. Measure the distance the coin stack travels on each surface.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Observation:</strong> The coin stack travels the largest distance on polished marble and the least on the rough wooden surface.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Why?</strong> The same initial force (rubber band stretched to same point C) gives the same initial velocity. After release, only friction acts. Less friction = slower deceleration = greater distance traveled.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Conclusion:</strong> Friction depends on the nature of the surfaces in contact. The smoother the surface, the weaker the friction and the further the object travels.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>What if friction = 0?</strong> The coin stack would never stop — it would continue moving indefinitely at constant velocity. This is the key insight that led to Newton's First Law!</div>
+    </div>
+  </div>
+
+  <!-- Activity 6.2 -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">📏 Activity 6.2</span>
+      <span class="activity-title">Measuring Friction Force with a Spring Balance</span>
+    </div>
+    <div class="activity-body">Attach a wooden block to a spring balance lying horizontal on each surface from Activity 6.1. Pull the spring balance with gradually increasing force and note the reading when the block just starts moving.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div>When the block just starts moving at constant velocity (not accelerating), the net force is zero — so the spring reading equals the friction force exactly.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Result:</strong> Spring reading is largest on wood (most friction) and smallest on polished marble (least friction).</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Cross-check with Activity 6.1:</strong> The surface where coins travelled furthest (smallest friction) gives the lowest spring reading, and vice versa. ✓</div>
+    </div>
+  </div>
+
+  <div class="think-scientist-card">
+    <div class="think-scientist-tag">🧬 Think as a Scientist — Thought Experiment</div>
+    <div class="think-scientist-body">
+      <strong style="color:var(--text-primary)">Imagine:</strong> An object on a perfectly frictionless horizontal surface — zero friction. You give it a push (rubber band to C). What happens after it leaves the rubber band?<br><br>
+      <strong style="color:var(--neon-ch6)">Answer:</strong> With no friction force to decelerate it, the object would <strong style="color:var(--text-primary)">never slow down</strong>. It would continue moving at the same velocity forever. This thought experiment was the basis of <strong style="color:var(--neon-ch6)">Galileo's revolutionary insight</strong> that motion does not require a continuous force to maintain it.
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ NEWTON'S FIRST LAW ══ -->
+<section class="section" id="first-law">
+  <div class="sec-header">
+    <div class="sec-tag">Section 6.4 · Newton's First Law</div>
+    <h2 class="sec-title">Newton's First Law of Motion</h2>
+    <p class="sec-subtitle">The Law of Inertia — objects resist changes to their state of motion</p>
+  </div>
+
+  <div class="law-panel law1">
+    <div class="law-number">Newton's First Law of Motion</div>
+    <div class="law-name">The Law of Inertia</div>
+    <div class="law-statement">"An object at rest remains at rest, and an object in motion continues to move with a constant velocity, unless a net force acts upon the object."</div>
+    <div class="law-body">In other words: if the <strong style="color:var(--text-primary)">net force = zero</strong>, an object cannot begin to move, cannot stop if already moving, and cannot change its direction or speed. Its acceleration is zero. The tendency of objects to resist changes to their state is called <strong style="color:var(--neon-ch6)">inertia</strong> — coined by Newton himself.</div>
+  </div>
+
+  <div class="concept-grid" style="margin-top:1.5rem">
+    <div class="concept-card blue">
+      <div class="concept-icon">💤</div>
+      <div class="concept-title">Object at Rest</div>
+      <div class="concept-body">An object at rest has <strong style="color:var(--neon-ch6)">zero velocity</strong>. Net force = 0 means it stays at zero velocity. Position–time graph: horizontal line. Velocity–time graph: flat line at v = 0.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">➡️</div>
+      <div class="concept-title">Object in Uniform Motion</div>
+      <div class="concept-body"><strong style="color:var(--neon-purple)">Constant velocity</strong> means both speed and direction are unchanged — straight-line motion. Net force = 0. Position–time graph: straight diagonal line. Velocity–time graph: flat horizontal line above zero.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">⚠️</div>
+      <div class="concept-title">Common Misconception</div>
+      <div class="concept-body">For centuries people believed a force is needed to <em>keep</em> something moving. <strong style="color:var(--neon-teal)">Wrong!</strong> Once moving on a frictionless surface, no force is needed to maintain constant velocity. Force is only needed to <em>change</em> velocity — to speed up, slow down, or turn.</div>
+    </div>
+  </div>
+
+  <div class="misconception-card">
+    <div class="misconception-label">⚠️ Common Misconception to Avoid</div>
+    <div class="misconception-body">Many students think <strong>"if something is moving, a force must be acting on it."</strong> This is incorrect. A force is needed to <em>change</em> motion, not to maintain it. A ball sliding on ice at constant speed has zero net force — friction is simply very small. If there were truly no friction, it would slide forever with no force needed.</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <span class="example-num">Example 6.2</span>
+      <span class="example-emoji">📦</span>
+      <span class="example-title">Applied Force = Friction — What Happens?</span>
+    </div>
+    <div class="example-question">A person pushes a moving box in the forward direction with a force exactly equal to the force of friction. Will the box continue moving or stop?</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">
+      Applied force (forward) = Friction force (backward) → they are equal and opposite → <strong style="color:var(--neon-ch6)">balanced forces → net force = 0</strong>.<br><br>
+      By Newton's First Law, zero net force means <strong style="color:var(--text-primary)">the box continues moving at constant velocity</strong>. It does not accelerate and does not stop. You need to reduce the applied force below friction to let it slow down.
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <span class="example-num">Example 6.3</span>
+      <span class="example-emoji">📈</span>
+      <span class="example-title">Graphs When Net Force = Zero</span>
+    </div>
+    <div class="example-question">Draw position–time and velocity–time graphs for an object with zero net force acting on it.</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">
+      <strong style="color:var(--neon-ch6)">Case 1 — Object at rest:</strong> Position–time graph is a horizontal line (position doesn't change). Velocity–time graph is a flat line at v = 0.<br><br>
+      <strong style="color:var(--neon-purple)">Case 2 — Object moving at constant velocity:</strong> Position–time graph is a straight diagonal line (equal position change in equal time). Velocity–time graph is a flat horizontal line above zero (velocity constant).<br><br>
+      <strong style="color:var(--text-secondary)">Key insight:</strong> Both cases have the same net force (zero) but look completely different on graphs. What they share is <strong style="color:var(--text-primary)">zero acceleration</strong>.
+    </div>
+  </div>
+
+  <div class="note-box"><strong>Important:</strong> If friction = 0, a net force must still be applied to set a resting object moving. But once it's moving, <em>no further force</em> is needed to maintain constant velocity. To change velocity — speed up, slow down, or turn — a force must be applied.</div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>3.</strong> An object is moving with a constant velocity. Is there a net force acting upon it?<br>
+      <strong>4.</strong> No net force acts on an object. Which situations are possible? (i) Object at rest stays at rest. (ii) Moving object keeps moving at constant velocity. (iii) Object moves with constant acceleration. Which of these three can occur?<br>
+      <strong>5.</strong> In the real world it's hard to have zero net force. But it can be achieved artificially. Give an example.
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ NEWTON'S SECOND LAW ══ -->
+<div class="full-bg" id="second-law">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 6.5 · Newton's Second Law</div>
+    <h2 class="sec-title">Newton's Second Law of Motion</h2>
+    <p class="sec-subtitle">The quantitative law — relating force, mass and acceleration with F = ma</p>
+  </div>
+
+  <div class="law-panel law2">
+    <div class="law-number">Newton's Second Law of Motion</div>
+    <div class="law-name">F = ma — The Fundamental Relationship</div>
+    <div class="law-statement">"When a net force acts on an object, the object accelerates in the direction of the net force. The magnitude of acceleration is proportional to the net force and inversely proportional to the mass of the object."</div>
+    <div class="law-body">Mathematically: <strong style="color:var(--neon-purple)">a = F/m</strong> or equivalently <strong style="color:var(--neon-purple)">F = ma</strong>, where F = net force (N), m = mass (kg), a = acceleration (m s⁻²). The direction of acceleration is the same as the direction of the net force.</div>
+  </div>
+
+  <div class="eq-grid" style="margin:1.5rem 0">
+    <div class="eq-box">
+      <div class="eq-label">Core Formula</div>
+      <div class="eq-formula">F = m × a</div>
+      <div class="eq-explain">Net Force (N) = Mass (kg) × Acceleration (m s⁻²)</div>
+    </div>
+    <div class="eq-box" style="border-color:rgba(155,109,255,0.25)">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon-purple),var(--neon-pink))"></div>
+      <div class="eq-label" style="color:var(--neon-purple)">Gravitational Force</div>
+      <div class="eq-formula" style="color:var(--neon-purple)">F = m × g</div>
+      <div class="eq-explain">Weight (N) = Mass (kg) × g (9.8 m s⁻²); g is the same for all objects regardless of mass</div>
+    </div>
+    <div class="eq-box" style="border-color:rgba(0,212,168,0.25)">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon-teal),var(--neon-ch6))"></div>
+      <div class="eq-label" style="color:var(--neon-teal)">Definition of 1 Newton</div>
+      <div class="eq-formula" style="color:var(--neon-teal);font-size:1rem">1 N = 1 kg × 1 m s⁻²</div>
+      <div class="eq-explain">The force that produces 1 m s⁻² acceleration on a 1 kg object. g ≈ 9.8 m s⁻² (use 10 for quick estimates)</div>
+    </div>
+  </div>
+
+  <div class="concept-grid" style="margin-bottom:1.5rem">
+    <div class="concept-card blue">
+      <div class="concept-icon">💪</div>
+      <div class="concept-title">Force ↑ → Acceleration ↑</div>
+      <div class="concept-body">For the <strong style="color:var(--neon-ch6)">same mass</strong>, doubling the net force doubles the acceleration. A gentle push → small acceleration. A strong push → large acceleration. They are directly proportional: a ∝ F.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🏋️</div>
+      <div class="concept-title">Mass ↑ → Acceleration ↓</div>
+      <div class="concept-body">For the <strong style="color:var(--neon-purple)">same force</strong>, doubling the mass halves the acceleration. A lighter object accelerates more than a heavier one. They are inversely proportional: a ∝ 1/m.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🌍</div>
+      <div class="concept-title">Gravity is Mass-Independent</div>
+      <div class="concept-body"><strong style="color:var(--neon-teal)">g = 9.8 m s⁻² for all objects</strong> near Earth's surface regardless of mass — a feather and a hammer fall with the same acceleration in a vacuum. This is because both F and m scale together in F = mg.</div>
+    </div>
+  </div>
+
+  <!-- Activities 6.3 and 6.4 -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🛒 Activity 6.3</span>
+      <span class="activity-title">Demonstration — Larger Force → Larger Acceleration (same mass)</span>
+    </div>
+    <div class="activity-body">A cart made from a cardboard box with ball-bearing wheels on a table. A thread over a pulley is attached to a hanging paper cup with objects inside (providing the driving force via gravity). Record a slow-motion video and compare times T₁ and T₂ for the same cart distance with different forces.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div>Cart starts at rest (u = 0) and travels same distance s in time T. From s = ½aT², we get a = 2s/T².</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div>Since s is fixed: a₁/a₂ = T₂²/T₁². Doubling the cup mass doubles the force → acceleration doubles → time to cover same distance decreases.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Conclusion:</strong> For fixed mass, acceleration increases when net force increases. ✓ (Small discrepancy due to friction between wheels and surface)</div>
+    </div>
+  </div>
+
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🛒 Activity 6.4</span>
+      <span class="activity-title">Demonstration — Larger Mass → Smaller Acceleration (same force)</span>
+    </div>
+    <div class="activity-body">Keep the hanging cup mass (force) constant. Double the cart's mass by adding objects inside it. Compare the times to travel the same distance.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div>Same force, double the mass → acceleration halves → it takes longer to cover the same distance.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Conclusion:</strong> For fixed force, acceleration decreases when mass increases. a ∝ 1/m ✓</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div>Together with Activity 6.3, these two experiments confirm that F = ma is the relationship between force, mass and acceleration.</div>
+    </div>
+  </div>
+
+  <!-- Real-world applications -->
+  <div class="bridging-card">
+    <div class="bridging-tag">Bridging Science and Society</div>
+    <div class="bridging-title">🚗 Airbags — Newton's 2nd Law Saving Lives</div>
+    <div class="bridging-body">In a collision, a vehicle stops abruptly. Without an airbag, a passenger's head hits the hard steering wheel in a very short time — producing <span class="bridging-highlight">huge acceleration (deceleration)</span>, which means a huge force on the head (F = ma). An airbag inflates instantly into a soft cushion, <span class="bridging-highlight">increasing the time over which the passenger decelerates</span>. Same change in velocity, more time → smaller acceleration → smaller force → lower risk of serious injury. Seat belts work on the same principle.</div>
+  </div>
+
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🏏</div>
+    <div class="curiosity-tag">Threads of Curiosity</div>
+    <div class="curiosity-title">Catching a Cricket Ball &amp; Cracking a Coconut</div>
+    <div class="curiosity-body">When a fielder catches a fast ball, they <span class="curiosity-highlight">pull their hands backwards</span> with the ball. This increases the time for the ball to stop → smaller acceleration → smaller force on the hands → less pain and risk of injury. A cricket ball stops via F = ma: less a means less F.<br><br>Cracking a coconut works the <em>opposite</em> way — you bring it down at <span class="curiosity-highlight">high velocity and stop it in a very short time</span>. Short time → huge deceleration → huge force by the ground → the shell breaks!</div>
+  </div>
+
+  <div class="beyond-card">
+    <div class="beyond-tag">Ready to Go Beyond — Momentum</div>
+    <div class="beyond-title">The More Complete Form of Newton's Second Law</div>
+    <div class="beyond-body">The complete form of Newton's second law is stated in terms of <span class="beyond-highlight">momentum</span> — defined as the product of an object's mass and velocity (p = mv). Newton's second law states: <em>"The rate of change of momentum of an object is proportional to the net force and takes place in the direction of that force."</em> This form applies even when mass is not constant (e.g., rockets that burn fuel and lose mass). You will study momentum in detail in higher grades.</div>
+  </div>
+
+  <!-- Examples 6.4, 6.5, 6.6 -->
+  <div class="example-card">
+    <div class="example-header">
+      <span class="example-num">Example 6.4</span>
+      <span class="example-emoji">🏋️</span>
+      <span class="example-title">Weightlifter Holding a Barbell Steady</span>
+    </div>
+    <div class="example-question">A weightlifter holds a barbell: 10 kg on each side + 10 kg bar. How much force is she applying to keep it steady?</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">
+      Total mass = 10 + 10 + 10 = <strong>30 kg</strong><br>
+      Gravitational force (downward) = F = mg = 30 × 9.8 = <strong style="color:var(--neon-ch6)">294 N</strong><br>
+      To keep barbell steady (a = 0, net force = 0), she must apply <strong style="color:var(--neon-ch6)">294 N upward</strong>.
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <span class="example-num">Example 6.5</span>
+      <span class="example-emoji">📦</span>
+      <span class="example-title">Pushing a Block — With and Without Enough Force</span>
+    </div>
+    <div class="example-question">A 25 kg stationary block. Max friction = 50 N. Find displacement in 2 s if pushed with (i) 50 N, (ii) 55 N.</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">
+      <strong style="color:var(--neon-purple)">(i) 50 N push:</strong> Applied force = Friction = 50 N → balanced → net force = 0 → <strong style="color:var(--neon-purple)">block stays stationary. Displacement = 0 m.</strong><br><br>
+      <strong style="color:var(--neon-ch6)">(ii) 55 N push:</strong> Net force = 55 − 50 = <strong>5 N</strong> (forward)<br>
+      Acceleration = F/m = 5/25 = <strong>0.2 m s⁻²</strong><br>
+      Displacement = ut + ½at² = 0 + ½ × 0.2 × 4 = <strong style="color:var(--neon-ch6)">0.4 m forward</strong>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <span class="example-num">Example 6.6</span>
+      <span class="example-emoji">🚗</span>
+      <span class="example-title">Sports Car — Force from Velocity-Time Graph (1500 kg)</span>
+    </div>
+    <div class="example-question">A 1500 kg sports car moves east. Velocity–time graph shows: 0–5 s (accelerating from 0 to 10 m/s), 5–10 s (constant 10 m/s), 10–15 s (decelerating from 10 to 0 m/s). Find force in each interval.</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">
+      <strong style="color:var(--neon-ch6)">(i) 0–5 s:</strong> v = u + at → 10 = 0 + a×5 → a = 2 m s⁻². F = 1500 × 2 = <strong style="color:var(--neon-ch6)">3000 N eastward</strong><br><br>
+      <strong style="color:var(--neon-teal)">(ii) 5–10 s:</strong> Velocity is constant → a = 0 → <strong style="color:var(--neon-teal)">F = 0 N</strong><br><br>
+      <strong style="color:var(--neon-pink)">(iii) 10–15 s:</strong> 0 = 10 + a×5 → a = −2 m s⁻². F = 1500 × (−2) = <strong style="color:var(--neon-pink)">−3000 N (westward, opposite to motion)</strong>
+    </div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>6.</strong> A toy car of 100 g moves at a constant velocity of 0.5 m s⁻¹. What is the net force on it?<br>
+      <strong>7.</strong> Two children of different masses sit on identical swings. To give them identical initial acceleration, for which child do you apply a larger force? Why?<br>
+      <strong>8.</strong> How does packing glass items in bubble wrap or hay protect them from damage? (Hint: think about the time of impact and F = ma.)
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ NEWTON'S THIRD LAW ══ -->
+<section class="section" id="third-law">
+  <div class="sec-header">
+    <div class="sec-tag">Section 6.6 · Newton's Third Law</div>
+    <h2 class="sec-title">Newton's Third Law of Motion</h2>
+    <p class="sec-subtitle">Every force has an equal and opposite partner — forces always come in pairs on two different objects</p>
+  </div>
+
+  <div class="law-panel law3">
+    <div class="law-number">Newton's Third Law of Motion</div>
+    <div class="law-name">Action and Reaction — Always in Pairs</div>
+    <div class="law-statement">"Whenever one object is exerting a force on a second object, the second object is simultaneously exerting an equal and opposite force on the first object."</div>
+    <div class="law-body">The forces are <strong style="color:var(--neon-teal)">equal in magnitude</strong> but <strong style="color:var(--neon-teal)">opposite in direction</strong>. Crucially, they act on <strong style="color:var(--text-primary)">two different objects</strong> — so they never cancel each other. Newton's third law applies to <em>all</em> types of forces — contact forces AND non-contact forces (gravity, magnetism, electrostatics).</div>
+  </div>
+
+  <div class="note-box" style="margin-top:1.25rem"><strong>Critical Distinction:</strong> Third-law force pairs act on TWO DIFFERENT objects — they never cancel. But balanced forces (First Law) are two forces on the SAME object that cancel. Don't confuse these!</div>
+
+  <!-- Activity 6.5 -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🪑 Activity 6.5</span>
+      <span class="activity-title">Chair on Wheels — Feeling Reaction Force</span>
+    </div>
+    <div class="activity-body">Sit on a wheeled chair with feet raised. Push a heavy table forward with both hands. Observe what happens to the chair. Then pull the table toward you — what happens?</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Push table forward:</strong> You apply force on the table → table applies equal force on you backwards → your chair rolls backward.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Pull table toward you:</strong> You apply force on the table → table applies equal force on you forward → your chair rolls forward.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Conclusion:</strong> The table always applies an equal and opposite force on you. You cannot push or pull without experiencing a reaction in return.</div>
+    </div>
+  </div>
+
+  <!-- Activity 6.6 -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">⚖️ Activity 6.6</span>
+      <span class="activity-title">Two Spring Balances — Verifying Equal Forces</span>
+    </div>
+    <div class="activity-body">Connect two identical spring balances by their hooks. Fix one end to an immovable object. Pull the free end of the other. Read both scales simultaneously.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Observation:</strong> Both spring balances read exactly the same value, every time, regardless of how hard you pull.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div>This confirms that the force each spring applies on the other is equal in magnitude — action and reaction forces are always equal. Newton's Third Law verified ✓</div>
+    </div>
+  </div>
+
+  <!-- Activity 6.7 -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🎈 Activity 6.7</span>
+      <span class="activity-title">Balloon Rocket — Action-Reaction in Action</span>
+    </div>
+    <div class="activity-body">Inflate a balloon. Thread a straw along a taut horizontal thread. Release the balloon neck and observe which way the balloon moves.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div>The balloon material pushes air molecules OUT through the neck (action force on air, backward).</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div>The air rushing out pushes back on the balloon in the OPPOSITE direction (reaction force on balloon, forward).</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div>The balloon moves FORWARD — in the direction opposite to the escaping air. This is exactly how a rocket works!</div>
+    </div>
+  </div>
+
+  <!-- Real-world applications of 3rd law -->
+  <div class="triple-grid" style="margin:1.5rem 0">
+    <div class="triple-card c1">
+      <div class="triple-label">Walking</div>
+      <span class="triple-icon">🚶</span>
+      <div class="triple-title">You Walk</div>
+      <div class="triple-desc">You push the ground backwards with your foot. Ground pushes your foot forward (friction) — making you walk. No friction → foot slips backwards → you fall.</div>
+      <div class="triple-example">Grooved shoe soles increase friction. Wet floors are dangerous because friction is reduced.</div>
+    </div>
+    <div class="triple-card c2">
+      <div class="triple-label">Canoeing</div>
+      <span class="triple-icon">🚣</span>
+      <div class="triple-title">Rowing</div>
+      <div class="triple-desc">Paddle pushes water backwards. Water pushes paddle (and canoe) forward. Push harder → greater forward force → greater velocity. Harder paddle = faster canoe.</div>
+      <div class="triple-example">Speed also depends on drag, water currents, style of rowing, and canoe mass.</div>
+    </div>
+    <div class="triple-card c3">
+      <div class="triple-label">Rockets</div>
+      <span class="triple-icon">🚀</span>
+      <div class="triple-title">Rocket Launch</div>
+      <div class="triple-desc">Engine expels hot gas downward. Gas pushes rocket upward. If upward force &gt; rocket weight, net force is upward → rocket lifts off.</div>
+      <div class="triple-example">Chandrayaan-3's Vikram lander fired engines in its direction of motion to decelerate for a soft Moon landing.</div>
+    </div>
+  </div>
+
+  <div class="bridging-card">
+    <div class="bridging-tag">Bridging Science and Society</div>
+    <div class="bridging-title">🧗 Climbing Trees, Grooved Shoes, and Icy Roads</div>
+    <div class="bridging-body">A person climbing a coconut tree pushes their legs down against the trunk. The trunk pushes their legs up via friction — lifting them. <span class="bridging-highlight">Smooth trunk = less friction = harder to climb.</span> The same Third-Law friction that helps you walk also keeps tyres on roads. Tyre treads increase contact area and friction. On icy or wet roads, friction drops drastically — tyres spin without grip, making driving dangerous. Grooved shoe soles use the same principle.</div>
+  </div>
+
+  <!-- Third law examples 6.7, 6.8 -->
+  <div class="example-card">
+    <div class="example-header">
+      <span class="example-num">Example 6.7</span>
+      <span class="example-emoji">🍎</span>
+      <span class="example-title">Earth and Fruit — Equal Forces, Very Different Accelerations</span>
+    </div>
+    <div class="example-question">Earth and a fruit apply equal and opposite gravitational forces on each other. Why does the fruit fall toward Earth, but Earth doesn't visibly move toward the fruit?</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">
+      By Newton's Third Law, force on fruit by Earth = force on Earth by fruit (equal magnitude).<br><br>
+      By Newton's Second Law: a = F/m. The Earth's mass is <strong style="color:var(--text-primary)">enormously larger</strong> than the fruit's mass. The same force produces an acceleration on the Earth so tiny (≈10⁻²⁵ m s⁻²) that it is completely undetectable. The fruit, being much lighter, accelerates at g = 9.8 m s⁻² — visibly falling.
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <span class="example-num">Example 6.8</span>
+      <span class="example-emoji">🔫</span>
+      <span class="example-title">Gun Recoil — Equal Force, Different Accelerations</span>
+    </div>
+    <div class="example-question">A 0.1 kg bullet is fired from a 5 kg gun with a force of 2 N. What are the initial accelerations of bullet and gun?</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">
+      By Newton's Third Law: recoil force on gun = 2 N (equal to force on bullet).<br><br>
+      <strong style="color:var(--neon-ch6)">Acceleration of gun</strong> = F/m_gun = 2/5 = <strong style="color:var(--neon-ch6)">0.4 m s⁻² (backward)</strong><br>
+      <strong style="color:var(--neon-purple)">Acceleration of bullet</strong> = F/m_bullet = 2/0.1 = <strong style="color:var(--neon-purple)">20 m s⁻² (forward)</strong><br><br>
+      Same force → very different accelerations because their masses are very different. The gun barely recoils; the bullet screams forward.
+    </div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>9.</strong> Why does a firefighter sometimes struggle when holding a hose issuing water? (Hint: Third Law — water goes forward, so…)<br>
+      <strong>10.</strong> A spacecraft is in a region where gravity is negligible. How can it change its velocity? (Hint: think rocket exhaust.)
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SYSTEMS OF OBJECTS ══ -->
+<div class="full-bg" id="systems">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 6.7 · Advanced Application</div>
+    <h2 class="sec-title">Forces Acting on a System of Objects</h2>
+    <p class="sec-subtitle">Treat connected objects as a single system — internal forces cancel, only external forces matter</p>
+  </div>
+
+  <div class="know-panel">
+    <div style="position:relative;z-index:1">
+      <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch6);font-weight:600;margin-bottom:1rem">The System Approach</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1rem">Two boxes (mass m₁ and m₂) connected by a string on a frictionless surface. A force F pulls Box 1 to the right. Box 1 pulls Box 2 via string (tension T). By Newton's Third Law, Box 2 pulls Box 1 back via the string. Tension acts as an <strong style="color:var(--text-primary)">internal force</strong> between the boxes.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div style="background:rgba(79,158,255,0.07);border:1px solid rgba(79,158,255,0.2);border-radius:var(--radius-md);padding:1rem">
+          <div style="font-size:12px;font-weight:600;color:var(--neon-ch6);margin-bottom:0.5rem">Internal Forces</div>
+          <div style="font-size:12px;color:var(--text-secondary);line-height:1.7">Tension T between Box 1 and Box 2 via the string. Internal forces cancel when treating the whole system — they always occur in equal and opposite pairs within the system.</div>
+        </div>
+        <div style="background:rgba(155,109,255,0.07);border:1px solid rgba(155,109,255,0.2);border-radius:var(--radius-md);padding:1rem">
+          <div style="font-size:12px;font-weight:600;color:var(--neon-purple);margin-bottom:0.5rem">External Forces</div>
+          <div style="font-size:12px;color:var(--text-secondary);line-height:1.7">The applied force F pulling Box 1 comes from outside the system. This is the only force that changes the system's total momentum. Gravity and normal force also cancel (balanced, vertical).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="eq-grid" style="margin:1.5rem 0">
+    <div class="eq-box">
+      <div class="eq-label">System Acceleration</div>
+      <div class="eq-formula">a = F / (m₁ + m₂)</div>
+      <div class="eq-explain">The whole connected system accelerates as if it were a single object of mass m₁ + m₂ with only external force F acting on it.</div>
+    </div>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card blue">
+      <div class="concept-icon">🧩</div>
+      <div class="concept-title">Why This Works</div>
+      <div class="concept-body">Internal forces (tension, normal contact between connected parts) come in equal-opposite pairs — they sum to zero within the system. Only <strong style="color:var(--neon-ch6)">external forces</strong> can accelerate the entire system. This is a powerful simplification!</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🏃</div>
+      <div class="concept-title">Your Body as a System</div>
+      <div class="concept-body">While walking, your arms and legs move in complex ways (internal forces galore). Yet your <strong style="color:var(--neon-purple)">overall centre of mass motion</strong> can be studied by treating your whole body as a single object subject to external friction force from the ground.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🚂</div>
+      <div class="concept-title">Multiple Connected Objects</div>
+      <div class="concept-body">A train engine pulling several carriages, a rocket burning fuel, a tractor with a harrow — all are systems. Once external force and total mass are known, <strong style="color:var(--neon-teal)">a = F_external / m_total</strong> gives the acceleration of every part simultaneously.</div>
+    </div>
+  </div>
+
+  <div class="beyond-card">
+    <div class="beyond-tag">Ready to Go Beyond — External Force Balance</div>
+    <div class="beyond-title">All External Forces on a Two-Box System</div>
+    <div class="beyond-body">In addition to the horizontal applied force F, the full set of external forces on the two-box system includes: <span class="beyond-highlight">downward gravitational force</span> (m₁ + m₂)g from the Earth, balanced by <span class="beyond-highlight">upward normal force</span> N₁ + N₂ from the ground. These vertical forces cancel. The only unbalanced external force is F (horizontal) — so it alone produces the system's acceleration a = F/(m₁+m₂).</div>
+  </div>
+
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🌌</div>
+    <div class="curiosity-tag">Threads of Curiosity — The Power of System Thinking</div>
+    <div class="curiosity-title">Science Gets Simpler When You Look at the Whole</div>
+    <div class="curiosity-body">Newton's laws describe motion across an enormous range of scales — from a marble rolling on a desk to planets orbiting stars. They need modification only in three extreme cases: <span class="curiosity-highlight">very close to massive objects</span> (General Relativity), at <span class="curiosity-highlight">speeds near the speed of light</span> (Special Relativity), and at <span class="curiosity-highlight">very small (atomic) scales</span> (Quantum Mechanics). For everything in between — from engineering to astronomy — Newton's three laws are exact and complete.</div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ SCIENTIST SPOTLIGHT ══ -->
+<section class="section" id="scientists">
+  <div class="sec-header">
+    <div class="sec-tag">Meet the Scientists</div>
+    <h2 class="sec-title">The Minds Behind the Laws</h2>
+    <p class="sec-subtitle">Two giants of science who revolutionised our understanding of motion</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+    <div class="scientist-card">
+      <div class="scientist-tag">Meet a Scientist · 17th Century</div>
+      <div class="scientist-name">Galileo Galilei</div>
+      <div class="scientist-role">Italian Physicist &amp; Astronomer · Pioneer of Thought Experiments</div>
+      <div class="scientist-body">
+        In ancient times it was believed that a force was always required to keep an object moving at constant velocity — a concept that went unchallenged for centuries.<br><br>
+        In the <span class="scientist-highlight">17th century</span>, Galileo challenged this through a brilliant series of thought experiments. He argued that if a body moves along a horizontal plane and <span class="scientist-highlight">all impediments to its motion are removed</span> (friction, air resistance), it will continue to move indefinitely — without needing any continuing force. This was a revolutionary idea that overturned ancient Greek physics and laid the foundation for Newton's laws.
+      </div>
+    </div>
+
+    <div class="scientist-card">
+      <div class="scientist-tag">Meet a Scientist · 1687</div>
+      <div class="scientist-name">Isaac Newton</div>
+      <div class="scientist-role">English Mathematician &amp; Physicist · Author of the Principia</div>
+      <div class="scientist-body">
+        Building on Galileo's work, Newton coined the word <span class="scientist-highlight">'inertia'</span> to describe the tendency of objects to resist changes in their state of rest or uniform motion. He used this to frame his first law of motion.<br><br>
+        In <span class="scientist-highlight">1687</span>, Newton published <em>Philosophiæ Naturalis Principia Mathematica</em> containing all three laws of motion — a defining moment in the history of science. The laws described motion from falling apples to planetary orbits using the same mathematics.<br><br>
+        <strong style="color:var(--text-primary)">Naming convention:</strong> When a unit is named after a person, the full form is in lowercase (newton, not Newton) but the symbol is capitalised (N, not n).
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SUMMARY ══ -->
+<section class="section" id="summary">
+  <div class="sec-header">
+    <div class="sec-tag">Chapter Summary</div>
+    <h2 class="sec-title">At a Glance — Newton's Three Laws</h2>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-block"><div class="stat-value">3</div><div class="stat-label">Laws of Motion</div></div>
+    <div class="stat-block"><div class="stat-value">F=ma</div><div class="stat-label">Second Law Formula</div></div>
+    <div class="stat-block"><div class="stat-value">9.8</div><div class="stat-label">g in m s⁻²</div></div>
+    <div class="stat-block"><div class="stat-value">1687</div><div class="stat-label">Newton's Principia</div></div>
+    <div class="stat-block"><div class="stat-value">∞</div><div class="stat-label">Range of Newton's Laws</div></div>
+  </div>
+
+  <!-- Three-law comparison table -->
+  <div class="compare-wrap" style="margin-bottom:2rem">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th class="th-feat">Feature</th>
+          <th class="th-a">Newton's 1st Law</th>
+          <th class="th-b">Newton's 2nd Law</th>
+          <th style="color:var(--neon-teal);background:rgba(0,212,168,0.05);font-family:var(--font-display);font-size:12px;font-weight:600;padding:14px 20px;text-align:left;border-bottom:1px solid var(--border)">Newton's 3rd Law</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Also called</td>
+          <td class="td-a">Law of Inertia</td>
+          <td class="td-b">Law of Acceleration</td>
+          <td style="color:var(--neon-teal)">Law of Action-Reaction</td>
+        </tr>
+        <tr>
+          <td>Statement</td>
+          <td class="td-a">Net force = 0 → no change in velocity</td>
+          <td class="td-b">Net force = mass × acceleration</td>
+          <td style="color:var(--neon-teal)">Every action has equal and opposite reaction</td>
+        </tr>
+        <tr>
+          <td>Key formula</td>
+          <td class="td-a">a = 0 when F_net = 0</td>
+          <td class="td-b">F = ma; a = F/m</td>
+          <td style="color:var(--neon-teal)">F₁₂ = −F₂₁</td>
+        </tr>
+        <tr>
+          <td>Forces act on</td>
+          <td class="td-a">One object</td>
+          <td class="td-b">One object</td>
+          <td style="color:var(--neon-teal)">Two different objects</td>
+        </tr>
+        <tr>
+          <td>Real examples</td>
+          <td class="td-a">Ball rolling on ice forever; seat belt during braking</td>
+          <td class="td-b">Airbag extends crash time; F=mg for weight</td>
+          <td style="color:var(--neon-teal)">Rocket exhaust; canoe paddling; walking friction</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Key Concept Summary Cards -->
+  <div class="concept-grid">
+    <div class="concept-card blue">
+      <div class="concept-icon">⚡</div>
+      <div class="concept-title">Force — Vector Quantity</div>
+      <div class="concept-body">SI unit: newton (N). Has both magnitude and direction. Measured with spring balance. Can start motion, stop motion, change direction, or change shape. Effect depends on NET force, not individual forces.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">⚖️</div>
+      <div class="concept-title">Balanced vs Unbalanced</div>
+      <div class="concept-body">Balanced (net F = 0): no acceleration. Unbalanced (net F ≠ 0): object accelerates in direction of net force. Same direction → add magnitudes. Opposite directions → subtract, take direction of larger.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🤚</div>
+      <div class="concept-title">Friction</div>
+      <div class="concept-body">Acts opposite to direction of motion. Depends on nature of surfaces. Weight (normal force) also acts, balanced by ground reaction. Air friction usually negligible. Four forces on a pushed object: applied, friction, weight, normal.</div>
+    </div>
+    <div class="concept-card sky">
+      <div class="concept-icon">💤</div>
+      <div class="concept-title">Newton's 1st Law (Inertia)</div>
+      <div class="concept-body">Objects resist change. At rest → stays at rest. Moving → stays at constant velocity. UNLESS net force acts. No force needed to maintain constant velocity — only to change it. Zero net force = zero acceleration.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">📐</div>
+      <div class="concept-title">Newton's 2nd Law (F=ma)</div>
+      <div class="concept-body">Net force = mass × acceleration. Direction of a = direction of F. g = 9.8 m s⁻² for all objects. Weight = mg. More force → more acceleration. More mass → less acceleration for same force.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🔄</div>
+      <div class="concept-title">Newton's 3rd Law</div>
+      <div class="concept-body">Every force has an equal and opposite reaction on a DIFFERENT object. Forces are equal in magnitude, opposite in direction. Applies to ALL forces — contact and non-contact. Equal forces don't mean equal acceleration (masses differ).</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🔗</div>
+      <div class="concept-title">Systems of Objects</div>
+      <div class="concept-body">Connected objects treated as one system. Internal forces (tension) cancel. Only external forces produce system acceleration. a = F_external / (m₁ + m₂). Simplifies complex problems enormously.</div>
+    </div>
+    <div class="concept-card amber">
+      <div class="concept-icon">🚀</div>
+      <div class="concept-title">Rocket Propulsion</div>
+      <div class="concept-body">Engine expels gas downward (action). Gas pushes rocket upward (reaction). If upward reaction &gt; rocket weight → net force upward → liftoff. Chandrayaan-3 used reverse thrust to brake for Moon landing.</div>
+    </div>
+  </div>
+
+  <!-- Key terms -->
+  <div class="highlight-box" style="margin-top:2rem">
+    <p><strong>Key Terms to Know:</strong><br>
+    <span class="key-term">Force</span> <span class="key-term">Newton (N)</span> <span class="key-term">Net Force</span> <span class="key-term">Balanced Forces</span> <span class="key-term">Unbalanced Forces</span> <span class="key-term">Friction</span> <span class="key-term">Normal Force</span> <span class="key-term">Gravitational Force</span> <span class="key-term">Inertia</span> <span class="key-term">Newton's 1st Law</span> <span class="key-term">Newton's 2nd Law</span> <span class="key-term">Newton's 3rd Law</span> <span class="key-term">F = ma</span> <span class="key-term">g = 9.8 m s⁻²</span> <span class="key-term">Weight = mg</span> <span class="key-term">Action-Reaction</span> <span class="key-term">Internal Force</span> <span class="key-term">External Force</span> <span class="key-term">System of Objects</span> <span class="key-term">Momentum</span> <span class="key-term">Spring Balance</span>
+    </p>
+  </div>
+</section>
+
+<!-- ══ CLOSING BANNER ══ -->
+<div class="closing-banner">
+  <div class="closing-title">From a Canoe Paddle to a Rocket Engine,<br><span>Three Laws Explain It All</span></div>
+  <p class="closing-sub">Newton's laws describe the motion of every object — from atoms to galaxies — with stunning precision. Master force, inertia, F=ma, and action-reaction, and you hold the key to predicting how the physical universe moves.</p>
+  <div style="margin-top:2rem;display:flex;flex-wrap:wrap;gap:1rem;justify-content:center">
+    <span class="hero-badge badge-blue">⚡ Chapter 6 Complete</span>
+    <span class="hero-badge badge-purple">Grade 9 · Exploration</span>
+    <span class="hero-badge badge-teal">Newton's Laws Mastered</span>
+  </div>
+</div>
+
+</div><!-- /main -->
+<script>
+const sections=document.querySelectorAll('section[id],div[id]');
+const navLinks=document.querySelectorAll('.nav-link');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id=e.target.id;
+      navLinks.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));
+    }
+  });
+},{rootMargin:'-40% 0px -55% 0px'});
+sections.forEach(s=>obs.observe(s));
+navLinks.forEach(link=>{
+  link.addEventListener('click',e=>{
+    const href=link.getAttribute('href');
+    if(href&&href.startsWith('#')){
+      e.preventDefault();
+      const target=document.querySelector(href);
+      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  });
+});
+</script>
+</body>
+</html>

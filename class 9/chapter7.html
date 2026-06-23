@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 7 — Work, Energy, and Simple Machines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-primary:#0a0b0f;--bg-secondary:#0f1117;--bg-card:#13151c;
+  --bg-glass:rgba(255,255,255,0.03);--bg-glass-hover:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.08);--border-bright:rgba(255,255,255,0.15);
+  --neon-blue:#4f9eff;--neon-purple:#9b6dff;--neon-teal:#00d4a8;
+  --neon-pink:#ff6bac;--neon-amber:#ffb547;--neon-green:#3dd68c;
+  --neon-ch7:#ffb547;
+  --text-primary:#f0f2ff;--text-secondary:#8b90a8;--text-muted:#4a4f6a;
+  --font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);font-size:15px;line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg-secondary)}::-webkit-scrollbar-thumb{background:var(--neon-ch7);border-radius:3px}
+
+/* ── NAV ── */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,11,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;gap:2rem;height:56px}
+.nav-logo{font-family:var(--font-display);font-weight:700;font-size:15px;color:var(--neon-ch7);letter-spacing:0.5px;white-space:nowrap}
+.nav-links{display:flex;gap:0.25rem;overflow-x:auto;scrollbar-width:none;flex:1}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-link{font-size:12px;font-weight:500;color:var(--text-secondary);padding:6px 12px;border-radius:var(--radius-sm);white-space:nowrap;cursor:pointer;transition:all 0.2s;text-decoration:none;border:none;background:none}
+.nav-link:hover{color:var(--text-primary);background:var(--bg-glass-hover)}
+.nav-link.active{color:var(--neon-ch7);background:rgba(255,181,71,0.1)}
+.main{padding-top:56px}
+
+/* ── HERO ── */
+.hero{position:relative;overflow:hidden;min-height:520px;display:flex;align-items:center;padding:5rem 2rem 4rem;background:var(--bg-secondary)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,181,71,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,181,71,0.04) 1px,transparent 1px);background-size:40px 40px}
+.hero-glow-1{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,181,71,0.1) 0%,transparent 70%);top:-200px;right:-200px}
+.hero-glow-2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(79,158,255,0.08) 0%,transparent 70%);bottom:-150px;left:100px}
+.hero-content{position:relative;z-index:2;max-width:900px;margin:0 auto;width:100%}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--neon-ch7);background:rgba(255,181,71,0.1);border:1px solid rgba(255,181,71,0.2);padding:6px 14px;border-radius:100px;margin-bottom:1.5rem}
+.hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-ch7);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero-title{font-family:var(--font-display);font-size:clamp(2rem,5vw,3.5rem);font-weight:700;line-height:1.15;margin-bottom:1.5rem}
+.hero-title .line1{display:block;color:var(--text-primary)}
+.hero-title .line2{display:block;background:linear-gradient(135deg,var(--neon-ch7),var(--neon-pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:16px;color:var(--text-secondary);max-width:600px;margin-bottom:2rem;line-height:1.8}
+.hero-badges{display:flex;flex-wrap:wrap;gap:10px}
+.hero-badge{font-size:12px;font-weight:500;padding:6px 14px;border-radius:100px;border:1px solid}
+.badge-amber{color:var(--neon-amber);border-color:rgba(255,181,71,0.3);background:rgba(255,181,71,0.08)}
+.badge-blue{color:var(--neon-blue);border-color:rgba(79,158,255,0.3);background:rgba(79,158,255,0.08)}
+.badge-purple{color:var(--neon-purple);border-color:rgba(155,109,255,0.3);background:rgba(155,109,255,0.08)}
+.badge-teal{color:var(--neon-teal);border-color:rgba(0,212,168,0.3);background:rgba(0,212,168,0.08)}
+.badge-pink{color:var(--neon-pink);border-color:rgba(255,107,172,0.3);background:rgba(255,107,172,0.08)}
+.badge-green{color:var(--neon-green);border-color:rgba(61,214,140,0.3);background:rgba(61,214,140,0.08)}
+
+/* ── LAYOUT ── */
+.section{padding:4rem 2rem;max-width:1100px;margin:0 auto}
+.full-bg{background:var(--bg-secondary)}
+.full-bg .section{max-width:none;padding-left:max(2rem,calc(50vw - 550px));padding-right:max(2rem,calc(50vw - 550px))}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border-bright),transparent)}
+
+/* ── SECTION HEADERS ── */
+.sec-header{margin-bottom:2.5rem}
+.sec-tag{font-family:var(--font-mono);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon-ch7);margin-bottom:0.75rem}
+.sec-title{font-family:var(--font-display);font-size:1.75rem;font-weight:700;color:var(--text-primary);margin-bottom:0.5rem}
+.sec-subtitle{font-size:14px;color:var(--text-secondary)}
+
+/* ── OBJ CARDS ── */
+.obj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+.obj-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;display:flex;gap:1rem;align-items:flex-start;transition:border-color 0.2s,background 0.2s}
+.obj-card:hover{border-color:var(--border-bright);background:var(--bg-glass-hover)}
+.obj-num{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch7);background:rgba(255,181,71,0.1);border:1px solid rgba(255,181,71,0.2);min-width:28px;height:28px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;margin-top:2px}
+.obj-text{font-size:13px;color:var(--text-secondary);line-height:1.6}
+.obj-text strong{color:var(--text-primary);font-weight:500}
+
+/* ── CONCEPT CARDS ── */
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem}
+.concept-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;position:relative;overflow:hidden;transition:all 0.3s}
+.concept-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent-start,var(--neon-ch7)),var(--accent-end,var(--neon-pink)))}
+.concept-card:hover{border-color:var(--border-bright);transform:translateY(-2px);background:var(--bg-glass-hover)}
+.concept-icon{font-size:28px;margin-bottom:1rem}
+.concept-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary);margin-bottom:0.5rem}
+.concept-body{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.concept-card.amber{--accent-start:#ffb547;--accent-end:#ff6bac}
+.concept-card.blue{--accent-start:#4f9eff;--accent-end:#9b6dff}
+.concept-card.teal{--accent-start:#00d4a8;--accent-end:#4f9eff}
+.concept-card.purple{--accent-start:#9b6dff;--accent-end:#ff6bac}
+.concept-card.pink{--accent-start:#ff6bac;--accent-end:#ffb547}
+.concept-card.green{--accent-start:#3dd68c;--accent-end:#00d4a8}
+.concept-card.sky{--accent-start:#4f9eff;--accent-end:#00d4a8}
+
+/* ── HIGHLIGHT BOX ── */
+.highlight-box{background:rgba(255,181,71,0.05);border:1px solid rgba(255,181,71,0.18);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin:1.25rem 0}
+.highlight-box p{font-size:13px;color:var(--text-secondary);line-height:1.75;margin:0}
+.highlight-box strong{color:var(--text-primary);font-weight:500}
+
+/* ── FLOW ── */
+.flow-chain{display:flex;align-items:center;gap:0;flex-wrap:wrap}
+.flow-node{flex:1;min-width:120px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem 0.75rem;text-align:center}
+.flow-node-icon{font-size:1.75rem;margin-bottom:0.4rem}
+.flow-node-title{font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:0.2rem}
+.flow-node-sub{font-size:11px;color:var(--text-secondary)}
+.flow-arrow{color:var(--neon-ch7);font-size:1.25rem;padding:0 4px;flex-shrink:0}
+.flow-node.highlight{border-color:rgba(255,181,71,0.4);background:rgba(255,181,71,0.05)}
+
+/* ── EXAMPLE CARDS ── */
+.example-card{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--neon-ch7);border-radius:0 var(--radius-lg) var(--radius-lg) 0;padding:1.5rem;margin-bottom:1.25rem}
+.example-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;flex-wrap:wrap}
+.example-num{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch7);background:rgba(255,181,71,0.1);border:1px solid rgba(255,181,71,0.25);padding:3px 10px;border-radius:100px}
+.example-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary)}
+.example-emoji{font-size:1.5rem}
+.example-question{font-size:13px;color:var(--text-secondary);margin-bottom:1rem;font-style:italic;padding:10px 14px;background:rgba(255,255,255,0.02);border-radius:var(--radius-sm);border:1px solid var(--border)}
+.example-answer-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon-ch7);margin-bottom:0.5rem;font-weight:600}
+.example-answer{font-size:13px;color:var(--text-secondary);line-height:1.7}
+
+/* ── ACTIVITY CARDS ── */
+.activity-card{background:linear-gradient(135deg,rgba(255,181,71,0.06),rgba(255,107,172,0.06));border:1px solid rgba(255,181,71,0.2);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.25rem}
+.activity-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;flex-wrap:wrap}
+.activity-badge{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch7);background:rgba(255,181,71,0.12);border:1px solid rgba(255,181,71,0.3);padding:4px 12px;border-radius:100px}
+.activity-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary)}
+.activity-body{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.think-prompts{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem}
+.think-prompt{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text-secondary);padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);border:1px solid var(--border)}
+.think-prompt-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-ch7);margin-top:5px;flex-shrink:0}
+
+/* ── PONDER ── */
+.ponder-card{background:rgba(255,181,71,0.05);border:1px solid rgba(255,181,71,0.2);border-radius:var(--radius-lg);padding:1.5rem;margin:1.5rem 0}
+.ponder-header{display:flex;align-items:center;gap:10px;margin-bottom:0.75rem}
+.ponder-icon{font-size:1.25rem}
+.ponder-label{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch7);text-transform:uppercase;letter-spacing:1.5px}
+.ponder-q{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.ponder-q strong{color:var(--neon-ch7);font-weight:500}
+
+/* ── CURIOSITY ── */
+.curiosity-card{background:var(--bg-card);border:1px solid rgba(255,181,71,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.curiosity-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba(255,181,71,0.05) 0%,transparent 50%);pointer-events:none}
+.curiosity-glyph{position:absolute;right:1.5rem;top:1.25rem;font-size:3rem;opacity:0.08}
+.curiosity-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch7);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.curiosity-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-ch7)}
+.curiosity-title{font-family:var(--font-display);font-size:1.15rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.curiosity-body{font-size:13px;color:var(--text-secondary);line-height:1.75;position:relative}
+.curiosity-highlight{color:var(--neon-ch7);font-weight:500}
+
+/* ── BEYOND ── */
+.beyond-card{background:rgba(155,109,255,0.04);border:1px solid rgba(155,109,255,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.beyond-card::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(155,109,255,0.06) 0%,transparent 70%);pointer-events:none}
+.beyond-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-purple);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.beyond-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-purple)}
+.beyond-title{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.beyond-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+.beyond-highlight{color:var(--neon-purple);font-weight:500}
+
+/* ── BRIDGING ── */
+.bridging-card{background:rgba(61,214,140,0.04);border:1px solid rgba(61,214,140,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.bridging-card::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(61,214,140,0.05) 0%,transparent 70%);pointer-events:none}
+.bridging-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-green);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.bridging-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-green)}
+.bridging-title{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.bridging-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+.bridging-highlight{color:var(--neon-green);font-weight:500}
+
+/* ── TRIPLE GRID ── */
+.triple-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.triple-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;transition:all 0.3s;position:relative;overflow:hidden}
+.triple-card:hover{transform:translateY(-4px);border-color:var(--card-accent)}
+.triple-card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,var(--card-glow,rgba(255,181,71,0.05)) 0%,transparent 70%);pointer-events:none}
+.triple-card.c1{--card-accent:var(--neon-ch7);--card-glow:rgba(255,181,71,0.06)}
+.triple-card.c2{--card-accent:var(--neon-purple);--card-glow:rgba(155,109,255,0.06)}
+.triple-card.c3{--card-accent:var(--neon-teal);--card-glow:rgba(0,212,168,0.06)}
+.triple-label{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:100px;border:1px solid;display:inline-block;margin-bottom:1rem;font-weight:600}
+.triple-card.c1 .triple-label{color:var(--neon-ch7);border-color:rgba(255,181,71,0.3);background:rgba(255,181,71,0.1)}
+.triple-card.c2 .triple-label{color:var(--neon-purple);border-color:rgba(155,109,255,0.3);background:rgba(155,109,255,0.1)}
+.triple-card.c3 .triple-label{color:var(--neon-teal);border-color:rgba(0,212,168,0.3);background:rgba(0,212,168,0.1)}
+.triple-icon{font-size:2.5rem;margin-bottom:0.75rem;display:block}
+.triple-title{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:0.5rem}
+.triple-card.c1 .triple-title{color:var(--neon-ch7)}
+.triple-card.c2 .triple-title{color:var(--neon-purple)}
+.triple-card.c3 .triple-title{color:var(--neon-teal)}
+.triple-desc{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:1rem}
+.triple-example{font-size:11px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;color:var(--text-secondary);font-style:italic}
+
+/* ── EQUATION BOX ── */
+.eq-box{background:var(--bg-card);border:1px solid rgba(255,181,71,0.25);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;position:relative;overflow:hidden;margin-bottom:1rem}
+.eq-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon-ch7),var(--neon-pink))}
+.eq-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch7);font-weight:600;margin-bottom:0.75rem}
+.eq-formula{font-family:var(--font-mono);font-size:1.4rem;font-weight:700;color:var(--text-primary);margin-bottom:0.5rem;letter-spacing:1px}
+.eq-explain{font-size:12px;color:var(--text-secondary);line-height:1.6}
+.eq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+
+/* ── COMPARE TABLE ── */
+.compare-wrap{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;margin-bottom:1.5rem}
+.compare-table{width:100%;border-collapse:collapse;font-size:13px}
+.compare-table th{font-family:var(--font-display);font-size:12px;font-weight:600;padding:14px 20px;text-align:left;border-bottom:1px solid var(--border)}
+.compare-table th.th-a{color:var(--neon-ch7);background:rgba(255,181,71,0.05)}
+.compare-table th.th-b{color:var(--neon-purple);background:rgba(155,109,255,0.05)}
+.compare-table th.th-c{color:var(--neon-teal);background:rgba(0,212,168,0.05)}
+.compare-table th.th-feat{color:var(--text-muted)}
+.compare-table td{padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text-secondary);vertical-align:top}
+.compare-table tr:hover td{background:var(--bg-glass-hover)}
+.compare-table td.td-a{color:var(--neon-ch7)}
+.compare-table td.td-b{color:var(--neon-purple)}
+.compare-table td.td-c{color:var(--neon-teal)}
+
+/* ── STAT ROW ── */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin:2rem 0}
+.stat-block{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:1.25rem 1rem;text-align:center}
+.stat-value{font-family:var(--font-display);font-size:1.75rem;font-weight:700;background:linear-gradient(135deg,var(--neon-ch7),var(--neon-pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.25rem}
+.stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px}
+
+/* ── NOTE BOX ── */
+.note-box{background:rgba(255,181,71,0.05);border:1px solid rgba(255,181,71,0.2);border-left:3px solid var(--neon-ch7);border-radius:0 var(--radius-md) var(--radius-md) 0;padding:1rem 1.25rem;margin:1rem 0;font-size:13px;color:var(--text-secondary);line-height:1.7}
+.note-box strong{color:var(--neon-ch7);font-weight:600}
+
+/* ── SCIENTIST SPOTLIGHT ── */
+.scientist-card{background:var(--bg-card);border:1px solid rgba(155,109,255,0.25);border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.scientist-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-purple),var(--neon-pink))}
+.scientist-card::after{content:'';position:absolute;top:0;right:0;width:250px;height:250px;background:radial-gradient(circle,rgba(155,109,255,0.07) 0%,transparent 65%);pointer-events:none}
+.scientist-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-purple);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.scientist-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-purple)}
+.scientist-name{font-family:var(--font-display);font-size:1.4rem;font-weight:700;color:var(--text-primary);margin-bottom:0.25rem}
+.scientist-role{font-size:13px;color:var(--neon-purple);margin-bottom:1rem;font-weight:500}
+.scientist-body{font-size:13px;color:var(--text-secondary);line-height:1.8}
+.scientist-highlight{color:var(--neon-purple);font-weight:500}
+
+/* ── KEY TERM PILL ── */
+.key-term{display:inline-block;font-family:var(--font-mono);font-size:11px;font-weight:600;padding:2px 10px;border-radius:100px;background:rgba(255,181,71,0.1);border:1px solid rgba(255,181,71,0.25);color:var(--neon-ch7);margin:2px}
+
+/* ── KNOWLEDGE PANEL ── */
+.know-panel{background:var(--bg-card);border:1px solid rgba(255,181,71,0.25);border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.know-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch7),var(--neon-pink),var(--neon-purple))}
+.know-panel::after{content:'';position:absolute;top:0;right:0;width:300px;height:300px;background:radial-gradient(circle,rgba(255,181,71,0.06) 0%,transparent 60%);pointer-events:none}
+
+/* ── THINK SCIENTIST ── */
+.think-scientist-card{background:rgba(255,181,71,0.04);border:1px solid rgba(255,181,71,0.2);border-radius:var(--radius-xl);padding:1.75rem;margin-bottom:1.5rem}
+.think-scientist-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch7);font-weight:600;margin-bottom:0.75rem}
+.think-scientist-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+
+/* ── MACHINE PANEL ── */
+.machine-panel{border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.machine-panel.m1{background:rgba(255,181,71,0.05);border:1px solid rgba(255,181,71,0.25)}
+.machine-panel.m2{background:rgba(79,158,255,0.05);border:1px solid rgba(79,158,255,0.25)}
+.machine-panel.m3{background:rgba(155,109,255,0.05);border:1px solid rgba(155,109,255,0.25)}
+.machine-panel.m1::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch7),var(--neon-pink))}
+.machine-panel.m2::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-blue),var(--neon-teal))}
+.machine-panel.m3::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-purple),var(--neon-pink))}
+.machine-num{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-bottom:0.5rem}
+.machine-panel.m1 .machine-num{color:var(--neon-ch7)}
+.machine-panel.m2 .machine-num{color:var(--neon-blue)}
+.machine-panel.m3 .machine-num{color:var(--neon-purple)}
+.machine-name{font-family:var(--font-display);font-size:1.4rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.machine-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+
+/* ── CLOSING ── */
+.closing-banner{text-align:center;padding:5rem 2rem;position:relative;overflow:hidden;background:var(--bg-secondary)}
+.closing-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(255,181,71,0.1) 0%,transparent 60%)}
+.closing-title{font-family:var(--font-display);font-size:clamp(1.5rem,4vw,2.5rem);font-weight:700;color:var(--text-primary);margin-bottom:1rem;position:relative}
+.closing-title span{background:linear-gradient(135deg,var(--neon-ch7),var(--neon-pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.closing-sub{font-size:15px;color:var(--text-secondary);max-width:500px;margin:0 auto;position:relative}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .triple-grid{grid-template-columns:1fr}
+  .top-nav{padding:0 1rem}
+  .eq-grid{grid-template-columns:1fr}
+}
+@media(max-width:540px){.flow-chain{flex-direction:column}.flow-arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav class="top-nav">
+  <div class="nav-logo">⚡ Exploration · Gr.9 · Ch.7</div>
+  <div class="nav-links">
+    <a class="nav-link" href="#objectives">Objectives</a>
+    <a class="nav-link" href="#work">Work Done</a>
+    <a class="nav-link" href="#zero-work">When Work = 0</a>
+    <a class="nav-link" href="#pos-neg">Positive &amp; Negative Work</a>
+    <a class="nav-link" href="#wet">Work-Energy Theorem</a>
+    <a class="nav-link" href="#forms">Forms of Energy</a>
+    <a class="nav-link" href="#kinetic">Kinetic Energy</a>
+    <a class="nav-link" href="#potential">Potential Energy</a>
+    <a class="nav-link" href="#conservation">Conservation</a>
+    <a class="nav-link" href="#power">Power</a>
+    <a class="nav-link" href="#machines">Simple Machines</a>
+    <a class="nav-link" href="#scientists">Scientists</a>
+    <a class="nav-link" href="#summary">Summary</a>
+  </div>
+</nav>
+
+<div class="main">
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      Grade 9 · Chapter 7 · Physics
+    </div>
+    <h1 class="hero-title">
+      <span class="line1">Work, Energy, and</span>
+      <span class="line2">Simple Machines</span>
+    </h1>
+    <p class="hero-desc">Why does a child on a taller slide reach the bottom faster? How does a lever let you lift a rock ten times your weight? The answers live in work, energy and mechanical advantage — the most powerful toolkit in all of physics.</p>
+    <div class="hero-badges">
+      <span class="hero-badge badge-amber">⚙️ Work = F × s</span>
+      <span class="hero-badge badge-blue">🏃 Kinetic Energy K = ½mv²</span>
+      <span class="hero-badge badge-teal">🏔️ Potential Energy U = mgh</span>
+      <span class="hero-badge badge-pink">⚡ Power P = W/t</span>
+      <span class="hero-badge badge-purple">🔧 3 Simple Machines</span>
+      <span class="hero-badge badge-green">🌊 Conservation of Energy</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ OBJECTIVES ══ -->
+<section class="section" id="objectives">
+  <div class="sec-header">
+    <div class="sec-tag">Learning Objectives</div>
+    <h2 class="sec-title">What You Will Master</h2>
+    <p class="sec-subtitle">By the end of this chapter you should be able to confidently do all of the following</p>
+  </div>
+  <div class="obj-grid">
+    <div class="obj-card"><div class="obj-num">01</div><div class="obj-text"><strong>Define work</strong> using W = F × s; identify when work is zero, positive, or negative based on the directions of force and displacement</div></div>
+    <div class="obj-card"><div class="obj-num">02</div><div class="obj-text"><strong>State the Work-Energy Theorem</strong> — work done on an object equals the change in its energy — and apply it to solve problems</div></div>
+    <div class="obj-card"><div class="obj-num">03</div><div class="obj-text"><strong>Identify seven forms of energy</strong> (mechanical, thermal, light, sound, electrical, nuclear, chemical) and give examples of energy transformation between them</div></div>
+    <div class="obj-card"><div class="obj-num">04</div><div class="obj-text"><strong>Calculate kinetic energy</strong> using K = ½mv² and explain how doubling velocity quadruples kinetic energy; derive the formula from the work-energy theorem</div></div>
+    <div class="obj-card"><div class="obj-num">05</div><div class="obj-text"><strong>Calculate gravitational potential energy</strong> using U = mgh; explain how height and mass affect PE; conduct Activity 7.1 (ball dropped into sand)</div></div>
+    <div class="obj-card"><div class="obj-num">06</div><div class="obj-text"><strong>Apply conservation of mechanical energy</strong> — as PE decreases, KE increases, total stays constant; use pendulum activity to verify</div></div>
+    <div class="obj-card"><div class="obj-num">07</div><div class="obj-text"><strong>Calculate power</strong> using P = W/t; understand the SI unit watt (W) and its connection to horsepower; solve problems involving rate of energy transfer</div></div>
+    <div class="obj-card"><div class="obj-num">08</div><div class="obj-text"><strong>Explain three simple machines</strong> (pulley, inclined plane, lever); calculate mechanical advantage for each; connect to conservation of energy</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ WORK DONE ══ -->
+<div class="full-bg" id="work">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 7.1 · Foundations</div>
+    <h2 class="sec-title">Work Done by a Constant Force</h2>
+    <p class="sec-subtitle">In science, "work" has a precise meaning — force must displace an object in the direction of the force</p>
+  </div>
+
+  <div class="know-panel">
+    <div style="position:relative;z-index:1">
+      <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch7);font-weight:600;margin-bottom:1rem">The Scientific Definition of Work</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1rem">Work done on an object by a constant force = <strong style="color:var(--text-primary)">force applied × displacement in the direction of the force</strong></div>
+      <div class="eq-grid" style="margin:0">
+        <div class="eq-box">
+          <div class="eq-label">Work Formula</div>
+          <div class="eq-formula">W = F × s</div>
+          <div class="eq-explain">W = work (J) · F = force (N) · s = displacement in direction of force (m)</div>
+        </div>
+        <div class="eq-box" style="border-color:rgba(0,212,168,0.25)">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon-teal),var(--neon-blue))"></div>
+          <div class="eq-label" style="color:var(--neon-teal)">SI Unit of Work</div>
+          <div class="eq-formula" style="color:var(--neon-teal);font-size:1.2rem">1 J = 1 N × 1 m</div>
+          <div class="eq-explain">1 joule = force of 1 newton displacing object by 1 metre · Also: 1 J = 1 kg m² s⁻²</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top:1.5rem">
+    <p><strong>Two key insights from lifting bags:</strong> Lifting 3 bags one after another to 1 m = 3× work of lifting 1 bag. Lifting 1 bag to 3 m = 3× work of lifting to 1 m. <strong>Work ∝ Force AND Work ∝ Displacement</strong> — both scale the work done proportionally.</p>
+  </div>
+
+  <div class="concept-grid" style="margin-top:1.5rem">
+    <div class="concept-card amber">
+      <div class="concept-icon">📊</div>
+      <div class="concept-title">Force-Displacement Graph</div>
+      <div class="concept-body">Work done = <strong style="color:var(--neon-ch7)">area under the force-displacement graph</strong>. For a constant force of 10 N over 1 m: area = 10 N × 1 m = 10 J. Even for variable forces, the area under the graph gives total work done.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">📝</div>
+      <div class="concept-title">Always Specify</div>
+      <div class="concept-body">When describing work, always specify: (1) the <strong style="color:var(--neon-blue)">force (or agency) doing the work</strong> and (2) the <strong style="color:var(--neon-blue)">object on which work is done</strong>. Work is not a vector — it has no direction but can be positive or negative.</div>
+    </div>
+  </div>
+
+  <!-- When work = 0 -->
+  <section id="zero-work" style="margin-top:2.5rem">
+    <div style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--text-primary);margin-bottom:1rem">7.1.1 — When Is Work Done Equal to Zero?</div>
+    <div class="concept-grid">
+      <div class="concept-card amber">
+        <div class="concept-icon">🧱</div>
+        <div class="concept-title">Zero Displacement (s = 0)</div>
+        <div class="concept-body">Pushing a rigid wall: you apply force but the wall doesn't move → <strong style="color:var(--neon-ch7)">W = F × 0 = 0</strong>. You feel tired because your muscles use internal energy repeatedly contracting and expanding, but no scientific work is done <em>on the wall</em>.</div>
+      </div>
+      <div class="concept-card blue">
+        <div class="concept-icon">📦</div>
+        <div class="concept-title">Zero Force (F = 0)</div>
+        <div class="concept-body">If no force acts on the object, <strong style="color:var(--neon-blue)">W = 0 × s = 0</strong> regardless of displacement. An object coasting on a frictionless surface — no applied force, no work done by any agent.</div>
+      </div>
+      <div class="concept-card teal">
+        <div class="concept-icon">🚶</div>
+        <div class="concept-title">Force ⊥ Displacement</div>
+        <div class="concept-body">Carrying a box horizontally: you apply an <strong style="color:var(--neon-teal)">upward force</strong> but the box moves <strong style="color:var(--neon-teal)">horizontally</strong> — perpendicular directions. No displacement in the direction of force → W = 0. (Higher grades: W = Fs cosθ, cos 90° = 0.)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Positive and Negative work -->
+  <section id="pos-neg" style="margin-top:2.5rem">
+    <div style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--text-primary);margin-bottom:1rem">7.1.2 — Positive and Negative Work Done</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.5rem">
+      <div style="background:var(--bg-card);border:1px solid rgba(61,214,140,0.3);border-radius:var(--radius-xl);padding:1.5rem;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-green),var(--neon-teal))"></div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--neon-green);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.75rem">Positive Work</div>
+        <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--neon-green);margin-bottom:0.75rem">Force &amp; Displacement: Same Direction</div>
+        <div style="font-size:13px;color:var(--text-secondary);line-height:1.75">Pushing a wheelchair forward — force applied forward, displacement forward → <strong style="color:var(--neon-green)">W &gt; 0</strong>. Lifting a dumbbell upward — force upward, displacement upward → positive work. Object gains energy.</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid rgba(255,107,172,0.3);border-radius:var(--radius-xl);padding:1.5rem;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-pink),var(--neon-amber))"></div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--neon-pink);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.75rem">Negative Work</div>
+        <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--neon-pink);margin-bottom:0.75rem">Force &amp; Displacement: Opposite Directions</div>
+        <div style="font-size:13px;color:var(--text-secondary);line-height:1.75">Goalkeeper stopping a ball — force backward on ball, ball moves forward → <strong style="color:var(--neon-pink)">W &lt; 0</strong>. Lowering a dumbbell — holding force upward, displacement downward → negative work. Object loses energy.</div>
+      </div>
+    </div>
+
+    <div class="example-card">
+      <div class="example-header"><span class="example-num">Example 7.1</span><span class="example-emoji">🏋️</span><span class="example-title">Dumbbell — Positive vs Negative Work</span></div>
+      <div class="example-question">A girl lifts a dumbbell up then slowly lowers it. When does she do positive work and when negative?</div>
+      <div class="example-answer-label">Solution</div>
+      <div class="example-answer"><strong style="color:var(--neon-green)">Lifting up:</strong> Applied force is upward (equal to weight). Displacement is upward. Same direction → <strong style="color:var(--neon-green)">Positive work</strong> on dumbbell.<br><br><strong style="color:var(--neon-pink)">Lowering down:</strong> Applied force is still upward (to control descent). Displacement is downward. Opposite directions → <strong style="color:var(--neon-pink)">Negative work</strong> on dumbbell.</div>
+    </div>
+
+    <div class="example-card">
+      <div class="example-header"><span class="example-num">Example 7.2</span><span class="example-emoji">⚽</span><span class="example-title">Goalkeeper Stopping a Ball (F = 200 N, s = 15 cm)</span></div>
+      <div class="example-question">A goalkeeper's hand moved back 15 cm while applying 200 N to stop a ball. How much work did she do on the ball?</div>
+      <div class="example-answer-label">Solution</div>
+      <div class="example-answer">Force is opposite to the ball's displacement → negative work.<br>Displacement in direction of force = −0.15 m (negative because opposite to force direction).<br>W = F × s = 200 N × (−0.15 m) = <strong style="color:var(--neon-pink)">−30 J</strong><br><br><em>Note: The ball does +30 J on the goalkeeper (Newton's 3rd Law — equal and opposite forces, both do work on each other).</em></div>
+    </div>
+
+    <div class="ponder-card">
+      <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+      <div class="ponder-q">
+        <strong>1.</strong> A weightlifter holds a barbell steady in her hands. Is she doing any work on the barbell?<br>
+        <strong>2.</strong> Is the work done by friction on a stack of coins moving on a rough surface — positive, negative, or zero?
+      </div>
+    </div>
+  </section>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ WORK-ENERGY THEOREM ══ -->
+<section class="section" id="wet">
+  <div class="sec-header">
+    <div class="sec-tag">Section 7.2 · Core Theorem</div>
+    <h2 class="sec-title">The Work-Energy Theorem</h2>
+    <p class="sec-subtitle">Work done on an object equals the change in its energy — the bridge between force, motion and energy</p>
+  </div>
+
+  <div style="background:var(--bg-card);border:1px solid rgba(255,181,71,0.3);border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin-bottom:1.5rem">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch7),var(--neon-pink),var(--neon-purple))"></div>
+    <div style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--text-primary);margin-bottom:1rem">The Work-Energy Theorem</div>
+    <div style="font-family:var(--font-mono);font-size:1.2rem;font-weight:700;color:var(--neon-ch7);text-align:center;padding:1rem;background:rgba(255,181,71,0.07);border-radius:var(--radius-md);margin-bottom:1rem">Work done on an object = Change in its energy</div>
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.75">When positive work is done on an object, it <strong style="color:var(--text-primary)">gains energy</strong>. When negative work is done, it <strong style="color:var(--text-primary)">loses energy</strong>. This theorem holds for any system of objects and even when forces are not constant — making it far more powerful than Newton's laws alone for complex situations.</div>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card amber">
+      <div class="concept-icon">🏏</div>
+      <div class="concept-title">Cricket Ball &amp; Wickets</div>
+      <div class="concept-body">A fielder does work on a ball by throwing it. The ball gains energy. The moving ball then does work on the wickets, transferring its energy — making them fall. <strong style="color:var(--neon-ch7)">Work done → energy gained → energy transferred</strong>.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🌸</div>
+      <div class="concept-title">Flowerpot at Height</div>
+      <div class="concept-body">Work was done to raise the flowerpot to a height. It gained energy stored as <strong style="color:var(--neon-blue)">potential energy</strong>. When released, that energy does work on objects below — creating damage on impact.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">⚡</div>
+      <div class="concept-title">Ways Energy Transfers</div>
+      <div class="concept-body">Work is one way to transfer energy. Others: <strong style="color:var(--neon-teal)">heat</strong> (hot to cold), <strong style="color:var(--neon-teal)">radiation</strong> (Sun to Earth), <strong style="color:var(--neon-teal)">electric circuits</strong>, <strong style="color:var(--neon-teal)">sound waves</strong>, <strong style="color:var(--neon-teal)">nuclear reactions</strong>. SI unit of energy = joule (J), same as work.</div>
+    </div>
+  </div>
+
+  <div class="example-card" style="margin-top:1.5rem">
+    <div class="example-header"><span class="example-num">Example 7.3</span><span class="example-emoji">🎯</span><span class="example-title">Carrom — Energy Changes at Each Collision</span></div>
+    <div class="example-question">In a carrom shot: striker hits white coin, which hits black coin. Who does work and what energy changes occur?</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">
+      <strong style="color:var(--neon-ch7)">Striker → White coin:</strong> Striker does <em>positive work</em> on white coin → white coin gains energy. By Newton's 3rd Law, white coin does <em>negative work</em> on striker → striker loses energy.<br><br>
+      <strong style="color:var(--neon-pink)">White coin → Black coin:</strong> White coin does <em>positive work</em> on black coin → black coin gains energy. Black coin does <em>negative work</em> on white coin → white coin loses energy.
+    </div>
+  </div>
+
+  <div class="scientist-card" style="margin-top:1.5rem">
+    <div class="scientist-tag">Meet a Scientist</div>
+    <div class="scientist-name">James Prescott Joule</div>
+    <div class="scientist-role">English Physicist · Pioneer of Thermodynamics</div>
+    <div class="scientist-body">The SI unit of work and energy — the <span class="scientist-highlight">joule (J)</span> — is named after James Prescott Joule. He conducted painstaking experiments showing that <span class="scientist-highlight">mechanical energy and thermal energy are interconvertible</span> — that doing mechanical work can produce heat, and vice versa. This unified understanding of different forms of energy as manifestations of the same fundamental quantity was revolutionary, and helped lay the foundation of thermodynamics and the law of conservation of energy.</div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q"><strong>3.</strong> When you pedal a bicycle on a flat road, your muscles supply energy. In what forms does this muscular energy appear as you ride?</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ FORMS OF ENERGY ══ -->
+<div class="full-bg" id="forms">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 7.3 · Energy Landscape</div>
+    <h2 class="sec-title">Forms of Energy</h2>
+    <p class="sec-subtitle">Energy is the capacity to do work — it exists in seven major forms, all interconvertible</p>
+  </div>
+
+  <div class="triple-grid" style="margin-bottom:1.5rem">
+    <div class="triple-card c1">
+      <div class="triple-label">Mechanical</div>
+      <span class="triple-icon">⚙️</span>
+      <div class="triple-title">Mechanical Energy</div>
+      <div class="triple-desc">Energy due to motion (kinetic) or position (potential) of objects. The focus of this chapter. Directly connected to forces and kinematics.</div>
+      <div class="triple-example">Moving bicycle, raised ball, stretched spring</div>
+    </div>
+    <div class="triple-card c2">
+      <div class="triple-label">Thermal</div>
+      <span class="triple-icon">🔥</span>
+      <div class="triple-title">Thermal Energy</div>
+      <div class="triple-desc">Energy that makes things warm or hot. Related to kinetic energy of atoms and molecules vibrating randomly inside matter.</div>
+      <div class="triple-example">Electric heater, friction heating, fire</div>
+    </div>
+    <div class="triple-card c3">
+      <div class="triple-label">Electrical</div>
+      <span class="triple-icon">⚡</span>
+      <div class="triple-title">Electrical Energy</div>
+      <div class="triple-desc">Energy related to position or motion of electric charges. Transferred through circuits and used in nearly all modern technology.</div>
+      <div class="triple-example">Rotating fan, phone charging, light bulb</div>
+    </div>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card blue">
+      <div class="concept-icon">💡</div>
+      <div class="concept-title">Light Energy</div>
+      <div class="concept-body">Energy that allows us to see. Electromagnetic radiation. Electrical energy → light energy in a bulb. Solar panels convert light energy back to electrical.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🔊</div>
+      <div class="concept-title">Sound Energy</div>
+      <div class="concept-body">Energy of vibrations propagating through air or other molecules. A ringing bell converts mechanical energy → sound energy. Microphone converts sound → electrical.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">⚗️</div>
+      <div class="concept-title">Chemical Energy</div>
+      <div class="concept-body">Energy stored in chemical bonds between atoms — in food, fuel, batteries. Food's chemical energy → mechanical energy in muscles. Fuel → mechanical energy in engines.</div>
+    </div>
+    <div class="concept-card amber">
+      <div class="concept-icon">☢️</div>
+      <div class="concept-title">Nuclear Energy</div>
+      <div class="concept-body">Energy stored in the nuclei of atoms. Released by fission (splitting) or fusion (combining) of nuclei. Powers the Sun through nuclear fusion, and nuclear power plants through fission.</div>
+    </div>
+  </div>
+
+  <div class="bridging-card" style="margin-top:1.5rem">
+    <div class="bridging-tag">Bridging Science and Society</div>
+    <div class="bridging-title">🌊 The Gharat / Panchakki — Traditional Water Mill of the Himalayas</div>
+    <div class="bridging-body">In the Himalayan region, water flowing downhill from heights converts its <span class="bridging-highlight">gravitational potential energy</span> into kinetic energy as it rushes down a pipe (A). The moving water's kinetic energy drives a wheel (B) into rotational motion. The wheel is connected to a grinding stone (C) that grinds grain — converting kinetic energy into mechanical work. <span class="bridging-highlight">Modern hydroelectric dams</span> use the same principle on a massive scale: stored water at height → kinetic energy in turbines → electrical energy for cities.</div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ KINETIC ENERGY ══ -->
+<section class="section" id="kinetic">
+  <div class="sec-header">
+    <div class="sec-tag">Section 7.4.1 · Mechanical Energy</div>
+    <h2 class="sec-title">Kinetic Energy</h2>
+    <p class="sec-subtitle">The energy an object possesses due to its motion — K = ½mv²</p>
+  </div>
+
+  <div style="background:var(--bg-card);border:1px solid rgba(255,181,71,0.3);border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin-bottom:1.5rem">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch7),var(--neon-pink))"></div>
+    <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:1rem">Deriving K = ½mv² from the Work-Energy Theorem</div>
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1rem">Starting from rest (u = 0), a force F acts on a mass m over displacement s, reaching velocity v. From kinematics: s = (v² − u²)/2a = v²/2a. Work done: W = F × s = ma × v²/2a = ½mv². By the Work-Energy Theorem, this work equals the kinetic energy gained.</div>
+    <div class="eq-grid">
+      <div class="eq-box">
+        <div class="eq-label">Kinetic Energy</div>
+        <div class="eq-formula">K = ½mv²</div>
+        <div class="eq-explain">m = mass (kg) · v = speed (m s⁻¹) · K = kinetic energy (J). No direction — it's a scalar quantity.</div>
+      </div>
+      <div class="eq-box" style="border-color:rgba(155,109,255,0.25)">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon-purple),var(--neon-pink))"></div>
+        <div class="eq-label" style="color:var(--neon-purple)">General Form (Work-Energy Theorem)</div>
+        <div class="eq-formula" style="color:var(--neon-purple);font-size:1.1rem">W = ½mv² − ½mu²</div>
+        <div class="eq-explain">Change in KE = Work done. Works for any initial velocity u, not just u = 0.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card amber">
+      <div class="concept-icon">🚀</div>
+      <div class="concept-title">Velocity Doubles → KE Quadruples</div>
+      <div class="concept-body">Since K ∝ v², if v doubles, K increases by a factor of <strong style="color:var(--neon-ch7)">2² = 4</strong>. A vehicle at 2v has four times the kinetic energy of the same vehicle at v. This is why high speeds are so dangerous in collisions — the energy to be absorbed is far greater.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">📈</div>
+      <div class="concept-title">KE Change with Work Done</div>
+      <div class="concept-body"><strong style="color:var(--neon-blue)">Positive work</strong> → velocity increases → KE increases. <strong style="color:var(--neon-blue)">Negative work</strong> → velocity decreases → KE decreases. <strong style="color:var(--neon-blue)">Zero work</strong> (W = 0) → velocity unchanged → KE constant.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🎳</div>
+      <div class="concept-title">KE Has No Direction</div>
+      <div class="concept-body">Kinetic energy is a <strong style="color:var(--neon-purple)">scalar</strong> — it has magnitude only, no direction. A ball moving left at 5 m/s and a ball moving right at 5 m/s have identical kinetic energy. Only the speed matters, not the direction of motion.</div>
+    </div>
+  </div>
+
+  <!-- Examples 7.4, 7.5, 7.6 -->
+  <div class="example-card" style="margin-top:1.5rem">
+    <div class="example-header"><span class="example-num">Example 7.4</span><span class="example-emoji">🚗</span><span class="example-title">Velocity Doubles — How Does KE Change?</span></div>
+    <div class="example-question">If the velocity of a vehicle doubles in magnitude, what happens to its kinetic energy?</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">Initial KE = ½mv². New KE = ½m(2v)² = ½m × 4v² = 4 × ½mv².<br>The new KE = <strong style="color:var(--neon-ch7)">4 times</strong> the original. Kinetic energy scales with the square of velocity.</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header"><span class="example-num">Example 7.5</span><span class="example-emoji">🏏</span><span class="example-title">KE of Indian Cricket Ball at 154.8 km h⁻¹</span></div>
+    <div class="example-question">An Indian cricketer bowls a 0.2 kg ball at 154.8 km h⁻¹. Find its kinetic energy.</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">Mass = 0.2 kg · Velocity = 154.8 km h⁻¹ = 43 m s⁻¹<br>K = ½mv² = ½ × 0.2 × 43² = ½ × 0.2 × 1849 = <strong style="color:var(--neon-ch7)">184.9 J</strong></div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header"><span class="example-num">Example 7.6</span><span class="example-emoji">✈️</span><span class="example-title">Jet Aircraft Stopped by Deck Wire (15000 kg, 100 m stop)</span></div>
+    <div class="example-question">A 15000 kg jet is stopped within 100 m by a wire exerting 367500 N. What was its initial velocity?</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">Work done by wire = −367500 × 100 = −36750000 J (negative, opposing motion)<br>By Work-Energy Theorem: ΔKE = Work done<br>0 − ½ × 15000 × v² = −36750000<br>v² = 73500000/15000 = 4900 → v = <strong style="color:var(--neon-ch7)">70 m s⁻¹ = 252 km h⁻¹</strong></div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>4.</strong> Objects A and B have masses m and 4m with the same kinetic energy. What is the ratio of their speeds v_A : v_B?<br>
+      <strong>5.</strong> Does the kinetic energy of an object moving with constant velocity change with its position?
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ POTENTIAL ENERGY ══ -->
+<div class="full-bg" id="potential">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 7.4.2 · Stored Energy</div>
+    <h2 class="sec-title">Potential Energy</h2>
+    <p class="sec-subtitle">Energy stored due to an object's deformation or the relative positions of objects in a system</p>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card amber">
+      <div class="concept-icon">🏹</div>
+      <div class="concept-title">Elastic Potential Energy</div>
+      <div class="concept-body">A stretched rubber band (gulel/slingshot) or bent bow stores energy due to <strong style="color:var(--neon-ch7)">deformation of shape</strong>. When released, this stored energy converts to kinetic energy of the projectile. Internal forces within the elastic material store and release the energy.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🧲</div>
+      <div class="concept-title">Magnetic &amp; Electric PE</div>
+      <div class="concept-body">Separating unlike magnet poles against the attractive force stores <strong style="color:var(--neon-blue)">magnetic potential energy</strong>. Similarly, separating unlike electric charges stores <strong style="color:var(--neon-blue)">electrostatic PE</strong>. Both are due to relative positions of objects in the system.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🌍</div>
+      <div class="concept-title">Gravitational PE</div>
+      <div class="concept-body">Lifting a ball away from Earth against gravity stores <strong style="color:var(--neon-teal)">gravitational PE</strong> in the Earth-ball system. The greater the height, the more energy stored. When released, both Earth and ball move toward each other — but Earth barely moves due to its enormous mass.</div>
+    </div>
+  </div>
+
+  <!-- Activity 7.1 -->
+  <div class="activity-card" style="margin-top:1.5rem">
+    <div class="activity-header">
+      <span class="activity-badge">🔬 Activity 7.1</span>
+      <span class="activity-title">Ball Dropped into Sand — Investigating Gravitational PE</span>
+    </div>
+    <div class="activity-body">Drop a heavy ball into a container of loose sand from heights of 1 m, 2 m, and 3 m at different positions. Compare the depth of depressions created.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div>The depression is deepest when the ball is dropped from the greatest height. More height = more work done lifting = more PE stored = more energy released on impact = deeper depression.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div>Conclusion: The greater the height of the ball above the Earth's surface, the greater its gravitational potential energy.</div>
+    </div>
+  </div>
+
+  <div style="background:var(--bg-card);border:1px solid rgba(255,181,71,0.3);border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin:1.5rem 0">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch7),var(--neon-pink))"></div>
+    <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:1rem">Deriving Gravitational PE = mgh</div>
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1rem">To lift an object of mass m slowly to height h, apply a force equal to mg (balancing gravity). Work done W = force × displacement = mg × h = mgh. By the Work-Energy Theorem, this work becomes stored potential energy.</div>
+    <div class="eq-box">
+      <div class="eq-label">Gravitational Potential Energy</div>
+      <div class="eq-formula">U = mgh</div>
+      <div class="eq-explain">m = mass (kg) · g = 9.8 m s⁻² · h = height above reference level (m) · U = PE (J). Valid only near Earth's surface where g is approximately constant.</div>
+    </div>
+  </div>
+
+  <div class="note-box"><strong>Reference Level:</strong> Potential energy is defined relative to a reference point (usually the ground, where U = 0). Only <em>changes</em> in PE matter physically — the absolute value depends on where you set your reference.</div>
+
+  <div class="example-card">
+    <div class="example-header"><span class="example-num">Example 7.7</span><span class="example-emoji">🏏</span><span class="example-title">Cricket Ball Thrown 10 m High — PE at Maximum Height</span></div>
+    <div class="example-question">A fielder throws a 200 g cricket ball 10 m high in celebration. What is its PE at the maximum height? (g = 10 m s⁻²)</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">U = mgh = 0.2 kg × 10 m s⁻² × 10 m = <strong style="color:var(--neon-ch7)">20 J</strong></div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q"><strong>6.</strong> Does the PE of an object near Earth's surface change if it moves horizontally at constant velocity? What about if it's gradually raised vertically?</div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ CONSERVATION ══ -->
+<section class="section" id="conservation">
+  <div class="sec-header">
+    <div class="sec-tag">Section 7.4.3 · Conservation Law</div>
+    <h2 class="sec-title">Conservation of Mechanical Energy</h2>
+    <p class="sec-subtitle">As an object falls freely, PE converts to KE — but the total mechanical energy (PE + KE) stays constant</p>
+  </div>
+
+  <div style="background:var(--bg-card);border:1px solid rgba(255,181,71,0.3);border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin-bottom:1.5rem">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch7),var(--neon-teal))"></div>
+    <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:1rem">The Law of Conservation of Mechanical Energy</div>
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1.25rem">As an object moves under gravitational force only (no friction, no air resistance), its mechanical energy E = KE + PE remains constant throughout the motion.</div>
+    <div class="flow-chain">
+      <div class="flow-node highlight"><div class="flow-node-icon">🔝</div><div class="flow-node-title">Point A (top)</div><div class="flow-node-sub">KE = 0 · PE = mgh · E = mgh</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="flow-node-icon">⬇️</div><div class="flow-node-title">Point B (mid)</div><div class="flow-node-sub">KE = ½mg²t² · PE = mgh′ · E = mgh</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node highlight" style="border-color:rgba(0,212,168,0.4);background:rgba(0,212,168,0.05)"><div class="flow-node-icon">🔽</div><div class="flow-node-title">Point C (bottom)</div><div class="flow-node-sub">KE = mgh · PE = 0 · E = mgh</div></div>
+    </div>
+  </div>
+
+  <!-- Activity 7.2 — Pendulum -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🕰️ Activity 7.2</span>
+      <span class="activity-title">Simple Pendulum — Verifying Conservation of Mechanical Energy</span>
+    </div>
+    <div class="activity-body">Set up a simple pendulum. Draw a horizontal line at the height of the bob at rest. Pull the bob to point P (at the level of the line, height h) and release. Observe the bob's motion.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Point P (start, height h):</strong> PE = mgh, KE = 0. Total mechanical energy = mgh.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Point Q (bottom):</strong> PE = 0 (reference level), KE = mgh. All PE has converted to KE. Total = mgh.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Point R (other side):</strong> KE = 0 again, PE = mgh again. Bob reaches almost the same height it started from.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Why "almost" — not exactly?</strong> In real life, friction at the support and air resistance cause small energy losses to thermal energy. The pendulum gradually slows down and eventually stops due to these dissipative forces.</div>
+    </div>
+  </div>
+
+  <!-- Slide velocity example -->
+  <div class="example-card">
+    <div class="example-header"><span class="example-num">Example 7.8</span><span class="example-emoji">🛝</span><span class="example-title">Speed at Bottom of Slide — The "Think It Over" Question Answered!</span></div>
+    <div class="example-question">What is the speed of a child at the bottom of a frictionless slide of height h?</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">At top: PE = mgh, KE = 0. At bottom: PE = 0, KE = ½mv².<br>By conservation of mechanical energy: mgh = ½mv² → v² = 2gh → <strong style="color:var(--neon-ch7)">v = √(2gh)</strong><br><br>The velocity depends <em>only on height h</em> — NOT on the shape of the slide OR the mass of the child. Two children of different masses on the same slide reach the bottom with the same speed! The taller slide gives a larger v.</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header"><span class="example-num">Example 7.9</span><span class="example-emoji">🚛</span><span class="example-title">Escape Ramp — Minimum Length to Stop a Runaway Truck</span></div>
+    <div class="example-question">A 10000 kg truck at 72 km h⁻¹ with failed brakes enters a 30° sand ramp (rises 1 m per 2 m along ramp). Sand force = 50000 N opposing motion. Find minimum ramp length d.</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">Initial KE = ½ × 10000 × 20² = 2000000 J. Initial PE = 0.<br>Height gained = d/2. Final KE = 0. Final PE = 10000 × 10 × d/2 = 50000d J.<br>Work by sand = −50000d J.<br>Work-Energy Theorem: −50000d = (50000d − 2000000)<br>−50000d − 50000d = −2000000 → d = 2000000/100000 = <strong style="color:var(--neon-ch7)">20 m</strong></div>
+  </div>
+
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🎢</div>
+    <div class="curiosity-tag">Threads of Curiosity</div>
+    <div class="curiosity-title">Why Conservation of Energy Is More Powerful Than Newton's Laws</div>
+    <div class="curiosity-body">Solving problems directly through Newton's laws requires knowing all forces at every instant — which can be extremely complex (e.g., normal force on a curved slide changes with position). Conservation of mechanical energy sidesteps all intermediate steps: just compare total energy at the <span class="curiosity-highlight">start and end</span>. This is why Example 7.8's answer (v = √(2gh)) is independent of slide shape — we never needed to know the forces at each point on the curve.</div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>7.</strong> For a freely falling object (Fig. 7.19), calculate the mechanical energy just before it hits the ground and show it equals mgh.<br>
+      <strong>8.</strong> In a ball roller coaster (science park), describe KE and PE changes at peaks and troughs A, B, C. Why do later peaks (C, D, E) have lower heights than earlier ones?
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ POWER ══ -->
+<div class="full-bg" id="power">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 7.5 · Rate of Work</div>
+    <h2 class="sec-title">Power</h2>
+    <p class="sec-subtitle">Running up stairs vs walking slowly — the same work, but very different rates. That rate is power.</p>
+  </div>
+
+  <div style="background:var(--bg-card);border:1px solid rgba(255,181,71,0.3);border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin-bottom:1.5rem">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch7),var(--neon-pink))"></div>
+    <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:1rem">Power — The Rate of Doing Work</div>
+    <div class="eq-grid">
+      <div class="eq-box">
+        <div class="eq-label">Power Formula</div>
+        <div class="eq-formula">P = W / t</div>
+        <div class="eq-explain">P = average power (W) · W = work done (J) · t = time taken (s). More work in same time = more power. Same work in less time = more power.</div>
+      </div>
+      <div class="eq-box" style="border-color:rgba(0,212,168,0.25)">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon-teal),var(--neon-blue))"></div>
+        <div class="eq-label" style="color:var(--neon-teal)">SI Unit</div>
+        <div class="eq-formula" style="color:var(--neon-teal);font-size:1.1rem">1 W = 1 J s⁻¹</div>
+        <div class="eq-explain">1 watt = 1 joule per second. Also: 1 horsepower = 746 W. Named after James Watt who invented the efficient steam engine.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header"><span class="example-num">Example 7.10</span><span class="example-emoji">🏋️</span><span class="example-title">Weightlifter — Power Required to Lift 75 kg by 2 m in 5 s</span></div>
+    <div class="example-question">A weightlifter lifts 75 kg by 2 m in 5 seconds. How much power does she need? (g = 10 m s⁻²)</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">Work done = mgh = 75 × 10 × 2 = 1500 J<br>Power = W/t = 1500 J / 5 s = <strong style="color:var(--neon-ch7)">300 W</strong></div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header"><span class="example-num">Example 7.11</span><span class="example-emoji">🚗</span><span class="example-title">Car Engine Power — 1000 kg Car Reaches 72 km h⁻¹ in 10 s</span></div>
+    <div class="example-question">A 1000 kg car starts from rest and reaches 72 km h⁻¹ in 10 s. Find engine power.</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">Final velocity v = 72 km h⁻¹ = 20 m s⁻¹; initial u = 0<br>Work done = ΔKE = ½mv² − 0 = ½ × 1000 × 400 = 200000 J<br>Power = W/t = 200000/10 = <strong style="color:var(--neon-ch7)">20000 W = 20 kW</strong></div>
+  </div>
+
+  <div class="scientist-card">
+    <div class="scientist-tag">Meet a Scientist</div>
+    <div class="scientist-name">James Watt</div>
+    <div class="scientist-role">Scottish Engineer · Inventor of the Efficient Steam Engine</div>
+    <div class="scientist-body">The SI unit of power — the <span class="scientist-highlight">watt (W)</span> — is named in honour of James Watt. He didn't invent the steam engine, but he invented a far more efficient version that could generate <span class="scientist-highlight">rotational motion</span> to drive machinery and wheels — transforming the Industrial Revolution. To market his engines to horse-powered industries, Watt defined <span class="scientist-highlight">horsepower (1 hp = 746 W)</span> by measuring how much work a horse could do per minute. This unit is still used today for car engines and water pumps.</div>
+  </div>
+
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🐎</div>
+    <div class="curiosity-tag">Threads of Curiosity — Horsepower</div>
+    <div class="curiosity-title">Why Do We Still Measure Engines in "Horsepower"?</div>
+    <div class="curiosity-body">When engines were first invented, industries used horses to drive their machinery. James Watt needed a way to compare his engines to horses so buyers could understand the power output. He measured that a horse can do work at about 746 W — and called this <span class="curiosity-highlight">1 horsepower</span>. Even though we now have SI units (watts), horsepower persists in car specifications and pump ratings because of historical tradition and consumer familiarity.</div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ SIMPLE MACHINES ══ -->
+<section class="section" id="machines">
+  <div class="sec-header">
+    <div class="sec-tag">Section 7.6 · Applied Physics</div>
+    <h2 class="sec-title">Simple Machines</h2>
+    <p class="sec-subtitle">Devices that make work easier — they change the magnitude or direction of force but never reduce total work done</p>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>Key Definitions:</strong> <strong>Effort</strong> = the force we apply to a machine. <strong>Load</strong> = the force that needs to be overcome. <strong>Mechanical Advantage</strong> = Load ÷ Effort = how much the machine multiplies your applied force. Machines do NOT create energy — they redistribute it between force and distance.</p>
+  </div>
+
+  <div class="eq-box" style="margin:1.25rem 0">
+    <div class="eq-label">Mechanical Advantage</div>
+    <div class="eq-formula">MA = Load / Effort</div>
+    <div class="eq-explain">MA &gt; 1: machine multiplies force (you apply less effort). MA = 1: direction change only. MA &lt; 1: force reduced, distance multiplied (rare but useful for speed).</div>
+  </div>
+
+  <!-- PULLEY -->
+  <div class="machine-panel m1" id="pulley">
+    <div class="machine-num">7.6.1 — Simple Machine 1</div>
+    <div class="machine-name">⚙️ Pulley</div>
+    <div class="machine-body">
+      A pulley is a wheel with a groove that guides a rope. It changes the direction and/or magnitude of applied force.
+      <div class="concept-grid" style="margin-top:1rem">
+        <div style="background:rgba(255,181,71,0.07);border:1px solid rgba(255,181,71,0.2);border-radius:var(--radius-md);padding:1rem">
+          <div style="font-size:12px;font-weight:600;color:var(--neon-ch7);margin-bottom:0.5rem">Fixed Pulley</div>
+          <div style="font-size:12px;color:var(--text-secondary);line-height:1.7">Changes direction only. Pull <em>downward</em> to lift load <em>upward</em> — more convenient than pushing up. Effort = Load. <strong style="color:var(--neon-ch7)">MA = 1</strong>. Used in flagpoles, wells, elevators.</div>
+        </div>
+        <div style="background:rgba(155,109,255,0.07);border:1px solid rgba(155,109,255,0.2);border-radius:var(--radius-md);padding:1rem">
+          <div style="font-size:12px;font-weight:600;color:var(--neon-purple);margin-bottom:0.5rem">Movable Pulley / Pulley System</div>
+          <div style="font-size:12px;color:var(--text-secondary);line-height:1.7">Load attached to movable pulley; one end of rope fixed. Effort is less than load. <strong style="color:var(--neon-purple)">MA &gt; 1</strong>. Used in cranes, construction hoists, block-and-tackle systems.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INCLINED PLANE -->
+  <div class="machine-panel m2">
+    <div class="machine-num">7.6.2 — Simple Machine 2</div>
+    <div class="machine-name">📐 Inclined Plane</div>
+    <div class="machine-body">
+      A ramp or sloped surface that allows heavy loads to be raised with less force over a longer distance.
+      <div style="margin-top:1rem">
+        <div class="eq-box" style="border-color:rgba(79,158,255,0.25)">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon-blue),var(--neon-teal))"></div>
+          <div class="eq-label" style="color:var(--neon-blue)">MA of Inclined Plane</div>
+          <div class="eq-formula" style="color:var(--neon-blue)">MA = L / h</div>
+          <div class="eq-explain">L = length of inclined plane · h = height gained. As L increases (shallower angle), MA increases and effort decreases — but you push over a longer distance.</div>
+        </div>
+      </div>
+      <div class="activity-card" style="margin-top:1rem">
+        <div class="activity-header"><span class="activity-badge">📏 Activity 7.3</span><span class="activity-title">Inclined Plane Experiment — Spring Balance &amp; Cart</span></div>
+        <div class="activity-body">Pull a toy cart up a plank with a spring balance at two different angles. Compare readings.</div>
+        <div class="think-prompts">
+          <div class="think-prompt"><div class="think-prompt-dot"></div>Spring balance reads less when pulling up the ramp than when lifting vertically — force required is smaller on the inclined plane.</div>
+          <div class="think-prompt"><div class="think-prompt-dot"></div>Making the plank less steep (increasing L, decreasing angle): spring balance reading decreases further but distance moved is greater.</div>
+          <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Key insight:</strong> Total work done (F × distance) remains constant — if force decreases, distance increases proportionally. Machines don't save work.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header"><span class="example-num">Example 7.12</span><span class="example-emoji">📐</span><span class="example-title">Inclined Ramp Over a 30 cm Step (width = 40 cm)</span></div>
+    <div class="example-question">A ramp rises 30 cm (height h = 30 cm) over a width of 40 cm. What is its MA?</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">By Pythagoras: L = √(40² + 30²) = √(1600 + 900) = √2500 = 50 cm<br>MA = L/h = 50/30 = <strong style="color:var(--neon-blue)">1.67</strong> — you need only 1/1.67 ≈ 60% of the load's weight as effort.</div>
+  </div>
+
+  <!-- LEVER -->
+  <div class="machine-panel m3">
+    <div class="machine-num">7.6.3 — Simple Machine 3</div>
+    <div class="machine-name">🔧 Lever</div>
+    <div class="machine-body">
+      A rigid bar that rotates about a fixed point (fulcrum). A small force at one end can overcome a large load at the other end.
+      <div class="concept-grid" style="margin-top:1rem">
+        <div style="background:rgba(155,109,255,0.07);border:1px solid rgba(155,109,255,0.2);border-radius:var(--radius-md);padding:1rem">
+          <div style="font-size:12px;font-weight:600;color:var(--neon-purple);margin-bottom:0.5rem">Three Parts</div>
+          <div style="font-size:12px;color:var(--text-secondary);line-height:1.7"><strong>Fulcrum:</strong> Fixed pivot point · <strong>Load arm:</strong> Distance from fulcrum to load · <strong>Effort arm:</strong> Distance from fulcrum to effort point</div>
+        </div>
+        <div style="background:rgba(155,109,255,0.07);border:1px solid rgba(155,109,255,0.2);border-radius:var(--radius-md);padding:1rem">
+          <div style="font-size:12px;font-weight:600;color:var(--neon-purple);margin-bottom:0.5rem">Lever Principle</div>
+          <div style="font-size:12px;color:var(--text-secondary);line-height:1.7">F₁ × d₁ = F₂ × d₂ (effort × effort arm = load × load arm). MA = effort arm / load arm. Larger effort arm → larger MA.</div>
+        </div>
+      </div>
+      <div class="activity-card" style="margin-top:1rem">
+        <div class="activity-header"><span class="activity-badge">⚖️ Activity 7.4 &amp; 7.5</span><span class="activity-title">Scale + Pencil + Erasers &amp; Beam Balance Investigation</span></div>
+        <div class="activity-body">Activity 7.4: Place a stapler near the pencil fulcrum and erasers far away — lighter erasers lift the heavier stapler! Activity 7.5: Beam balance with coin pans confirms: n₁ × L₁ = n₂ × L₂ (effort × effort arm = load × load arm).</div>
+        <div class="think-prompts">
+          <div class="think-prompt"><div class="think-prompt-dot"></div>When effort arm L₁ is longer than load arm L₂, effort F₁ needed is less than load F₂.</div>
+          <div class="think-prompt"><div class="think-prompt-dot"></div>MA = effort arm / load arm = L₁/L₂. Increasing effort arm increases MA.</div>
+          <div class="think-prompt"><div class="think-prompt-dot"></div>A lever reduces the force needed but the effort moves a larger distance — total work done is unchanged.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Classes of Levers -->
+  <div class="sec-header" style="margin-top:2rem;margin-bottom:1.5rem">
+    <div class="sec-tag">Lever Classification</div>
+    <h2 class="sec-title" style="font-size:1.3rem">Three Classes of Levers</h2>
+    <p class="sec-subtitle">Based on the relative positions of fulcrum, load and effort</p>
+  </div>
+
+  <div class="triple-grid">
+    <div class="triple-card c1">
+      <div class="triple-label">Class I</div>
+      <span class="triple-icon">⚖️</span>
+      <div class="triple-title">Fulcrum in Between</div>
+      <div class="triple-desc">Load — Fulcrum — Effort arrangement. The fulcrum sits between load and effort. Can have MA greater or less than 1 depending on arm lengths.</div>
+      <div class="triple-example">Scissors, tongs, crowbar, pliers, balance scale, seesaw</div>
+    </div>
+    <div class="triple-card c2">
+      <div class="triple-label">Class II</div>
+      <span class="triple-icon">🛒</span>
+      <div class="triple-title">Load in Between</div>
+      <div class="triple-desc">Fulcrum — Load — Effort arrangement. Effort arm always longer than load arm → MA always &gt; 1. Requires less effort than load.</div>
+      <div class="triple-example">Lemon squeezer, wheelbarrow, bottle opener, nutcracker</div>
+    </div>
+    <div class="triple-card c3">
+      <div class="triple-label">Class III</div>
+      <span class="triple-icon">🧹</span>
+      <div class="triple-title">Effort in Between</div>
+      <div class="triple-desc">Fulcrum — Effort — Load arrangement. Effort arm always shorter → MA always &lt; 1. You apply MORE force than load but gain speed or range.</div>
+      <div class="triple-example">Tweezers, broom, fishing rod, hammer (when scooping), oar</div>
+    </div>
+  </div>
+
+  <div class="example-card" style="margin-top:1.5rem">
+    <div class="example-header"><span class="example-num">Example 7.13</span><span class="example-emoji">🪢</span><span class="example-title">Seesaw Balance — Children of Different Masses</span></div>
+    <div class="example-question">A seesaw: AC = EC = 2 m, BC = DC = 1 m (fulcrum at C). Where should a 30 kg child sit if a 15 kg child sits at A (2 m from C)?</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">Using lever principle: effort × effort arm = load × load arm<br>15 kg × 2 m = 30 kg × L → L = 30/30 = <strong style="color:var(--neon-ch7)">1 m</strong>. The 30 kg child should sit at seat D (1 m from C).</div>
+  </div>
+
+  <div class="note-box"><strong>Conservation in All Machines:</strong> Machines do NOT create energy. The work input (effort × effort displacement) = work output (load × load displacement), ignoring friction. If effort decreases, distance must increase — work remains constant.</div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>9.</strong> Why do roads on hills wind around in gentle slopes rather than going straight up?<br>
+      <strong>10.</strong> Why is climbing an inclined ladder easier than a vertical ladder to reach the same floor?<br>
+      <strong>11.</strong> Why is it easier to open a can lid using a spoon?<br>
+      <strong>12.</strong> Why do you push an object closer to the scissors fulcrum when cutting something hard?<br>
+      <strong>13.</strong> Throughout history, perpetual motion machines have been proposed but none work. Why do all real machines slow down and stop?
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SUMMARY ══ -->
+<section class="section" id="summary">
+  <div class="sec-header">
+    <div class="sec-tag">Chapter Summary</div>
+    <h2 class="sec-title">At a Glance — All Key Concepts</h2>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-block"><div class="stat-value">W=Fs</div><div class="stat-label">Work Formula</div></div>
+    <div class="stat-block"><div class="stat-value">½mv²</div><div class="stat-label">Kinetic Energy</div></div>
+    <div class="stat-block"><div class="stat-value">mgh</div><div class="stat-label">Gravitational PE</div></div>
+    <div class="stat-block"><div class="stat-value">P=W/t</div><div class="stat-label">Power Formula</div></div>
+    <div class="stat-block"><div class="stat-value">3</div><div class="stat-label">Simple Machines</div></div>
+    <div class="stat-block"><div class="stat-value">7</div><div class="stat-label">Forms of Energy</div></div>
+  </div>
+
+  <!-- Master comparison table -->
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th class="th-feat">Quantity</th>
+          <th class="th-a">Formula</th>
+          <th class="th-b">SI Unit</th>
+          <th class="th-c">Key Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Work</td><td class="td-a">W = F × s</td><td class="td-b">Joule (J)</td><td class="td-c">Positive if F ∥ s; Negative if F anti-∥ s; Zero if F ⊥ s or s = 0</td></tr>
+        <tr><td>Kinetic Energy</td><td class="td-a">K = ½mv²</td><td class="td-b">Joule (J)</td><td class="td-c">Scalar; doubles v → quadruples K; KE = 0 when v = 0</td></tr>
+        <tr><td>Gravitational PE</td><td class="td-a">U = mgh</td><td class="td-b">Joule (J)</td><td class="td-c">Depends on reference level; increases with height; path-independent</td></tr>
+        <tr><td>Mechanical Energy</td><td class="td-a">E = K + U</td><td class="td-b">Joule (J)</td><td class="td-c">Conserved when no friction; PE converts to KE and vice versa</td></tr>
+        <tr><td>Power</td><td class="td-a">P = W/t</td><td class="td-b">Watt (W)</td><td class="td-c">1 W = 1 J s⁻¹; 1 hp = 746 W; same work in less time = more power</td></tr>
+        <tr><td>MA (Inclined Plane)</td><td class="td-a">MA = L/h</td><td class="td-b">Dimensionless</td><td class="td-c">Always &gt; 1; longer ramp = larger MA = less effort needed</td></tr>
+        <tr><td>MA (Lever)</td><td class="td-a">MA = L₁/L₂</td><td class="td-b">Dimensionless</td><td class="td-c">effort arm ÷ load arm; Class I: any MA; Class II: &gt;1; Class III: &lt;1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card amber">
+      <div class="concept-icon">⚙️</div>
+      <div class="concept-title">Work Done</div>
+      <div class="concept-body">W = F × s. Zero when: no displacement, no force, or force ⊥ displacement. Positive: F and s same direction. Negative: F and s opposite. Work is a scalar — no direction.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🔗</div>
+      <div class="concept-title">Work-Energy Theorem</div>
+      <div class="concept-body">Work done = change in energy. Positive work → energy gained. Negative work → energy lost. Applies to any system, even with variable forces.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🌊</div>
+      <div class="concept-title">Conservation of ME</div>
+      <div class="concept-body">KE + PE = constant (no friction). As object falls, PE → KE. v = √(2gh) at bottom regardless of path or mass. Real machines lose some energy to friction → thermal energy.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">⚖️</div>
+      <div class="concept-title">Machines Never Reduce Work</div>
+      <div class="concept-body">Simple machines change force and/or direction but never reduce total work. Reduced effort → increased displacement. Work in = Work out (ideal, no friction).</div>
+    </div>
+  </div>
+
+  <!-- Key terms -->
+  <div class="highlight-box" style="margin-top:2rem">
+    <p><strong>Key Terms:</strong><br>
+    <span class="key-term">Work (W)</span><span class="key-term">Joule (J)</span><span class="key-term">Energy</span><span class="key-term">Work-Energy Theorem</span><span class="key-term">Kinetic Energy (K)</span><span class="key-term">Potential Energy (U)</span><span class="key-term">Gravitational PE</span><span class="key-term">Mechanical Energy</span><span class="key-term">Conservation of ME</span><span class="key-term">Power (P)</span><span class="key-term">Watt (W)</span><span class="key-term">Horsepower</span><span class="key-term">Simple Machine</span><span class="key-term">Effort</span><span class="key-term">Load</span><span class="key-term">Mechanical Advantage</span><span class="key-term">Pulley</span><span class="key-term">Inclined Plane</span><span class="key-term">Lever</span><span class="key-term">Fulcrum</span><span class="key-term">Effort Arm</span><span class="key-term">Load Arm</span><span class="key-term">Class I / II / III Lever</span>
+    </p>
+  </div>
+
+  <div class="beyond-card" style="margin-top:1.5rem">
+    <div class="beyond-tag">The Quest Continues — Dark Energy</div>
+    <div class="beyond-title">The Mysterious Energy Governing the Fate of the Universe</div>
+    <div class="beyond-body">Scientists have discovered that the Universe's expansion is <span class="beyond-highlight">accelerating</span>. To explain this, physicists propose a form of energy called <span class="beyond-highlight">dark energy</span> — unlike any other form, it cannot be exchanged with other forms of energy. It permeates all of space and appears to push the Universe apart faster and faster. Dark energy may govern the ultimate fate of the Universe billions of years in the future. It remains one of the greatest unsolved mysteries in all of science.</div>
+  </div>
+</section>
+
+<!-- ══ CLOSING BANNER ══ -->
+<div class="closing-banner">
+  <div class="closing-title">From a Playground Slide to a Rescue Ramp,<br><span>Energy Is the Invisible Thread Behind It All</span></div>
+  <p class="closing-sub">Work, energy and simple machines unlock a more powerful way to analyse motion — bypassing the complexity of forces at every instant and replacing it with elegant equations that reveal deep truths about the physical world.</p>
+  <div style="margin-top:2rem;display:flex;flex-wrap:wrap;gap:1rem;justify-content:center">
+    <span class="hero-badge badge-amber">⚡ Chapter 7 Complete</span>
+    <span class="hero-badge badge-blue">Grade 9 · Exploration</span>
+    <span class="hero-badge badge-teal">Energy Mastered</span>
+  </div>
+</div>
+
+</div><!-- /main -->
+<script>
+const sections=document.querySelectorAll('section[id],div[id]');
+const navLinks=document.querySelectorAll('.nav-link');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id=e.target.id;
+      navLinks.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));
+    }
+  });
+},{rootMargin:'-40% 0px -55% 0px'});
+sections.forEach(s=>obs.observe(s));
+navLinks.forEach(link=>{
+  link.addEventListener('click',e=>{
+    const href=link.getAttribute('href');
+    if(href&&href.startsWith('#')){
+      e.preventDefault();
+      const target=document.querySelector(href);
+      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  });
+});
+</script>
+</body>
+</html>

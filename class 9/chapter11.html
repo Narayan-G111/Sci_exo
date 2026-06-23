@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 11 — Reproduction: How Life Continues</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-primary:#0a0b0f;--bg-secondary:#0f1117;--bg-card:#13151c;
+  --bg-glass:rgba(255,255,255,0.03);--bg-glass-hover:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.08);--border-bright:rgba(255,255,255,0.15);
+  --neon-blue:#4f9eff;--neon-purple:#9b6dff;--neon-teal:#00d4a8;
+  --neon-pink:#ff6bac;--neon-amber:#ffb547;--neon-green:#3dd68c;
+  --neon-ch11:#3dd68c;
+  --text-primary:#f0f2ff;--text-secondary:#8b90a8;--text-muted:#4a4f6a;
+  --font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);font-size:15px;line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg-secondary)}::-webkit-scrollbar-thumb{background:var(--neon-ch11);border-radius:3px}
+
+/* ── NAV ── */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,11,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;gap:2rem;height:56px}
+.nav-logo{font-family:var(--font-display);font-weight:700;font-size:15px;color:var(--neon-ch11);letter-spacing:0.5px;white-space:nowrap}
+.nav-links{display:flex;gap:0.25rem;overflow-x:auto;scrollbar-width:none;flex:1}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-link{font-size:12px;font-weight:500;color:var(--text-secondary);padding:6px 12px;border-radius:var(--radius-sm);white-space:nowrap;cursor:pointer;transition:all 0.2s;text-decoration:none;border:none;background:none}
+.nav-link:hover{color:var(--text-primary);background:var(--bg-glass-hover)}
+.nav-link.active{color:var(--neon-ch11);background:rgba(61,214,140,0.1)}
+.main{padding-top:56px}
+
+/* ── HERO ── */
+.hero{position:relative;overflow:hidden;min-height:520px;display:flex;align-items:center;padding:5rem 2rem 4rem;background:var(--bg-secondary)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(61,214,140,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(61,214,140,0.04) 1px,transparent 1px);background-size:40px 40px}
+.hero-glow-1{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(61,214,140,0.1) 0%,transparent 70%);top:-200px;right:-200px}
+.hero-glow-2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,168,0.08) 0%,transparent 70%);bottom:-150px;left:100px}
+.hero-content{position:relative;z-index:2;max-width:900px;margin:0 auto;width:100%}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--neon-ch11);background:rgba(61,214,140,0.1);border:1px solid rgba(61,214,140,0.2);padding:6px 14px;border-radius:100px;margin-bottom:1.5rem}
+.hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-ch11);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero-title{font-family:var(--font-display);font-size:clamp(2rem,5vw,3.5rem);font-weight:700;line-height:1.15;margin-bottom:1.5rem}
+.hero-title .line1{display:block;color:var(--text-primary)}
+.hero-title .line2{display:block;background:linear-gradient(135deg,var(--neon-ch11),var(--neon-teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:16px;color:var(--text-secondary);max-width:600px;margin-bottom:2rem;line-height:1.8}
+.hero-badges{display:flex;flex-wrap:wrap;gap:10px}
+.hero-badge{font-size:12px;font-weight:500;padding:6px 14px;border-radius:100px;border:1px solid}
+.badge-teal{color:var(--neon-teal);border-color:rgba(0,212,168,0.3);background:rgba(0,212,168,0.08)}
+.badge-blue{color:var(--neon-blue);border-color:rgba(79,158,255,0.3);background:rgba(79,158,255,0.08)}
+.badge-purple{color:var(--neon-purple);border-color:rgba(155,109,255,0.3);background:rgba(155,109,255,0.08)}
+.badge-pink{color:var(--neon-pink);border-color:rgba(255,107,172,0.3);background:rgba(255,107,172,0.08)}
+.badge-amber{color:var(--neon-amber);border-color:rgba(255,181,71,0.3);background:rgba(255,181,71,0.08)}
+.badge-green{color:var(--neon-green);border-color:rgba(61,214,140,0.3);background:rgba(61,214,140,0.08)}
+
+/* ── LAYOUT ── */
+.section{padding:4rem 2rem;max-width:1100px;margin:0 auto}
+.full-bg{background:var(--bg-secondary)}
+.full-bg .section{max-width:none;padding-left:max(2rem,calc(50vw - 550px));padding-right:max(2rem,calc(50vw - 550px))}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border-bright),transparent)}
+
+/* ── SECTION HEADERS ── */
+.sec-header{margin-bottom:2.5rem}
+.sec-tag{font-family:var(--font-mono);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon-ch11);margin-bottom:0.75rem}
+.sec-title{font-family:var(--font-display);font-size:1.75rem;font-weight:700;color:var(--text-primary);margin-bottom:0.5rem}
+.sec-subtitle{font-size:14px;color:var(--text-secondary)}
+
+/* ── OBJ CARDS ── */
+.obj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+.obj-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;display:flex;gap:1rem;align-items:flex-start;transition:border-color 0.2s,background 0.2s}
+.obj-card:hover{border-color:var(--border-bright);background:var(--bg-glass-hover)}
+.obj-num{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch11);background:rgba(61,214,140,0.1);border:1px solid rgba(61,214,140,0.2);min-width:28px;height:28px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;margin-top:2px}
+.obj-text{font-size:13px;color:var(--text-secondary);line-height:1.6}
+.obj-text strong{color:var(--text-primary);font-weight:500}
+
+/* ── CONCEPT CARDS ── */
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem}
+.concept-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;position:relative;overflow:hidden;transition:all 0.3s}
+.concept-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent-start,var(--neon-ch11)),var(--accent-end,var(--neon-teal)))}
+.concept-card:hover{border-color:var(--border-bright);transform:translateY(-2px);background:var(--bg-glass-hover)}
+.concept-icon{font-size:28px;margin-bottom:1rem}
+.concept-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary);margin-bottom:0.5rem}
+.concept-body{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.concept-card.sky{--accent-start:#00d4a8;--accent-end:#4f9eff}
+.concept-card.blue{--accent-start:#4f9eff;--accent-end:#9b6dff}
+.concept-card.teal{--accent-start:#00d4a8;--accent-end:#4f9eff}
+.concept-card.purple{--accent-start:#9b6dff;--accent-end:#ff6bac}
+.concept-card.pink{--accent-start:#ff6bac;--accent-end:#ffb547}
+.concept-card.amber{--accent-start:#ffb547;--accent-end:#00d4a8}
+.concept-card.green{--accent-start:#3dd68c;--accent-end:#00d4a8}
+
+/* ── HIGHLIGHT BOX ── */
+.highlight-box{background:rgba(61,214,140,0.05);border:1px solid rgba(61,214,140,0.18);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin:1.25rem 0}
+.highlight-box p{font-size:13px;color:var(--text-secondary);line-height:1.75;margin:0}
+.highlight-box strong{color:var(--text-primary);font-weight:500}
+
+/* ── FLOW ── */
+.flow-chain{display:flex;align-items:center;gap:0;flex-wrap:wrap}
+.flow-node{flex:1;min-width:120px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem 0.75rem;text-align:center}
+.flow-node-icon{font-size:1.75rem;margin-bottom:0.4rem}
+.flow-node-title{font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:0.2rem}
+.flow-node-sub{font-size:11px;color:var(--text-secondary)}
+.flow-arrow{color:var(--neon-ch11);font-size:1.25rem;padding:0 4px;flex-shrink:0}
+.flow-node.highlight{border-color:rgba(61,214,140,0.4);background:rgba(61,214,140,0.05)}
+
+/* ── EXAMPLE CARDS ── */
+.example-card{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--neon-ch11);border-radius:0 var(--radius-lg) var(--radius-lg) 0;padding:1.5rem;margin-bottom:1.25rem}
+.example-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.example-num{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch11);background:rgba(61,214,140,0.1);border:1px solid rgba(61,214,140,0.25);padding:3px 10px;border-radius:100px}
+.example-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary)}
+.example-emoji{font-size:1.5rem}
+.example-question{font-size:13px;color:var(--text-secondary);margin-bottom:1rem;font-style:italic;padding:10px 14px;background:rgba(255,255,255,0.02);border-radius:var(--radius-sm);border:1px solid var(--border)}
+.example-answer-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon-ch11);margin-bottom:0.5rem;font-weight:600}
+.example-answer{font-size:13px;color:var(--text-secondary);line-height:1.7}
+
+/* ── ACTIVITY CARDS ── */
+.activity-card{background:linear-gradient(135deg,rgba(61,214,140,0.06),rgba(0,212,168,0.06));border:1px solid rgba(61,214,140,0.2);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.25rem}
+.activity-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.activity-badge{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch11);background:rgba(61,214,140,0.12);border:1px solid rgba(61,214,140,0.3);padding:4px 12px;border-radius:100px}
+.activity-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary)}
+.activity-body{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.think-prompts{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem}
+.think-prompt{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text-secondary);padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);border:1px solid var(--border)}
+.think-prompt-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-ch11);margin-top:5px;flex-shrink:0}
+
+/* ── PONDER ── */
+.ponder-card{background:rgba(255,181,71,0.05);border:1px solid rgba(255,181,71,0.2);border-radius:var(--radius-lg);padding:1.5rem;margin:1.5rem 0}
+.ponder-header{display:flex;align-items:center;gap:10px;margin-bottom:0.75rem}
+.ponder-icon{font-size:1.25rem}
+.ponder-label{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-amber);text-transform:uppercase;letter-spacing:1.5px}
+.ponder-q{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.ponder-q strong{color:var(--neon-amber);font-weight:500}
+
+/* ── CURIOSITY ── */
+.curiosity-card{background:var(--bg-card);border:1px solid rgba(61,214,140,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.curiosity-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba(61,214,140,0.05) 0%,transparent 50%);pointer-events:none}
+.curiosity-glyph{position:absolute;right:1.5rem;top:1.25rem;font-size:3rem;opacity:0.08}
+.curiosity-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch11);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.curiosity-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-ch11)}
+.curiosity-title{font-family:var(--font-display);font-size:1.15rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.curiosity-body{font-size:13px;color:var(--text-secondary);line-height:1.75;position:relative}
+.curiosity-highlight{color:var(--neon-ch11);font-weight:500}
+
+/* ── BRIDGING ── */
+.bridging-card{background:rgba(61,214,140,0.04);border:1px solid rgba(61,214,140,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.bridging-card::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(61,214,140,0.05) 0%,transparent 70%);pointer-events:none}
+.bridging-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-green);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.bridging-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-green)}
+.bridging-title{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.bridging-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+.bridging-highlight{color:var(--neon-green);font-weight:500}
+
+/* ── SCIENTIST SPOTLIGHT ── */
+.scientist-card{background:var(--bg-card);border:1px solid rgba(61,214,140,0.25);border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.scientist-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch11),var(--neon-teal))}
+.scientist-card::after{content:'';position:absolute;top:0;right:0;width:250px;height:250px;background:radial-gradient(circle,rgba(61,214,140,0.07) 0%,transparent 65%);pointer-events:none}
+.scientist-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch11);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.scientist-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-ch11)}
+.scientist-name{font-family:var(--font-display);font-size:1.4rem;font-weight:700;color:var(--text-primary);margin-bottom:0.25rem}
+.scientist-role{font-size:13px;color:var(--neon-ch11);margin-bottom:1rem;font-weight:500}
+.scientist-body{font-size:13px;color:var(--text-secondary);line-height:1.8}
+.scientist-highlight{color:var(--neon-ch11);font-weight:500}
+
+/* ── KEY TERM PILL ── */
+.key-term{display:inline-block;font-family:var(--font-mono);font-size:11px;font-weight:600;padding:2px 10px;border-radius:100px;background:rgba(61,214,140,0.1);border:1px solid rgba(61,214,140,0.25);color:var(--neon-ch11);margin:2px}
+
+/* ── KNOWLEDGE PANEL ── */
+.know-panel{background:var(--bg-card);border:1px solid rgba(61,214,140,0.25);border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.know-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch11),var(--neon-teal),var(--neon-purple))}
+.know-panel::after{content:'';position:absolute;top:0;right:0;width:300px;height:300px;background:radial-gradient(circle,rgba(61,214,140,0.06) 0%,transparent 60%);pointer-events:none}
+
+/* ── TRIPLE GRID ── */
+.triple-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.triple-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;transition:all 0.3s;position:relative;overflow:hidden}
+.triple-card:hover{transform:translateY(-4px);border-color:var(--card-accent)}
+.triple-card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,var(--card-glow,rgba(61,214,140,0.05)) 0%,transparent 70%);pointer-events:none}
+.triple-card.c1{--card-accent:var(--neon-ch11);--card-glow:rgba(61,214,140,0.06)}
+.triple-card.c2{--card-accent:var(--neon-teal);--card-glow:rgba(0,212,168,0.06)}
+.triple-card.c3{--card-accent:var(--neon-purple);--card-glow:rgba(155,109,255,0.06)}
+.triple-label{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:100px;border:1px solid;display:inline-block;margin-bottom:1rem;font-weight:600}
+.triple-card.c1 .triple-label{color:var(--neon-ch11);border-color:rgba(61,214,140,0.3);background:rgba(61,214,140,0.1)}
+.triple-card.c2 .triple-label{color:var(--neon-teal);border-color:rgba(0,212,168,0.3);background:rgba(0,212,168,0.1)}
+.triple-card.c3 .triple-label{color:var(--neon-purple);border-color:rgba(155,109,255,0.3);background:rgba(155,109,255,0.1)}
+.triple-icon{font-size:2.5rem;margin-bottom:0.75rem;display:block}
+.triple-title{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:0.5rem}
+.triple-card.c1 .triple-title{color:var(--neon-ch11)}
+.triple-card.c2 .triple-title{color:var(--neon-teal)}
+.triple-card.c3 .triple-title{color:var(--neon-purple)}
+.triple-desc{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:1rem}
+.triple-example{font-size:11px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;color:var(--text-secondary);font-style:italic}
+
+/* ── EQUATION / FORMULA BOX ── */
+.eq-box{background:var(--bg-card);border:1px solid rgba(61,214,140,0.25);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;position:relative;overflow:hidden;margin-bottom:1rem}
+.eq-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon-ch11),var(--neon-teal))}
+.eq-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch11);font-weight:600;margin-bottom:0.75rem}
+.eq-formula{font-family:var(--font-mono);font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:0.5rem;letter-spacing:1px}
+.eq-explain{font-size:12px;color:var(--text-secondary);line-height:1.6}
+.eq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+
+/* ── COMPARE TABLE ── */
+.compare-wrap{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;margin-bottom:1.5rem}
+.compare-table{width:100%;border-collapse:collapse;font-size:13px}
+.compare-table th{font-family:var(--font-display);font-size:12px;font-weight:600;padding:14px 20px;text-align:left;border-bottom:1px solid var(--border)}
+.compare-table th.th-a{color:var(--neon-ch11);background:rgba(61,214,140,0.05)}
+.compare-table th.th-b{color:var(--neon-teal);background:rgba(0,212,168,0.05)}
+.compare-table th.th-c{color:var(--neon-purple);background:rgba(155,109,255,0.05)}
+.compare-table th.th-feat{color:var(--text-muted)}
+.compare-table td{padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text-secondary);vertical-align:top}
+.compare-table tr:hover td{background:var(--bg-glass-hover)}
+.compare-table td.td-a{color:var(--neon-ch11)}
+.compare-table td.td-b{color:var(--neon-teal)}
+.compare-table td.td-c{color:var(--neon-purple)}
+
+/* ── STAT ROW ── */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin:2rem 0}
+.stat-block{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:1.25rem 1rem;text-align:center}
+.stat-value{font-family:var(--font-display);font-size:1.75rem;font-weight:700;background:linear-gradient(135deg,var(--neon-ch11),var(--neon-teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.25rem}
+.stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px}
+
+/* ── NOTE BOX ── */
+.note-box{background:rgba(255,181,71,0.05);border:1px solid rgba(255,181,71,0.2);border-left:3px solid var(--neon-amber);border-radius:0 var(--radius-md) var(--radius-md) 0;padding:1rem 1.25rem;margin:1rem 0;font-size:13px;color:var(--text-secondary);line-height:1.7}
+.note-box strong{color:var(--neon-amber);font-weight:600}
+
+/* ── SAFETY BOX ── */
+.safety-box{background:rgba(255,107,172,0.05);border:1px solid rgba(255,107,172,0.2);border-left:3px solid var(--neon-pink);border-radius:0 var(--radius-md) var(--radius-md) 0;padding:1rem 1.25rem;margin:1rem 0;font-size:13px;color:var(--text-secondary);line-height:1.7}
+.safety-box strong{color:var(--neon-pink);font-weight:600}
+
+/* ── WAVE VISUAL ── */
+.wave-visual{display:flex;align-items:center;justify-content:center;gap:1rem;padding:1.5rem;background:rgba(79,158,255,0.04);border:1px solid rgba(79,158,255,0.15);border-radius:var(--radius-lg);margin:1rem 0;flex-wrap:wrap}
+.wave-block{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:0.75rem 1rem;text-align:center;min-width:100px}
+.wave-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon-ch11);font-weight:600;margin-bottom:0.25rem}
+.wave-value{font-size:18px;color:var(--text-primary);font-weight:700}
+.wave-unit{font-size:11px;color:var(--text-muted)}
+.wave-c{background:rgba(79,158,255,0.15);border-color:rgba(79,158,255,0.4);color:var(--neon-ch11);font-weight:700;padding:0.5rem 0.75rem;border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:1.1rem}
+.wave-r{background:rgba(255,107,172,0.12);border-color:rgba(255,107,172,0.35);color:var(--neon-pink);font-weight:700;padding:0.5rem 0.75rem;border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:1.1rem}
+.wave-pattern{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:center}
+
+/* ── FREQUENCY RANGE ── */
+.freq-range{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:1.5rem 0;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.freq-band{padding:1.5rem 1rem;text-align:center;border-right:1px solid var(--border)}
+.freq-band:last-child{border-right:none}
+.freq-band-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-bottom:0.5rem}
+.freq-band-range{font-family:var(--font-display);font-size:0.9rem;font-weight:700;margin-bottom:0.75rem}
+.freq-band-body{font-size:11px;color:var(--text-secondary);line-height:1.6}
+.freq-infra{background:rgba(155,109,255,0.06);border-bottom:2px solid var(--neon-purple)}
+.freq-infra .freq-band-label{color:var(--neon-purple)}
+.freq-infra .freq-band-range{color:var(--neon-purple)}
+.freq-audible{background:rgba(79,158,255,0.06);border-bottom:2px solid var(--neon-ch11)}
+.freq-audible .freq-band-label{color:var(--neon-ch11)}
+.freq-audible .freq-band-range{color:var(--neon-ch11)}
+.freq-ultra{background:rgba(0,212,168,0.06);border-bottom:2px solid var(--neon-teal)}
+.freq-ultra .freq-band-label{color:var(--neon-teal)}
+.freq-ultra .freq-band-range{color:var(--neon-teal)}
+
+/* ── THINK SCIENTIST ── */
+.think-scientist-card{background:rgba(79,158,255,0.04);border:1px solid rgba(79,158,255,0.2);border-radius:var(--radius-xl);padding:1.75rem;margin-bottom:1.5rem}
+.think-scientist-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch11);font-weight:600;margin-bottom:0.75rem}
+.think-scientist-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+
+/* ── CLOSING ── */
+.closing-banner{text-align:center;padding:5rem 2rem;position:relative;overflow:hidden;background:var(--bg-secondary)}
+.closing-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(61,214,140,0.1) 0%,transparent 60%)}
+.closing-title{font-family:var(--font-display);font-size:clamp(1.5rem,4vw,2.5rem);font-weight:700;color:var(--text-primary);margin-bottom:1rem;position:relative}
+.closing-title span{background:linear-gradient(135deg,var(--neon-ch11),var(--neon-teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.closing-sub{font-size:15px;color:var(--text-secondary);max-width:500px;margin:0 auto;position:relative}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .triple-grid{grid-template-columns:1fr}
+  .top-nav{padding:0 1rem}
+  .eq-grid{grid-template-columns:1fr}
+  .freq-range{grid-template-columns:1fr}
+  .freq-band{border-right:none;border-bottom:1px solid var(--border)}
+  .freq-band:last-child{border-bottom:none}
+}
+@media(max-width:540px){.flow-chain{flex-direction:column}.flow-arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<!-- ══ NAV ══ -->
+<nav class="top-nav">
+  <div class="nav-logo">🌱 Exploration · Gr.9 · Ch.11</div>
+  <div class="nav-links">
+    <a class="nav-link" href="#objectives">Objectives</a>
+    <a class="nav-link" href="#intro">What is Reproduction</a>
+    <a class="nav-link" href="#asexual">Asexual Reproduction</a>
+    <a class="nav-link" href="#budding-spores">Budding &amp; Spores</a>
+    <a class="nav-link" href="#sexual">Sexual Reproduction</a>
+    <a class="nav-link" href="#flowers">Flower Structure</a>
+    <a class="nav-link" href="#pollination">Pollination</a>
+    <a class="nav-link" href="#fertilisation-seed">Fertilisation &amp; Seeds</a>
+    <a class="nav-link" href="#animal-repro">Animals</a>
+    <a class="nav-link" href="#human-systems">Human Systems</a>
+    <a class="nav-link" href="#gametes">Gametes &amp; Fertilisation</a>
+    <a class="nav-link" href="#menstrual">Menstrual Cycle</a>
+    <a class="nav-link" href="#pregnancy">Pregnancy</a>
+    <a class="nav-link" href="#adolescence">Adolescence &amp; Health</a>
+    <a class="nav-link" href="#scientists">Scientists</a>
+    <a class="nav-link" href="#summary">Summary</a>
+  </div>
+</nav>
+
+<div class="main">
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      Grade 9 · Chapter 11 · Biology
+    </div>
+    <h1 class="hero-title">
+      <span class="line1">Reproduction:</span>
+      <span class="line2">How Life Continues</span>
+    </h1>
+    <p class="hero-desc">From a single Bryophyllum leaf sprouting tiny plantlets to a human zygote dividing inside a womb — every living thing carries forward a spark of life into the next generation. Discover how plants, animals and humans solve the same ancient problem in wonderfully different ways.</p>
+    <div class="hero-badges">
+      <span class="hero-badge badge-green">🌿 Asexual Reproduction</span>
+      <span class="hero-badge badge-teal">🧬 Meiosis &amp; Variation</span>
+      <span class="hero-badge badge-pink">🌸 Flowers &amp; Pollination</span>
+      <span class="hero-badge badge-purple">🐸 Animal Reproduction</span>
+      <span class="hero-badge badge-blue">👶 Human Reproduction</span>
+      <span class="hero-badge badge-amber">🩺 Adolescent Health</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ OBJECTIVES ══ -->
+<section class="section" id="objectives">
+  <div class="sec-header">
+    <div class="sec-tag">Learning Objectives</div>
+    <h2 class="sec-title">What You Will Explore</h2>
+    <p class="sec-subtitle">By the end of this chapter you should be able to confidently do all of the following</p>
+  </div>
+  <div class="obj-grid">
+    <div class="obj-card"><div class="obj-num">01</div><div class="obj-text"><strong>Differentiate asexual and sexual reproduction</strong> and explain why each produces genetically identical or varied offspring</div></div>
+    <div class="obj-card"><div class="obj-num">02</div><div class="obj-text"><strong>Describe vegetative propagation</strong> — cutting, grafting, layering and tissue culture — and their value in agriculture</div></div>
+    <div class="obj-card"><div class="obj-num">03</div><div class="obj-text"><strong>Explain budding and spore formation</strong> in yeast, hydra and fungi, and connect them to mitosis and clones</div></div>
+    <div class="obj-card"><div class="obj-num">04</div><div class="obj-text"><strong>Explain how meiosis creates variation</strong> by halving chromosome number and shuffling characters into gametes</div></div>
+    <div class="obj-card"><div class="obj-num">05</div><div class="obj-text"><strong>Identify the parts of a flower</strong> and describe pollination, self- and cross-pollination, and pollination strategies</div></div>
+    <div class="obj-card"><div class="obj-num">06</div><div class="obj-text"><strong>Trace fertilisation in flowering plants</strong> from pollen tube growth to zygote, seed and fruit formation</div></div>
+    <div class="obj-card"><div class="obj-num">07</div><div class="obj-text"><strong>Compare external and internal fertilisation</strong> in animals and link egg number to survival strategy</div></div>
+    <div class="obj-card"><div class="obj-num">08</div><div class="obj-text"><strong>Describe the human reproductive systems</strong>, gametogenesis, the menstrual cycle, pregnancy and adolescent reproductive health</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ INTRO: WHAT IS REPRODUCTION ══ -->
+<section class="section" id="intro">
+  <div class="sec-header">
+    <div class="sec-tag">Opening Concept</div>
+    <h2 class="sec-title">What is Reproduction?</h2>
+    <p class="sec-subtitle">Every organism is born, grows, matures, reproduces and eventually dies — reproduction is what keeps the chain of life unbroken</p>
+  </div>
+
+  <div class="know-panel" style="margin-bottom:2rem">
+    <div style="position:relative;z-index:1">
+      <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem">A Mango Tree Dies. Its Seeds Don't.</div>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.75">Reproduction is the biological process by which living beings produce new individuals of their own kind, ensuring life continues even after an individual organism dies. A mango tree eventually grows old and dies, but the seeds it dropped years earlier are already growing into new mango trees. Cows give birth to calves, dogs to puppies, cats to kittens, and humans to children — each generation handing the baton of life to the next.</p>
+    </div>
+  </div>
+
+  <div class="concept-grid" style="margin-bottom:1.5rem">
+    <div class="concept-card green">
+      <div class="concept-icon">🧬</div>
+      <div class="concept-title">Asexual Reproduction</div>
+      <div class="concept-body">A <strong style="color:var(--neon-green)">single parent</strong> produces offspring that are almost exact copies of itself. No mixing of genetic material — the new individual is essentially a clone.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🌸</div>
+      <div class="concept-title">Sexual Reproduction</div>
+      <div class="concept-body"><strong style="color:var(--neon-teal)">Two parents</strong> contribute genetic material, and the offspring inherits a mix of characteristics from both — producing small but important differences from each parent.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🌍</div>
+      <div class="concept-title">Why Variation Matters</div>
+      <div class="concept-body">Differences between parent and offspring, accumulated over many generations, help species <strong style="color:var(--neon-purple)">adapt to changing environments</strong> and sometimes give rise to entirely new species over time.</div>
+    </div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">💭</div><div class="ponder-label">Think It Over</div></div>
+    <div class="ponder-q">
+      <strong>•</strong> When does a farmer prefer asexual or sexual methods of reproduction for crop production?<br><br>
+      <strong>•</strong> Why do you think most complex animals and flowering plants use sexual reproduction, while many simple organisms like yeast and hydra mainly reproduce asexually?
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ ASEXUAL REPRODUCTION ══ -->
+<div class="full-bg" id="asexual">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 11.1 · One Parent, Identical Copies</div>
+    <h2 class="sec-title">Asexual Reproduction &amp; Vegetative Propagation</h2>
+    <p class="sec-subtitle">Seen in bacteria, amoeba, yeast, hydra, sponge — and in many plants that sprout new shoots and roots from existing parts</p>
+  </div>
+
+  <div class="highlight-box">
+    <p>Many plants sprout new shoots and roots from their existing vegetative parts — without ever producing seeds. Potato and ginger have fleshy underground stems that sprout new plants. Money plant and sugarcane stem cuttings grow into new plants. A <strong>Bryophyllum</strong> leaf sprouts tiny plantlets along its edge that eventually grow into independent plants. This is called <strong>vegetative propagation</strong>: new plants arising from the growing (vegetative) parts of a parent plant. Because only one parent is involved, the offspring are <strong>genetically identical</strong> to it.</p>
+  </div>
+
+  <!-- Activity 11.1 -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🔬 Activity 11.1</span>
+      <span class="activity-title">Let Us Explore — Visiting Gardeners and Farmers</span>
+    </div>
+    <div class="activity-body">Interact with gardeners in your school garden or farmers in a field. Observe and discuss their techniques of cutting, grafting and layering, and record your observations in a notebook.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Cutting:</strong> Branches are cut at the end of the growing season. Leaves are removed from the lower half of the cutting, and it is inserted about halfway into compost-mixed soil at a 45–60° angle, then watered regularly. Count the nodes and internodes on each cutting.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>What to record:</strong> Average length of cuttings, number of nodes/internodes, and how different plants have different growing seasons for taking cuttings.</div>
+    </div>
+  </div>
+
+  <div class="triple-grid" style="margin-bottom:2rem">
+    <div class="triple-card c1">
+      <div class="triple-label">Cutting</div>
+      <span class="triple-icon">✂️</span>
+      <div class="triple-title">Stem Piece → New Plant</div>
+      <div class="triple-desc">A healthy stem piece is cut and planted directly in soil. Roses, sugarcane and money plant readily grow this way — the cutting develops its own roots and becomes an independent plant.</div>
+      <div class="triple-example">Cut at 45–60° angle, half-buried, leaves removed from lower half</div>
+    </div>
+    <div class="triple-card c2">
+      <div class="triple-label">Grafting</div>
+      <span class="triple-icon">🌿</span>
+      <div class="triple-title">Joining Two Plants</div>
+      <div class="triple-desc">A stem piece of one variety (Plant B, e.g. yellow rose) is fitted into a slit cut on a rooted plant of another variety (Plant A, e.g. wild rose). The wound is wrapped to keep out pests until it heals.</div>
+      <div class="triple-example">Combines the rootstock's hardiness with the scion's fruit/flower quality</div>
+    </div>
+    <div class="triple-card c3">
+      <div class="triple-label">Layering</div>
+      <span class="triple-icon">🌱</span>
+      <div class="triple-title">Rooting While Still Attached</div>
+      <div class="triple-desc">A flexible twig (e.g. lemon) is bent and its middle part buried in soil while still attached to the parent. After 10–15 days roots develop at the buried point; the twig is then cut free to grow independently.</div>
+      <div class="triple-example">Roots form before separation — a safer method for difficult-to-root plants</div>
+    </div>
+  </div>
+
+  <!-- Bridging KVK -->
+  <div class="bridging-card">
+    <div class="bridging-tag">Bridging Science and Society</div>
+    <div class="bridging-title">Krishi Vigyan Kendras — Taking Grafting to Farmers</div>
+    <div class="bridging-body">Various <span class="bridging-highlight">Krishi Vigyan Kendras (KVKs)</span> under the Indian Council of Agricultural Research (ICAR) train farmers in vocational grafting skills, helping them grow high-yield fruit varieties and boost their income through better marketing strategies and government schemes.</div>
+  </div>
+
+  <!-- Tissue culture bridging -->
+  <div class="bridging-card">
+    <div class="bridging-tag">Bridging Science and Society</div>
+    <div class="bridging-title">Tissue Culture — Revolutionising Banana Farming</div>
+    <div class="bridging-body">Scientists can mass-produce healthy plantlets from just the <span class="bridging-highlight">shoot tip (apical meristem)</span> of a plant using the tissue culture technique. This is another form of asexual reproduction — it eliminates virus-infected stock and ensures high, uniform yields, and has transformed banana farming across India.</div>
+  </div>
+
+  <div class="note-box"><strong>Key point:</strong> All vegetative propagation methods — cutting, grafting, layering, and tissue culture — produce genetically identical individuals because only one parent's vegetative tissue is involved. These methods let farmers reliably reproduce a desirable variety on a large scale.</div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ BUDDING & SPORE FORMATION ══ -->
+<section class="section" id="budding-spores">
+  <div class="sec-header">
+    <div class="sec-tag">Section 11.1 continued · Other Asexual Methods</div>
+    <h2 class="sec-title">Budding, Spore Formation &amp; the Power of Mitosis</h2>
+    <p class="sec-subtitle">Yeast buds, hydra buds, and bread mould releases millions of spores — all powered by the same cell-division process</p>
+  </div>
+
+  <!-- Activity 11.2 -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🔬 Activity 11.2</span>
+      <span class="activity-title">Watching Yeast Bud Under a Microscope</span>
+    </div>
+    <div class="activity-body">A pinch of yeast granules is added to 20 mL of warm sugar solution in a test tube, plugged with cotton, and left undisturbed in a warm place. After 1–2 hours, a drop is mounted on a slide and observed under a compound microscope.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Observation:</strong> Small, round outgrowths called buds appear on the parent yeast cells — visible proof that the yeast is duplicating itself.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>In hydra:</strong> Repeated cell division at a specific site on the body produces a small outgrowth (a bud), which enlarges and eventually separates to live independently. Several buds can often be seen growing on one hydra at once.</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>Budding</strong> is asexual reproduction where a new individual develops as an outgrowth from the parent's body and later detaches to live on its own — seen in single-celled yeast and the multicellular hydra alike.</p>
+  </div>
+
+  <!-- Pasteur / germ theory -->
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🔬</div>
+    <div class="curiosity-tag">Threads of Curiosity</div>
+    <div class="curiosity-title">Louis Pasteur — Life Only Comes from Life</div>
+    <div class="curiosity-body">For centuries people believed living things could arise spontaneously from non-living matter. <span class="curiosity-highlight">Louis Pasteur's</span> experiments disproved this once and for all, proving new life always comes from pre-existing life. His work also established the <em>germ theory of disease</em>, strengthened the <em>cell theory</em> (all cells arise from pre-existing cells), and led directly to practices like food and instrument sterilisation that we depend on today.</div>
+  </div>
+
+  <!-- Activity 11.3 -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🔬 Activity 11.3</span>
+      <span class="activity-title">Growing Mould on Bread — Where Do Microbes Come From?</span>
+    </div>
+    <div class="activity-body">A moistened slice of bread or roti is placed in a warm, dark, moist chamber (a box lined with damp cotton and tissue paper) for three days, then examined with a magnifying glass and, later, under a microscope using cotton blue stain.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Observation:</strong> Fuzzy, thread-like structures (hyphae) appear, each topped with a round sac containing tiny spores.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Where did it come from?</strong> The mould was not present on the fresh bread — it grew from spores already floating in the air that settled on the moist bread and began reproducing rapidly once conditions were favourable.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Fungal structures seen:</strong> <em>Rhizopus</em> forms spores in a single sac-like structure; <em>Aspergillus</em> forms them on a swollen vesicle at the tip of a long fungal strand (hypha).</div>
+    </div>
+  </div>
+
+  <div class="concept-grid" style="margin-bottom:1.5rem">
+    <div class="concept-card green">
+      <div class="concept-icon">🍄</div>
+      <div class="concept-title">Spore Formation</div>
+      <div class="concept-body">Fungi produce <strong style="color:var(--neon-green)">millions of lightweight, single-celled spores</strong> from one colony alone. Spores float easily on air currents and germinate rapidly into a new individual once they land on moisture and nutrients.</div>
+    </div>
+    <div class="concept-card amber">
+      <div class="concept-icon">❄️</div>
+      <div class="concept-title">Why We Refrigerate Food</div>
+      <div class="concept-body">Mould spores need warmth (25–35°C) and moisture to grow. Lower temperatures slow or stop their reproduction — which is exactly why <strong style="color:var(--neon-amber)">refrigeration</strong> keeps food fresh far longer than was possible a century ago.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🔁</div>
+      <div class="concept-title">Mitosis — The Engine of Asexual Reproduction</div>
+      <div class="concept-body">In every organism studied so far, asexual reproduction is powered by <strong style="color:var(--neon-teal)">mitosis</strong> — cell division producing two daughter cells with the same chromosome number as the parent. The result: genetically identical offspring called <strong>clones</strong>.</div>
+    </div>
+  </div>
+
+  <!-- Fungi benefits bridging -->
+  <div class="bridging-card">
+    <div class="bridging-tag">Bridging Science and Society</div>
+    <div class="bridging-title">Fungi: Unpleasant on Bread, Invaluable to Society</div>
+    <div class="bridging-body">Mould on bread looks unappealing, but fungi benefit society enormously. Growing rapidly through spore formation, fungi <span class="bridging-highlight">degrade organic waste and pollutants</span> and play a role in removing heavy metals from industrial waste. Many life-saving antibiotics — including <span class="bridging-highlight">penicillin and amoxicillin</span> — are derived from fungi, saving countless lives from bacterial infections. Some fungi can even degrade plastic!</div>
+  </div>
+
+  <div class="note-box"><strong>Speed advantage:</strong> Because asexual reproduction via mitosis is fast and needs no partner, organisms can rapidly increase their population whenever environmental conditions are favourable.</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SEXUAL REPRODUCTION & MEIOSIS ══ -->
+<div class="full-bg" id="sexual">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 11.2 · Two Parents, New Combinations</div>
+    <h2 class="sec-title">Sexual Reproduction &amp; How Meiosis Creates Variation</h2>
+    <p class="sec-subtitle">Two parents, half the chromosomes each — and millions of possible combinations in every child</p>
+  </div>
+
+  <div class="know-panel" style="margin-bottom:2rem">
+    <div style="position:relative;z-index:1">
+      <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem">Solving the Chromosome-Doubling Problem</div>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.75">Sexual reproduction involves two parents, both contributing genetic material to the offspring. But if every generation received the <em>full</em> set of chromosomes from both parents, the chromosome number would double every generation. Nature solves this with <strong style="color:var(--neon-ch11)">meiosis</strong> — a special type of cell division that halves the chromosome number when forming gametes (sex cells), so that when two gametes fuse, the original number is restored.</p>
+    </div>
+  </div>
+
+  <div class="eq-grid" style="margin-bottom:2rem">
+    <div class="eq-box">
+      <div class="eq-label">Chromosomes</div>
+      <div class="eq-formula">Humans: 23 pairs</div>
+      <div class="eq-explain">Thread-like structures in the nucleus carrying genetic information. Each pair has one chromosome from each parent — 46 in total per cell.</div>
+    </div>
+    <div class="eq-box">
+      <div class="eq-label">Diploid Parent Cell</div>
+      <div class="eq-formula">2n → n</div>
+      <div class="eq-explain">Meiosis reduces the chromosome number of a parent (diploid) cell to half in the daughter cells, which are haploid.</div>
+    </div>
+    <div class="eq-box">
+      <div class="eq-label">Gametes</div>
+      <div class="eq-formula">Sperm + Egg</div>
+      <div class="eq-explain">Haploid cells used only for reproduction. In animals: sperm (male) and eggs (female). In plants: pollen grain (male) and ovule's egg cell (female).</div>
+    </div>
+  </div>
+
+  <!-- Activity 11.4 -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🔬 Activity 11.4</span>
+      <span class="activity-title">Bead Combinations — Modelling Meiosis</span>
+    </div>
+    <div class="activity-body">Take three pairs of contrasting-coloured beads, each pair representing two versions of a character on different chromatids of a chromosome — e.g. light/dark green for hair colour, light/dark blue for hair texture, light/dark red for eye colour. Randomly pick one bead from each pair to form a combination.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Result:</strong> With just 3 pairs of contrasting characters, <strong>8 different combinations</strong> are possible (2 × 2 × 2).</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Scaling up:</strong> Now imagine the possibilities with all 23 pairs of human chromosomes, each carrying information for many characters — the number of possible combinations becomes astronomically large.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Conclusion:</strong> During meiosis, chromosomes of each pair separate so every gamete gets only one chromosome from each pair. This random mixing is why children are genetically different from their parents — and from each other.</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p>This variation among individuals is essential for the <strong>survival of a species</strong> — it helps some individuals adapt better to changing environments and, over long timescales, contributes to evolution. For example, some people can tolerate low oxygen at high altitudes, or digest milk into adulthood — traits that arose from this constant genetic shuffling.</p>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ FLOWER STRUCTURE ══ -->
+<section class="section" id="flowers">
+  <div class="sec-header">
+    <div class="sec-tag">Section 11.2.2 · Reproductive Organs of Plants</div>
+    <h2 class="sec-title">Sexual Reproduction in Flowering Plants</h2>
+    <p class="sec-subtitle">Flowering plants (angiosperms) are Earth's most diverse plant group — and the flower is their reproductive organ</p>
+  </div>
+
+  <div class="highlight-box">
+    <p>A flower bud is wrapped in a thin, flat, green outer covering called the <strong>sepal</strong>, which protects the flower in the bud stage. As the bud opens, the colourful inner projections — the <strong>petals</strong> — are revealed, which attract pollinators and enhance the flower's beauty and fragrance. Together, a complete flower has <strong>four parts</strong>: sepals, petals, stamens, and pistil (in some flowers, sepals and petals are fused).</p>
+  </div>
+
+  <!-- Activity 11.5 -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🔬 Activity 11.5</span>
+      <span class="activity-title">Dissecting Flowers — Recording the Floral Parts</span>
+    </div>
+    <div class="activity-body">Collect different types of flowers and observe each part from the outer whorl inward. Record the presence of sepal, petal, stamen and pistil for each flower in a table, then cut a transverse and longitudinal section of the ovary and observe it under a dissecting microscope.</div>
+  </div>
+
+  <div class="concept-grid" style="margin-bottom:1.5rem">
+    <div class="concept-card pink">
+      <div class="concept-icon">🌸</div>
+      <div class="concept-title">Sepal &amp; Petal</div>
+      <div class="concept-body">The <strong style="color:var(--neon-pink)">sepal</strong> is the outermost green whorl that protects the flower bud. The <strong>petal</strong> is the colourful, often fragrant inner whorl that attracts pollinators.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">♂️</div>
+      <div class="concept-title">Stamen — Male Part</div>
+      <div class="concept-body">Consists of a <strong style="color:var(--neon-blue)">filament</strong> (stalk) and an <strong>anther</strong> at its tip, which produces pollen grains containing the male gametes.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">♀️</div>
+      <div class="concept-title">Pistil — Female Part</div>
+      <div class="concept-body">Made of three sub-parts: the <strong style="color:var(--neon-teal)">stigma</strong> (sticky tip that receives pollen), <strong>style</strong> (the connecting tube), and <strong>ovary</strong> (containing ovules, each with an egg cell).</div>
+    </div>
+  </div>
+
+  <div class="compare-wrap" style="margin-bottom:1.5rem">
+    <table class="compare-table">
+      <thead>
+        <tr><th class="th-feat">Flower Part</th><th class="th-a">Sub-structures</th><th class="th-b">Function</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Sepal</td><td class="td-a">Outermost green whorl</td><td class="td-b">Protects the flower bud before it blooms</td></tr>
+        <tr><td>Petal</td><td class="td-a">Coloured/fragrant whorl</td><td class="td-b">Attracts pollinators; enhances aesthetics</td></tr>
+        <tr><td>Stamen (male)</td><td class="td-a">Filament + Anther</td><td class="td-b">Anther produces pollen grains (male gametes)</td></tr>
+        <tr><td>Pistil (female)</td><td class="td-a">Stigma + Style + Ovary</td><td class="td-b">Receives pollen, ovary houses ovules (egg cells)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note-box"><strong>Quick check:</strong> Run your finger from the outside of any flower inward — sepal, then petal, then stamen, then pistil at the very centre. Not every flower has all four parts in equal numbers, and some, like papaya, carry male and female flowers on separate plants altogether.</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ POLLINATION ══ -->
+<div class="full-bg" id="pollination">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 11.2.3–11.2.4 · Pollen on the Move</div>
+    <h2 class="sec-title">Pollination — Strategies for Reproductive Success</h2>
+    <p class="sec-subtitle">Without pollen reaching the stigma, no fruit and no seed can ever form</p>
+  </div>
+
+  <!-- Activity 11.6 -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🔬 Activity 11.6</span>
+      <span class="activity-title">Investigating Pollination in Garden Pea</span>
+    </div>
+    <div class="activity-body">On the same pea plant, stamens are removed from one flower bud and one open flower. Muslin cloth bags are wrapped around: a bud, the stamen-removed bud, the stamen-removed flower, and an intact flower — while one intact flower is left completely uncovered.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Result:</strong> Fruits form in every treatment <em>except</em> the flower bud whose stamens were removed before it could mature.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Inference:</strong> The transfer of pollen grains from anther to stigma is essential for fruit formation. This transfer is called <strong style="color:var(--neon-ch11)">pollination</strong>.</div>
+    </div>
+  </div>
+
+  <div class="triple-grid" style="margin-bottom:2rem">
+    <div class="triple-card c1">
+      <div class="triple-label">Self-Pollination</div>
+      <span class="triple-icon">🔄</span>
+      <div class="triple-title">Same Flower or Plant</div>
+      <div class="triple-desc">Pollen is transferred to the stigma of the same flower, or to another flower on the same plant. Offspring are genetically very similar to the parent plant.</div>
+    </div>
+    <div class="triple-card c2">
+      <div class="triple-label">Cross-Pollination</div>
+      <span class="triple-icon">🦋</span>
+      <div class="triple-title">Between Two Plants</div>
+      <div class="triple-desc">Pollen from the anther of one plant's flower reaches the stigma of a different plant of the same species — introducing new genetic combinations and greater variation.</div>
+    </div>
+  </div>
+
+  <!-- Pollination strategies -->
+  <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin:1.5rem 0 1rem">11.2.4 Pollination Strategies — Who Carries the Pollen?</div>
+
+  <div class="concept-grid" style="margin-bottom:1.5rem">
+    <div class="concept-card blue">
+      <div class="concept-icon">💨</div>
+      <div class="concept-title">Wind Pollination</div>
+      <div class="concept-body">Seen in wheat, maize and rice. Pollen grains are <strong style="color:var(--neon-blue)">light, small, and produced in huge numbers</strong>; the stigma is long and feathery to trap drifting pollen.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">💧</div>
+      <div class="concept-title">Water Pollination</div>
+      <div class="concept-body">Aquatic plants like <em>Vallisneria</em> and <em>Hydrilla</em> rely on water currents to carry <strong style="color:var(--neon-teal)">pollen from one flower to another</strong>.</div>
+    </div>
+    <div class="concept-card pink">
+      <div class="concept-icon">🐝</div>
+      <div class="concept-title">Insect Pollination</div>
+      <div class="concept-body">Sunflower, hibiscus and marigold are bright, nectar-producing and fragrant to attract <strong style="color:var(--neon-pink)">bees and butterflies</strong>. Pollen is large, sticky or spiny so it clings to insect bodies, and the stigma is sticky to receive it.</div>
+    </div>
+    <div class="concept-card amber">
+      <div class="concept-icon">🐦</div>
+      <div class="concept-title">Bird Pollination</div>
+      <div class="concept-body">Coral tree and hibiscus flowers are pollinated by birds such as the <strong style="color:var(--neon-amber)">Indian white-eye and sunbirds</strong>, which feed on their nectar while incidentally transferring pollen.</div>
+    </div>
+  </div>
+
+  <!-- Activity 11.7 -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🔬 Activity 11.7</span>
+      <span class="activity-title">Comparing Wind vs Insect Pollination Efficiency</span>
+    </div>
+    <div class="activity-body">Data comparing pollen released per flower against the average seeds formed reveals a striking efficiency gap between strategies.</div>
+  </div>
+
+  <div class="compare-wrap" style="margin-bottom:1rem">
+    <table class="compare-table">
+      <thead>
+        <tr><th class="th-feat">Pollination Strategy</th><th class="th-a">Pollen Grains Released / Flower</th><th class="th-b">Average Seeds Formed</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Wind-pollinated grasses (maize, wheat)</td><td class="td-a">5,00,000 – 10,00,000</td><td class="td-b">50 – 200</td></tr>
+        <tr><td>Insect-pollinated plants (sunflower)</td><td class="td-a">20,000 – 40,000</td><td class="td-b">800 – 1,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note-box"><strong>Why so much wasted pollen?</strong> Wind pollination is highly inefficient at a per-grain level — most pollen never reaches a stigma at all. Producing enormous quantities compensates for this low hit-rate, making it a successful strategy despite poor odds for any single grain. Insect pollination is targeted and far more efficient per grain, so far fewer grains are needed.</div>
+
+  <!-- Plant breeding bridging -->
+  <div class="bridging-card">
+    <div class="bridging-tag">Bridging Science and Society</div>
+    <div class="bridging-title">Sexual Reproduction in Plant Breeding</div>
+    <div class="bridging-body">Understanding pollination has applied importance in plant breeding. In <span class="bridging-highlight">selective breeding</span>, farmers choose plants with desirable characters to reproduce. <span class="bridging-highlight">Artificial hybridisation</span> involves removing stamens, bagging the flower to prevent self-pollination, then manually transferring pollen with desired characters. <span class="bridging-highlight">Genetic engineering</span> goes further, inserting genetic material directly into a plant's DNA — together, these methods have produced high-yielding and disease-resistant crop varieties that have revolutionised agriculture.</div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ FERTILISATION & SEED FORMATION ══ -->
+<section class="section" id="fertilisation-seed">
+  <div class="sec-header">
+    <div class="sec-tag">Section 11.2.5 · From Flower to Fruit</div>
+    <h2 class="sec-title">Fertilisation &amp; Seed Formation</h2>
+    <p class="sec-subtitle">Once pollen lands on a compatible stigma, a remarkable journey to the ovule begins</p>
+  </div>
+
+  <div class="know-panel" style="margin-bottom:1.5rem">
+    <div style="position:relative;z-index:1">
+      <div class="flow-chain" style="margin-bottom:1rem">
+        <div class="flow-node highlight"><div class="flow-node-icon">🌼</div><div class="flow-node-title">Pollen lands</div><div class="flow-node-sub">On compatible stigma</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><div class="flow-node-icon">🪡</div><div class="flow-node-title">Pollen tube grows</div><div class="flow-node-sub">Down through the style</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node highlight"><div class="flow-node-icon">🥚</div><div class="flow-node-title">Male gamete reaches ovule</div><div class="flow-node-sub">Fuses with egg cell</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><div class="flow-node-icon">🌰</div><div class="flow-node-title">Zygote forms</div><div class="flow-node-sub">Beginning of a new life</div></div>
+      </div>
+      <p style="font-size:13px;color:var(--text-secondary)">This fusion of male and female gametes is called <strong style="color:var(--neon-ch11)">fertilisation</strong>. The fertilised egg, called a <strong>zygote</strong>, develops into an embryo. Meanwhile, the ovary surrounding the ovules enlarges into a <strong>fruit</strong>, while the ovules themselves develop into <strong>seeds</strong> inside it.</p>
+    </div>
+  </div>
+
+  <div class="concept-grid" style="margin-bottom:1.5rem">
+    <div class="concept-card green">
+      <div class="concept-icon">🌱</div>
+      <div class="concept-title">Ovary → Fruit</div>
+      <div class="concept-body">After fertilisation, the ovary that once held the ovules <strong style="color:var(--neon-green)">enlarges and ripens</strong> into the fruit that surrounds and protects the developing seeds.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🌰</div>
+      <div class="concept-title">Ovule → Seed</div>
+      <div class="concept-body">Each fertilised ovule develops into a <strong style="color:var(--neon-teal)">seed</strong>, containing the embryo and stored food to nourish it until germination.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🍃</div>
+      <div class="concept-title">Seed Dispersal &amp; Germination</div>
+      <div class="concept-body">Seeds disperse via <strong style="color:var(--neon-purple)">wind, water or animals</strong>. When water, air and temperature are favourable, a seed germinates and grows into a new plant.</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p>Sexual reproduction does more than just make new plants — it also <strong>creates variation</strong> among offspring, helping plant species survive and adapt as environments change over time.</p>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>1.</strong> In a china-rose (hibiscus) plant, a pollen tube grows and continues through the style after pollen lands on the stigma. Which process is about to happen next?<br><br>
+      <strong>2.</strong> Calotropis (madar) seeds have fine silky hairs, while dandelion seeds have a feathery parachute. What kind of seed dispersal are these seeds adapted for?<br><br>
+      <strong>3.</strong> A farmer plants two maize varieties side by side and notices seeds form only when pollen from one variety reaches the stigma of the other. What type of pollination is this?
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SEXUAL REPRODUCTION IN ANIMALS ══ -->
+<div class="full-bg" id="animal-repro">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 11.3–11.4 · Beyond Plants</div>
+    <h2 class="sec-title">Sexual Reproduction &amp; Its Variations in Animals</h2>
+    <p class="sec-subtitle">Every animal must solve two challenges: getting gametes to meet, and helping young ones survive long enough to reproduce themselves</p>
+  </div>
+
+  <div class="triple-grid" style="margin-bottom:2rem">
+    <div class="triple-card c1">
+      <div class="triple-label">External Fertilisation</div>
+      <span class="triple-icon">🐟</span>
+      <div class="triple-title">Outside the Body</div>
+      <div class="triple-desc">Common in frogs and most fish. The female releases eggs into water; the male releases sperm over them. A large number of eggs are laid, but many are lost to currents or predators.</div>
+      <div class="triple-example">Lower survival chance per egg → far more eggs produced</div>
+    </div>
+    <div class="triple-card c2">
+      <div class="triple-label">Internal Fertilisation</div>
+      <span class="triple-icon">🦎</span>
+      <div class="triple-title">Inside the Female's Body</div>
+      <div class="triple-desc">Occurs in reptiles, birds and mammals. Survival chances of young ones are generally higher because the fertilised egg or embryo is far better protected.</div>
+      <div class="triple-example">Higher survival chance per egg → fewer eggs needed</div>
+    </div>
+  </div>
+
+  <div class="compare-wrap" style="margin-bottom:1.5rem">
+    <table class="compare-table">
+      <thead>
+        <tr><th class="th-feat">Animal</th><th class="th-a">Habitat / Fertilisation</th><th class="th-b">Eggs Produced &amp; Survival</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Fish</td><td class="td-a">Water · External</td><td class="td-b">100s–1000s at a time · Low survival</td></tr>
+        <tr><td>Frog</td><td class="td-a">Water/Land · External</td><td class="td-b">5,000–50,000 at a time · Low survival</td></tr>
+        <tr><td>Lizard</td><td class="td-a">Land · Internal</td><td class="td-b">2–20 at a time · Moderate survival</td></tr>
+        <tr><td>Bird</td><td class="td-a">Water/Land · Internal</td><td class="td-b">1–15 at a time · Moderate to High survival</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="know-panel" style="margin-bottom:1.5rem">
+    <div style="position:relative;z-index:1">
+      <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem">🦋 The Larva Strategy — Feeding Before Forming</div>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1rem">Fish, amphibians and insects lay hundreds to thousands of eggs — far more than a mother's body could ever stock with enough nutritive yolk. Their solution: pack just enough yolk to produce a <strong style="color:var(--neon-ch11)">larva</strong>, an intermediate feeding stage that hatches early and gathers its own nutrition (often from organic waste or manure) before transforming into the adult body — as seen in butterflies and frogs.</p>
+      <div class="flow-chain">
+        <div class="flow-node"><div class="flow-node-icon">🥚</div><div class="flow-node-title">Egg</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node highlight"><div class="flow-node-icon">🐛</div><div class="flow-node-title">Larva</div><div class="flow-node-sub">Feeding stage</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><div class="flow-node-icon">🛡️</div><div class="flow-node-title">Pupa</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node highlight"><div class="flow-node-icon">🦋</div><div class="flow-node-title">Adult</div><div class="flow-node-sub">Emergence</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="concept-grid" style="margin-bottom:1.5rem">
+    <div class="concept-card blue">
+      <div class="concept-icon">🥚</div>
+      <div class="concept-title">Reptiles &amp; Birds</div>
+      <div class="concept-body">Each egg contains <strong style="color:var(--neon-blue)">enough yolk</strong> to nourish the developing embryo all the way until it hatches into a fully formed young one — no larval feeding stage needed.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🤰</div>
+      <div class="concept-title">Mammals</div>
+      <div class="concept-body">The zygote grows and develops <strong style="color:var(--neon-purple)">inside the female's body</strong>, nourished directly by the mother rather than by stored yolk.</div>
+    </div>
+    <div class="concept-card amber">
+      <div class="concept-icon">🍼</div>
+      <div class="concept-title">Parental Care After Birth</div>
+      <div class="concept-body">Some young find their own food immediately; others need extended care. <strong style="color:var(--neon-amber)">Mammals</strong> typically feed offspring with breast milk for a period after birth.</div>
+    </div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>4.</strong> Why do animals with external fertilisation generally produce more eggs than animals with internal fertilisation?<br><br>
+      <strong>5.</strong> In animals, which fertilisation method keeps the gametes more protected?
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ HUMAN REPRODUCTIVE SYSTEMS ══ -->
+<section class="section" id="human-systems">
+  <div class="sec-header">
+    <div class="sec-tag">Section 11.5.1–11.5.3 · Reproduction in Human Beings</div>
+    <h2 class="sec-title">The Male &amp; Female Reproductive Systems</h2>
+    <p class="sec-subtitle">As a child grows into an adult, reproductive organs mature and begin producing gametes</p>
+  </div>
+
+  <div class="highlight-box">
+    <p>During adolescence, reproductive organs mature and begin producing gametes — <strong>sperm</strong> in males and <strong>eggs</strong> in females. When a sperm meets an egg inside the female body, they form a zygote that develops first into an embryo and eventually into a foetus within the uterus.</p>
+  </div>
+
+  <!-- Male system -->
+  <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin:1.5rem 0 1rem">11.5.2 The Male Reproductive System</div>
+
+  <div class="concept-grid" style="margin-bottom:1.5rem">
+    <div class="concept-card blue">
+      <div class="concept-icon">🫘</div>
+      <div class="concept-title">Testes &amp; Scrotum</div>
+      <div class="concept-body">Sperm are produced in two oval organs called <strong style="color:var(--neon-blue)">testes</strong>, housed in a skin pouch called the <strong>scrotum</strong>, which keeps them slightly cooler than body temperature — necessary for sperm formation. Testes also produce a hormone controlling sperm production and puberty changes.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">〰️</div>
+      <div class="concept-title">Vas Deferens &amp; Urethra</div>
+      <div class="concept-body">Sperm travel from the testes through a long tube, the <strong style="color:var(--neon-teal)">vas deferens</strong>, which opens into the <strong>urethra</strong> — a shared passage for both urine and sperm.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">💧</div>
+      <div class="concept-title">Seminal Vesicle &amp; Prostate</div>
+      <div class="concept-body">These glands add fluids that <strong style="color:var(--neon-purple)">nourish the sperm</strong> and help them stay active and motile. Each sperm has a head with genetic material and a long tail for swimming.</div>
+    </div>
+  </div>
+
+  <!-- Female system -->
+  <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin:1.5rem 0 1rem">11.5.3 The Female Reproductive System</div>
+
+  <div class="concept-grid" style="margin-bottom:1.5rem">
+    <div class="concept-card pink">
+      <div class="concept-icon">🥚</div>
+      <div class="concept-title">Ovaries</div>
+      <div class="concept-body">A pair of ovaries produces the <strong style="color:var(--neon-pink)">female germ cells (eggs)</strong> and releases hormones that bring about changes during puberty.</div>
+    </div>
+    <div class="concept-card green">
+      <div class="concept-icon">➡️</div>
+      <div class="concept-title">Oviducts (Fallopian Tubes)</div>
+      <div class="concept-body">These tubes <strong style="color:var(--neon-green)">connect each ovary to the uterus</strong>, providing the pathway along which the released egg travels — and the usual site of fertilisation.</div>
+    </div>
+    <div class="concept-card amber">
+      <div class="concept-icon">🏠</div>
+      <div class="concept-title">Uterus, Cervix &amp; Vagina</div>
+      <div class="concept-body">The <strong style="color:var(--neon-amber)">uterus</strong> is a bag-like structure where a foetus develops. It opens into the <strong>vagina</strong> through a narrow passage called the <strong>cervix</strong>.</div>
+    </div>
+  </div>
+
+  <div class="note-box"><strong>Asymmetric design:</strong> Notice how the male system is built for producing and delivering huge numbers of mobile sperm, while the female system is built for producing far fewer eggs and providing a protected, nourishing space for a developing embryo — a pattern seen across most animal species.</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ GAMETOGENESIS & FERTILISATION ══ -->
+<div class="full-bg" id="gametes">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 11.5.4–11.5.5 · Making &amp; Meeting Gametes</div>
+    <h2 class="sec-title">Gametogenesis — and What Happens When Sperm Meets Egg</h2>
+    <p class="sec-subtitle">46 chromosomes become 23 in every gamete — so that fusion restores the full set</p>
+  </div>
+
+  <div class="highlight-box">
+    <p>The formation of gametes is called <strong>gametogenesis</strong>, occurring in the testes and ovaries through <strong>meiosis</strong>, which halves the chromosome number. Human cells have 46 chromosomes, but sperm and eggs have only 23 each — so that when they combine, the resulting zygote has the correct number of 46, just like both parents.</p>
+  </div>
+
+  <div class="compare-wrap" style="margin-bottom:1.5rem">
+    <table class="compare-table">
+      <thead>
+        <tr><th class="th-feat">Feature</th><th class="th-a">Sperm</th><th class="th-b">Egg</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Size</td><td class="td-a">Very small</td><td class="td-b">Large</td></tr>
+        <tr><td>Number produced</td><td class="td-a">Millions</td><td class="td-b">Few</td></tr>
+        <tr><td>Stored nutrients</td><td class="td-a">Absent</td><td class="td-b">Present</td></tr>
+        <tr><td>Motility</td><td class="td-a">Actively motile</td><td class="td-b">Non-motile</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin:1.5rem 0 1rem">11.5.5 When a Sperm Meets an Egg</div>
+
+  <div class="know-panel" style="margin-bottom:1.5rem">
+    <div style="position:relative;z-index:1">
+      <div class="flow-chain" style="margin-bottom:1rem">
+        <div class="flow-node highlight"><div class="flow-node-icon">🥚</div><div class="flow-node-title">Ovulation</div><div class="flow-node-sub">Mature egg released monthly</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><div class="flow-node-icon">➡️</div><div class="flow-node-title">Egg enters oviduct</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node highlight"><div class="flow-node-icon">🐟</div><div class="flow-node-title">Sperm reach egg</div><div class="flow-node-sub">During fertilisation</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><div class="flow-node-icon">🌟</div><div class="flow-node-title">Zygote forms</div></div>
+      </div>
+      <p style="font-size:13px;color:var(--text-secondary)">Before ovulation, the uterus lining thickens in preparation. Once a sperm fuses with the egg, the zygote undergoes a series of mitotic divisions while travelling toward the uterus, where it <strong style="color:var(--neon-ch11)">implants</strong> into the thickened, blood-rich inner lining to receive nourishment. This implantation marks the beginning of <strong>pregnancy</strong>.</p>
+    </div>
+  </div>
+
+  <div class="note-box"><strong>In-vitro Fertilisation (IVF):</strong> A medical technique where an egg and sperm are combined outside the body, usually in a laboratory dish — the resulting fertilised egg is then implanted in the uterus to begin a possible pregnancy. A baby born this way is commonly called a "test tube baby," though the fusion actually happens in a culture dish, not a test tube.</div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ MENSTRUAL CYCLE ══ -->
+<section class="section" id="menstrual">
+  <div class="sec-header">
+    <div class="sec-tag">Section 11.5.6 · The Monthly Cycle</div>
+    <h2 class="sec-title">What Happens When an Egg is Not Fertilised?</h2>
+    <p class="sec-subtitle">Menstruation, explained as part of a repeating ~28-day cycle of preparation and renewal</p>
+  </div>
+
+  <div class="highlight-box">
+    <p>If an egg is not fertilised, it remains viable for about a day before degenerating. The thickened, blood-rich uterine lining that had prepared to nourish a possible zygote is no longer needed, so it <strong>sheds</strong> — leaving the body through the vagina along with some blood. This process is called <strong>menstruation</strong> (a period), and usually lasts 3 to 7 days.</p>
+  </div>
+
+  <!-- Cycle flow -->
+  <div class="know-panel" style="margin-bottom:1.5rem">
+    <div style="position:relative;z-index:1">
+      <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch11);font-weight:600;margin-bottom:1rem">Key Stages of a Typical 28-Day Menstrual Cycle</div>
+      <div class="flow-chain">
+        <div class="flow-node highlight"><div class="flow-node-title">Day 1–5</div><div class="flow-node-sub">Menstruation — lining sheds</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><div class="flow-node-title">Day 6–14</div><div class="flow-node-sub">Lining rebuilds, egg matures</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node highlight"><div class="flow-node-title">Day 14</div><div class="flow-node-sub">Ovulation — egg released</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><div class="flow-node-title">Day 15–28</div><div class="flow-node-sub">Lining thickens; cycle repeats if no fertilisation</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat-row" style="margin-bottom:1.5rem">
+    <div class="stat-block"><div class="stat-value">21–35</div><div class="stat-label">Days — Typical Cycle Length</div></div>
+    <div class="stat-block"><div class="stat-value">~28</div><div class="stat-label">Days — Most Common Cycle</div></div>
+    <div class="stat-block"><div class="stat-value">3–7</div><div class="stat-label">Days — Menstruation Duration</div></div>
+    <div class="stat-block"><div class="stat-value">10–14</div><div class="stat-label">Age (yrs) — Onset of Puberty in Girls</div></div>
+    <div class="stat-block"><div class="stat-value">~50</div><div class="stat-label">Age (yrs) — Menopause</div></div>
+  </div>
+
+  <!-- Biological sex curiosity -->
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🧬</div>
+    <div class="curiosity-tag">Threads of Curiosity</div>
+    <div class="curiosity-title">What Determines a Baby's Biological Sex?</div>
+    <div class="curiosity-body">Every person has two sex chromosomes — females have <span class="curiosity-highlight">XX</span> and males have <span class="curiosity-highlight">XY</span>. The mother always contributes an X chromosome to her child, while the father contributes either an X (resulting in a female, XX) or a Y (resulting in a male, XY). Since only the father's gamete carries this variable chromosome, it is the <em>father's contribution</em> that determines the biological sex of the baby — not the mother's.</div>
+  </div>
+
+  <!-- Hygiene bridging -->
+  <div class="bridging-card">
+    <div class="bridging-tag">Bridging Science and Society · Period is Your Pride</div>
+    <div class="bridging-title">Healthy Hygiene Practices During Menstruation</div>
+    <div class="bridging-body">Menstruation is a sign of a <span class="bridging-highlight">healthy reproductive system</span>, not something to feel ashamed of. Good practices include: using menstrual products such as sanitary pads, tampons or menstrual cups (preferably biodegradable); washing the genital area with water only (soap can disrupt natural bacterial balance); always washing hands before and after changing a pad; wrapping used pads before disposal and never flushing them; properly cleaning and drying reusable pads; and changing menstrual products every 4–6 hours, or more often during heavy flow.</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ PREGNANCY & CHILDBIRTH ══ -->
+<div class="full-bg" id="pregnancy">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 11.5.7–11.5.8 · Nine Months of Growth</div>
+    <h2 class="sec-title">Pregnancy, Childbirth &amp; a Mother's Health</h2>
+    <p class="sec-subtitle">Three trimesters of transformation, followed by careful care for both mother and newborn</p>
+  </div>
+
+  <div class="triple-grid" style="margin-bottom:2rem">
+    <div class="triple-card c1">
+      <div class="triple-label">1st Trimester</div>
+      <span class="triple-icon">🌱</span>
+      <div class="triple-title">Months 1–3</div>
+      <div class="triple-desc">The fertilised egg develops into an embryo and major organs begin forming. From about the ninth week, the developing embryo is called a foetus.</div>
+    </div>
+    <div class="triple-card c2">
+      <div class="triple-label">2nd Trimester</div>
+      <span class="triple-icon">🤰</span>
+      <div class="triple-title">Months 4–6</div>
+      <div class="triple-desc">The foetus grows bigger and stronger, and the mother can usually start to feel its movements.</div>
+    </div>
+    <div class="triple-card c3">
+      <div class="triple-label">3rd Trimester</div>
+      <span class="triple-icon">👶</span>
+      <div class="triple-title">Months 7–9</div>
+      <div class="triple-desc">The baby grows rapidly and prepares for life outside the womb. The uterus protects and nourishes the baby throughout.</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p>During <strong>childbirth</strong>, strong contractions of the uterine muscles push the foetus out through the birth canal. If a normal vaginal birth is not possible or safe for mother or baby, doctors may use medical or surgical procedures to deliver the baby safely.</p>
+  </div>
+
+  <div class="concept-grid" style="margin-bottom:1.5rem">
+    <div class="concept-card pink">
+      <div class="concept-icon">🍼</div>
+      <div class="concept-title">Newborn Care</div>
+      <div class="concept-body">Breastfeeding provides <strong style="color:var(--neon-pink)">complete nutrition</strong> and protects against many diseases. Newborns must be kept warm, vaccinated on time, and handled gently.</div>
+    </div>
+    <div class="concept-card amber">
+      <div class="concept-icon">🥗</div>
+      <div class="concept-title">Mother's Health During Pregnancy</div>
+      <div class="concept-body">A balanced diet rich in <strong style="color:var(--neon-amber)">proteins, vitamins and minerals</strong>, regular medical check-ups, light exercise, adequate rest, and emotional support from family all matter greatly.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🚫</div>
+      <div class="concept-title">Substances to Avoid</div>
+      <div class="concept-body">It is strongly recommended for a pregnant woman to avoid <strong style="color:var(--neon-purple)">smoking, alcohol, and any medicines</strong> taken without medical advice, since the health of mother and baby are closely connected.</div>
+    </div>
+  </div>
+
+  <!-- ASHA bridging -->
+  <div class="bridging-card">
+    <div class="bridging-tag">Bridging Science and Society</div>
+    <div class="bridging-title">ASHA Workers — India's Community Health Heroes</div>
+    <div class="bridging-body">More than 10 lakh <span class="bridging-highlight">Accredited Social Health Activist (ASHA)</span> workers serve across India. These trained community health workers — predominantly women — promote hygiene, immunisation and family planning under the National Health Mission, especially in rural areas, offering advice on maternal care, safe deliveries and contraceptive methods.</div>
+  </div>
+
+  <!-- Postpartum depression curiosity -->
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">💙</div>
+    <div class="curiosity-tag">Threads of Curiosity</div>
+    <div class="curiosity-title">Post-Partum Depression — A Treatable Condition</div>
+    <div class="curiosity-body">Some mothers experience a form of anxiety and fatigue after childbirth, known as <span class="curiosity-highlight">post-partum depression</span>. This is a recognised, treatable condition — mothers should be encouraged to talk to a healthcare worker (doctor, nurse, or ASHA worker) if they feel low or overwhelmed, so they can get the proper help and support they deserve.</div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>6.</strong> Ravi notices he's growing taller rapidly, his shoulders are broadening, and his voice cracks. What stage of life is he entering?<br><br>
+      <strong>7.</strong> Rina's period occurs every 28 days. Her last period was on 5th March. On which day is she most likely to get her next period?<br><br>
+      <strong>8.</strong> A human zygote has just formed. How many chromosomes does it have?<br><br>
+      <strong>11.</strong> Human babies are completely dependent on adults for a long time, unlike many animals whose young can walk or find food soon after birth. What might be some advantages and disadvantages of this for humans as a species?
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ ADOLESCENCE & REPRODUCTIVE HEALTH ══ -->
+<section class="section" id="adolescence">
+  <div class="sec-header">
+    <div class="sec-tag">Section 11.5.9–11.5.10 · Growing Up Responsibly</div>
+    <h2 class="sec-title">Sexual Maturity, Safe Choices &amp; Reproductive Health</h2>
+    <p class="sec-subtitle">Physical readiness comes first — emotional and social maturity take longer to develop</p>
+  </div>
+
+  <div class="highlight-box">
+    <p>Sexual maturation means the body becomes capable of reproduction — sperm production in boys and menstrual cycles in girls happen gradually as part of overall growth. But this physical change does <strong>not</strong> mean someone is ready for adult responsibilities. Emotional maturity — handling feelings, communicating clearly, and making thoughtful decisions — develops on its own, longer timeline. Being ready for sexual activity is about far more than physical change; it requires the ability to make responsible, informed decisions.</p>
+  </div>
+
+  <!-- STIs -->
+  <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin:1.5rem 0 1rem">Sexually Transmitted Infections (STIs)</div>
+  <div class="note-box"><strong>What are STIs?</strong> Since sexual activity involves close physical contact, certain infections can pass from an infected person to an uninfected one. These are called Sexually Transmitted Infections and include gonorrhoea, herpes, syphilis, genital warts, and HIV (which can eventually lead to AIDS). Some of these are not yet curable. Using condoms can help prevent both their transmission and unwanted pregnancy.</div>
+
+  <!-- Contraceptive methods -->
+  <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin:1.5rem 0 1rem">Preventing Unwanted Pregnancy — Contraceptive Methods</div>
+
+  <div class="concept-grid" style="margin-bottom:1.5rem">
+    <div class="concept-card blue">
+      <div class="concept-icon">🛡️</div>
+      <div class="concept-title">Barrier Methods</div>
+      <div class="concept-body">Condoms or vaginal covers physically <strong style="color:var(--neon-blue)">stop sperm from reaching the egg</strong> — and condoms uniquely also reduce STI transmission.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">💊</div>
+      <div class="concept-title">Hormonal Methods</div>
+      <div class="concept-body">Oral contraceptive pills change <strong style="color:var(--neon-teal)">hormone levels to alter egg release</strong>, preventing pregnancy — though they may carry some side effects.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🌀</div>
+      <div class="concept-title">Intra-Uterine Devices (IUDs)</div>
+      <div class="concept-body">Devices like the <strong style="color:var(--neon-purple)">Copper-T</strong> are placed inside the uterus to prevent pregnancy, though they may sometimes cause irritation.</div>
+    </div>
+    <div class="concept-card amber">
+      <div class="concept-icon">⚕️</div>
+      <div class="concept-title">Surgical Methods</div>
+      <div class="concept-body">Permanently <strong style="color:var(--neon-amber)">blocking the vas deferens</strong> (in males) or the <strong>fallopian tubes</strong> (in females) prevents sperm and egg from ever meeting.</div>
+    </div>
+  </div>
+
+  <div class="note-box"><strong>Abortion:</strong> In some cases, an unwanted pregnancy can be ended by surgery — generally only within the first trimester, when the embryo is very small. The practice of self-selective abortion driven by gender preference is a serious concern, as it can severely imbalance a society's sex ratio. <strong>Prenatal sex determination is strictly prohibited by law in India</strong> to protect a healthy, forward-looking society.</div>
+
+  <!-- CDRI pill bridging -->
+  <div class="bridging-card">
+    <div class="bridging-tag">Bridging Science and Society</div>
+    <div class="bridging-title">India's Indigenous Contraceptive Breakthrough</div>
+    <div class="bridging-body">Indian scientists at the <span class="bridging-highlight">Central Drug Research Institute (CDRI), Lucknow</span>, developed the world's first non-steroidal and non-hormonal oral contraceptive pill. Taken just once weekly, it avoids common side effects like weight gain, nausea, or headaches. It is safe, convenient and effective, and is provided free through the National Family Planning Programme.</div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>9.</strong> What protective devices can be used during sexual activity to reduce the spread of STIs?<br><br>
+      <strong>10.</strong> If a couple uses oral contraceptive pills but not condoms, which risks remain — and why?
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SCIENTIST SPOTLIGHT ══ -->
+<section class="section" id="scientists">
+  <div class="sec-header">
+    <div class="sec-tag">Meet the Scientists</div>
+    <h2 class="sec-title">Indian Pioneers of Reproductive Science</h2>
+    <p class="sec-subtitle">From plant embryos in a test tube to India's first test-tube baby</p>
+  </div>
+
+  <div class="scientist-card">
+    <div class="scientist-tag">Father of Indian Embryology</div>
+    <div class="scientist-name">P. Maheshwari</div>
+    <div class="scientist-role">Indian Botanist · Pioneer of Plant Embryology</div>
+    <div class="scientist-body">P. Maheshwari led the field of <span class="scientist-highlight">embryology</span> — the study of plant reproductive organs. He developed the technique of <em>in-vitro fertilisation</em> in flowering plants, successfully fusing an egg and male gamete in a test tube to create new hybrid plants, and was among the first scientists to grow plant embryos on artificial nutrient media. His book, <em>An Introduction to the Embryology of Angiosperms</em> (1950), remains a classic reference for scientists worldwide.</div>
+  </div>
+
+  <div class="scientist-card">
+    <div class="scientist-tag">Pioneer of Indian IVF · 1978</div>
+    <div class="scientist-name">Subhash Mukhopadhyay</div>
+    <div class="scientist-role">Kolkata, India</div>
+    <div class="scientist-body">India holds a significant place in the history of <span class="scientist-highlight">In-vitro Fertilisation (IVF)</span> — a technique where an egg and sperm are combined outside the body, usually in a laboratory dish, and the resulting fertilised egg is implanted in the uterus to begin a possible pregnancy. In 1978, <span class="scientist-highlight">Subhash Mukhopadhyay</span> of Kolkata pioneered India's first test-tube baby, Kanupriya Agarwal (nicknamed Durga), through his own experimental IVF work — placing India among the earliest nations in the world to achieve this medical milestone.</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SUMMARY ══ -->
+<section class="section" id="summary">
+  <div class="sec-header">
+    <div class="sec-tag">Chapter Summary</div>
+    <h2 class="sec-title">At a Glance — Key Points</h2>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-block"><div class="stat-value">23</div><div class="stat-label">Pairs — Human Chromosomes</div></div>
+    <div class="stat-block"><div class="stat-value">4</div><div class="stat-label">Floral Parts — Sepal, Petal, Stamen, Pistil</div></div>
+    <div class="stat-block"><div class="stat-value">~28</div><div class="stat-label">Days — Average Menstrual Cycle</div></div>
+    <div class="stat-block"><div class="stat-value">9</div><div class="stat-label">Months — Human Pregnancy</div></div>
+    <div class="stat-block"><div class="stat-value">3</div><div class="stat-label">Trimesters of Pregnancy</div></div>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card green">
+      <div class="concept-icon">🌿</div>
+      <div class="concept-title">Asexual Reproduction</div>
+      <div class="concept-body">One parent, powered by mitosis, produces genetically identical clones. Seen as budding (yeast, hydra), spore formation (fungi), and vegetative propagation (cutting, grafting, layering, tissue culture).</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🧬</div>
+      <div class="concept-title">Sexual Reproduction &amp; Meiosis</div>
+      <div class="concept-body">Two parents contribute gametes formed by meiosis, which halves chromosome number. Random mixing of characters creates variation — vital for adaptation and survival of a species.</div>
+    </div>
+    <div class="concept-card pink">
+      <div class="concept-icon">🌸</div>
+      <div class="concept-title">Flower Structure &amp; Pollination</div>
+      <div class="concept-body">Sepal, petal, stamen (male) and pistil (female) make up a complete flower. Pollination — self or cross — transfers pollen from anther to stigma via wind, water, insects or birds.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🌰</div>
+      <div class="concept-title">Fertilisation &amp; Seed Formation</div>
+      <div class="concept-body">The pollen tube delivers the male gamete to the ovule, forming a zygote. The ovary becomes the fruit; ovules become seeds, ready for dispersal and germination.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🐟</div>
+      <div class="concept-title">Animal Reproduction</div>
+      <div class="concept-body">External fertilisation (fish, frogs) needs many eggs since survival is low; internal fertilisation (reptiles, birds, mammals) protects the embryo, needing far fewer eggs.</div>
+    </div>
+    <div class="concept-card amber">
+      <div class="concept-icon">👶</div>
+      <div class="concept-title">Human Reproduction</div>
+      <div class="concept-body">Testes and ovaries produce gametes via gametogenesis. Ovulation, fertilisation, implantation, and a nine-month pregnancy across three trimesters bring a new human into the world.</div>
+    </div>
+  </div>
+
+  <!-- Key terms -->
+  <div class="highlight-box" style="margin-top:2rem">
+    <p><strong>Key Terms to Know:</strong><br>
+    <span class="key-term">Reproduction</span>
+    <span class="key-term">Asexual Reproduction</span>
+    <span class="key-term">Sexual Reproduction</span>
+    <span class="key-term">Vegetative Propagation</span>
+    <span class="key-term">Cutting</span>
+    <span class="key-term">Grafting</span>
+    <span class="key-term">Layering</span>
+    <span class="key-term">Tissue Culture</span>
+    <span class="key-term">Budding</span>
+    <span class="key-term">Spore Formation</span>
+    <span class="key-term">Mitosis</span>
+    <span class="key-term">Clones</span>
+    <span class="key-term">Meiosis</span>
+    <span class="key-term">Chromosomes</span>
+    <span class="key-term">Gametes</span>
+    <span class="key-term">Sperm</span>
+    <span class="key-term">Egg / Ovule</span>
+    <span class="key-term">Variation</span>
+    <span class="key-term">Sepal</span>
+    <span class="key-term">Petal</span>
+    <span class="key-term">Stamen</span>
+    <span class="key-term">Anther</span>
+    <span class="key-term">Filament</span>
+    <span class="key-term">Pistil</span>
+    <span class="key-term">Stigma</span>
+    <span class="key-term">Style</span>
+    <span class="key-term">Ovary</span>
+    <span class="key-term">Pollination</span>
+    <span class="key-term">Self-Pollination</span>
+    <span class="key-term">Cross-Pollination</span>
+    <span class="key-term">Pollinators</span>
+    <span class="key-term">Fertilisation</span>
+    <span class="key-term">Zygote</span>
+    <span class="key-term">Embryo</span>
+    <span class="key-term">Seed</span>
+    <span class="key-term">Fruit</span>
+    <span class="key-term">External Fertilisation</span>
+    <span class="key-term">Internal Fertilisation</span>
+    <span class="key-term">Larva</span>
+    <span class="key-term">Metamorphosis</span>
+    <span class="key-term">Testes</span>
+    <span class="key-term">Scrotum</span>
+    <span class="key-term">Vas Deferens</span>
+    <span class="key-term">Urethra</span>
+    <span class="key-term">Seminal Vesicle</span>
+    <span class="key-term">Prostate Gland</span>
+    <span class="key-term">Ovaries</span>
+    <span class="key-term">Oviduct / Fallopian Tube</span>
+    <span class="key-term">Uterus</span>
+    <span class="key-term">Cervix</span>
+    <span class="key-term">Vagina</span>
+    <span class="key-term">Gametogenesis</span>
+    <span class="key-term">Ovulation</span>
+    <span class="key-term">Implantation</span>
+    <span class="key-term">Menstruation</span>
+    <span class="key-term">Menstrual Cycle</span>
+    <span class="key-term">Puberty</span>
+    <span class="key-term">Menopause</span>
+    <span class="key-term">Pregnancy</span>
+    <span class="key-term">Trimester</span>
+    <span class="key-term">Foetus</span>
+    <span class="key-term">Childbirth</span>
+    <span class="key-term">IVF</span>
+    <span class="key-term">Sexual Maturity</span>
+    <span class="key-term">STIs</span>
+    <span class="key-term">Contraception</span>
+    <span class="key-term">Condom</span>
+    <span class="key-term">Oral Pills</span>
+    <span class="key-term">IUD / Copper-T</span>
+    <span class="key-term">Abortion</span>
+    <span class="key-term">Sex Ratio</span>
+    <span class="key-term">XX / XY Chromosomes</span>
+    </p>
+  </div>
+</section>
+
+<!-- ══ CLOSING BANNER ══ -->
+<div class="closing-banner">
+  <div class="closing-title">From a Single Bryophyllum Leaf to a Human Zygote,<br><span>From a Whistling Bumblebee to a Mother's First Heartbeat Shared</span></div>
+  <p class="closing-sub">Reproduction is life's promise kept across generations — whether through an exact clone or an entirely new combination of traits. Master how plants, animals and humans pass life forward, and you understand the very engine of evolution and survival.</p>
+  <div style="margin-top:2rem;display:flex;flex-wrap:wrap;gap:1rem;justify-content:center">
+    <span class="hero-badge badge-green">🌱 Chapter 11 Complete</span>
+    <span class="hero-badge badge-teal">Grade 9 · Exploration</span>
+    <span class="hero-badge badge-pink">Reproduction Mastered</span>
+  </div>
+</div>
+
+</div><!-- /main -->
+<script>
+const sections=document.querySelectorAll('section[id],div[id]');
+const navLinks=document.querySelectorAll('.nav-link');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id=e.target.id;
+      navLinks.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));
+    }
+  });
+},{rootMargin:'-40% 0px -55% 0px'});
+sections.forEach(s=>obs.observe(s));
+navLinks.forEach(link=>{
+  link.addEventListener('click',e=>{
+    const href=link.getAttribute('href');
+    if(href&&href.startsWith('#')){
+      e.preventDefault();
+      const target=document.querySelector(href);
+      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 2 — Cell: The Building Block of Life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-primary:#0a0b0f;--bg-secondary:#0f1117;--bg-card:#13151c;
+  --bg-glass:rgba(255,255,255,0.03);--bg-glass-hover:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.08);--border-bright:rgba(255,255,255,0.15);
+  --neon-blue:#4f9eff;--neon-purple:#9b6dff;--neon-teal:#00d4a8;
+  --neon-pink:#ff6bac;--neon-amber:#ffb547;--neon-green:#3dd68c;
+  --text-primary:#f0f2ff;--text-secondary:#8b90a8;--text-muted:#4a4f6a;
+  --font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);font-size:15px;line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg-secondary)}::-webkit-scrollbar-thumb{background:var(--neon-teal);border-radius:3px}
+/* NAV */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,11,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;gap:2rem;height:56px}
+.nav-logo{font-family:var(--font-display);font-weight:700;font-size:15px;color:var(--neon-teal);letter-spacing:0.5px;white-space:nowrap}
+.nav-links{display:flex;gap:0.25rem;overflow-x:auto;scrollbar-width:none;flex:1}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-link{font-size:12px;font-weight:500;color:var(--text-secondary);padding:6px 12px;border-radius:var(--radius-sm);white-space:nowrap;cursor:pointer;transition:all 0.2s;text-decoration:none;border:none;background:none}
+.nav-link:hover{color:var(--text-primary);background:var(--bg-glass-hover)}
+.nav-link.active{color:var(--neon-teal);background:rgba(0,212,168,0.1)}
+.main{padding-top:56px}
+/* HERO */
+.hero{position:relative;overflow:hidden;min-height:520px;display:flex;align-items:center;padding:5rem 2rem 4rem;background:var(--bg-secondary)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,212,168,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,168,0.04) 1px,transparent 1px);background-size:40px 40px}
+.hero-glow-1{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,168,0.1) 0%,transparent 70%);top:-200px;right:-200px}
+.hero-glow-2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(79,158,255,0.08) 0%,transparent 70%);bottom:-150px;left:100px}
+.hero-content{position:relative;z-index:2;max-width:900px;margin:0 auto;width:100%}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--neon-teal);background:rgba(0,212,168,0.1);border:1px solid rgba(0,212,168,0.2);padding:6px 14px;border-radius:100px;margin-bottom:1.5rem}
+.hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-teal);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero-title{font-family:var(--font-display);font-size:clamp(2rem,5vw,3.5rem);font-weight:700;line-height:1.15;margin-bottom:1.5rem}
+.hero-title .line1{display:block;color:var(--text-primary)}
+.hero-title .line2{display:block;background:linear-gradient(135deg,var(--neon-teal),var(--neon-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:16px;color:var(--text-secondary);max-width:600px;margin-bottom:2rem;line-height:1.8}
+.hero-badges{display:flex;flex-wrap:wrap;gap:10px}
+.hero-badge{font-size:12px;font-weight:500;padding:6px 14px;border-radius:100px;border:1px solid}
+.badge-blue{color:var(--neon-blue);border-color:rgba(79,158,255,0.3);background:rgba(79,158,255,0.08)}
+.badge-purple{color:var(--neon-purple);border-color:rgba(155,109,255,0.3);background:rgba(155,109,255,0.08)}
+.badge-teal{color:var(--neon-teal);border-color:rgba(0,212,168,0.3);background:rgba(0,212,168,0.08)}
+.badge-pink{color:var(--neon-pink);border-color:rgba(255,107,172,0.3);background:rgba(255,107,172,0.08)}
+.badge-amber{color:var(--neon-amber);border-color:rgba(255,181,71,0.3);background:rgba(255,181,71,0.08)}
+/* LAYOUT */
+.section{padding:4rem 2rem;max-width:1100px;margin:0 auto}
+.full-bg{background:var(--bg-secondary)}
+.full-bg .section{max-width:none;padding-left:max(2rem,calc(50vw - 550px));padding-right:max(2rem,calc(50vw - 550px))}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border-bright),transparent)}
+/* SECTION HEADERS */
+.sec-header{margin-bottom:2.5rem}
+.sec-tag{font-family:var(--font-mono);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon-teal);margin-bottom:0.75rem}
+.sec-title{font-family:var(--font-display);font-size:1.75rem;font-weight:700;color:var(--text-primary);margin-bottom:0.5rem}
+.sec-subtitle{font-size:14px;color:var(--text-secondary)}
+/* OBJ CARDS */
+.obj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+.obj-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;display:flex;gap:1rem;align-items:flex-start;transition:border-color 0.2s,background 0.2s}
+.obj-card:hover{border-color:var(--border-bright);background:var(--bg-glass-hover)}
+.obj-num{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-teal);background:rgba(0,212,168,0.1);border:1px solid rgba(0,212,168,0.2);min-width:28px;height:28px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;margin-top:2px}
+.obj-text{font-size:13px;color:var(--text-secondary);line-height:1.6}
+.obj-text strong{color:var(--text-primary);font-weight:500}
+/* CONCEPT CARDS */
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem}
+.concept-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;position:relative;overflow:hidden;transition:all 0.3s}
+.concept-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent-start,var(--neon-teal)),var(--accent-end,var(--neon-blue)))}
+.concept-card:hover{border-color:var(--border-bright);transform:translateY(-2px);background:var(--bg-glass-hover)}
+.concept-icon{font-size:28px;margin-bottom:1rem}
+.concept-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary);margin-bottom:0.5rem}
+.concept-body{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.concept-card.blue{--accent-start:#4f9eff;--accent-end:#9b6dff}
+.concept-card.teal{--accent-start:#00d4a8;--accent-end:#4f9eff}
+.concept-card.purple{--accent-start:#9b6dff;--accent-end:#ff6bac}
+.concept-card.pink{--accent-start:#ff6bac;--accent-end:#ffb547}
+.concept-card.amber{--accent-start:#ffb547;--accent-end:#00d4a8}
+.concept-card.green{--accent-start:#3dd68c;--accent-end:#00d4a8}
+/* TRIPLE GRID */
+.triple-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.triple-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;transition:all 0.3s;position:relative;overflow:hidden}
+.triple-card:hover{transform:translateY(-4px);border-color:var(--card-accent)}
+.triple-card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,var(--card-glow,rgba(0,212,168,0.05)) 0%,transparent 70%);pointer-events:none}
+.triple-card.c1{--card-accent:var(--neon-teal);--card-glow:rgba(0,212,168,0.06)}
+.triple-card.c2{--card-accent:var(--neon-blue);--card-glow:rgba(79,158,255,0.06)}
+.triple-card.c3{--card-accent:var(--neon-purple);--card-glow:rgba(155,109,255,0.06)}
+.triple-label{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:100px;border:1px solid;display:inline-block;margin-bottom:1rem;font-weight:600}
+.triple-card.c1 .triple-label{color:var(--neon-teal);border-color:rgba(0,212,168,0.3);background:rgba(0,212,168,0.1)}
+.triple-card.c2 .triple-label{color:var(--neon-blue);border-color:rgba(79,158,255,0.3);background:rgba(79,158,255,0.1)}
+.triple-card.c3 .triple-label{color:var(--neon-purple);border-color:rgba(155,109,255,0.3);background:rgba(155,109,255,0.1)}
+.triple-icon{font-size:2.5rem;margin-bottom:0.75rem;display:block}
+.triple-title{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:0.5rem}
+.triple-card.c1 .triple-title{color:var(--neon-teal)}
+.triple-card.c2 .triple-title{color:var(--neon-blue)}
+.triple-card.c3 .triple-title{color:var(--neon-purple)}
+.triple-desc{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:1rem}
+.triple-example{font-size:11px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;color:var(--text-secondary);font-style:italic}
+/* FLOW */
+.flow-chain{display:flex;align-items:center;gap:0;flex-wrap:wrap}
+.flow-node{flex:1;min-width:120px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem 0.75rem;text-align:center;position:relative}
+.flow-node-icon{font-size:1.75rem;margin-bottom:0.4rem}
+.flow-node-title{font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:0.2rem}
+.flow-node-sub{font-size:11px;color:var(--text-secondary)}
+.flow-arrow{color:var(--neon-teal);font-size:1.25rem;padding:0 4px;flex-shrink:0}
+.flow-node.highlight{border-color:rgba(0,212,168,0.4);background:rgba(0,212,168,0.05)}
+/* EXAMPLE CARDS */
+.example-card{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--neon-teal);border-radius:0 var(--radius-lg) var(--radius-lg) 0;padding:1.5rem;margin-bottom:1.25rem}
+.example-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.example-num{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-teal);background:rgba(0,212,168,0.1);border:1px solid rgba(0,212,168,0.25);padding:3px 10px;border-radius:100px}
+.example-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary)}
+.example-emoji{font-size:1.5rem}
+.example-question{font-size:13px;color:var(--text-secondary);margin-bottom:1rem;font-style:italic;padding:10px 14px;background:rgba(255,255,255,0.02);border-radius:var(--radius-sm);border:1px solid var(--border)}
+.example-answer-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon-teal);margin-bottom:0.5rem;font-weight:600}
+.example-answer{font-size:13px;color:var(--text-secondary);line-height:1.7}
+/* ACTIVITY CARDS */
+.activity-card{background:linear-gradient(135deg,rgba(0,212,168,0.06),rgba(79,158,255,0.06));border:1px solid rgba(0,212,168,0.2);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.25rem}
+.activity-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.activity-badge{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-teal);background:rgba(0,212,168,0.12);border:1px solid rgba(0,212,168,0.3);padding:4px 12px;border-radius:100px}
+.activity-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary)}
+.activity-body{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.think-prompts{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem}
+.think-prompt{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text-secondary);padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);border:1px solid var(--border)}
+.think-prompt-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-teal);margin-top:5px;flex-shrink:0}
+/* PONDER */
+.ponder-card{background:rgba(255,181,71,0.05);border:1px solid rgba(255,181,71,0.2);border-radius:var(--radius-lg);padding:1.5rem;margin:1.5rem 0}
+.ponder-header{display:flex;align-items:center;gap:10px;margin-bottom:0.75rem}
+.ponder-icon{font-size:1.25rem}
+.ponder-label{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-amber);text-transform:uppercase;letter-spacing:1.5px}
+.ponder-q{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.ponder-q strong{color:var(--neon-amber);font-weight:500}
+/* CURIOSITY */
+.curiosity-card{background:var(--bg-card);border:1px solid rgba(0,212,168,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.curiosity-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba(0,212,168,0.05) 0%,transparent 50%);pointer-events:none}
+.curiosity-glyph{position:absolute;right:1.5rem;top:1.25rem;font-size:3rem;opacity:0.08}
+.curiosity-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-teal);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.curiosity-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-teal)}
+.curiosity-title{font-family:var(--font-display);font-size:1.15rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.curiosity-body{font-size:13px;color:var(--text-secondary);line-height:1.75;position:relative}
+.curiosity-highlight{color:var(--neon-teal);font-weight:500}
+/* BEYOND */
+.beyond-card{background:rgba(79,158,255,0.04);border:1px solid rgba(79,158,255,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.beyond-card::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(79,158,255,0.06) 0%,transparent 70%);pointer-events:none}
+.beyond-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-blue);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.beyond-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-blue)}
+.beyond-title{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.beyond-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+.beyond-highlight{color:var(--neon-blue);font-weight:500}
+/* SCIENTIST */
+.scientist-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:2rem;display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:start;position:relative;overflow:hidden}
+.scientist-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(0,212,168,0.05) 0%,transparent 60%);pointer-events:none}
+.scientist-avatar{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,rgba(0,212,168,0.3),rgba(79,158,255,0.3));border:2px solid rgba(0,212,168,0.3);display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0}
+.scientist-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-teal);font-weight:600;margin-bottom:0.5rem}
+.scientist-name{font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--text-primary);margin-bottom:0.25rem}
+.scientist-dates{font-size:12px;color:var(--text-muted);margin-bottom:1rem;font-family:var(--font-mono)}
+.scientist-contribution{font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1rem}
+.scientist-key{background:rgba(0,212,168,0.06);border:1px solid rgba(0,212,168,0.2);border-radius:var(--radius-md);padding:1rem;margin-top:0.5rem}
+.scientist-key-label{font-size:11px;font-weight:600;color:var(--neon-teal);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:0.4rem}
+.scientist-key-text{font-size:12px;color:var(--text-secondary);line-height:1.6}
+/* PILLS */
+.pills-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:1rem}
+.pill{font-size:11px;font-weight:500;padding:5px 12px;border-radius:100px;border:1px solid}
+/* SYMBOL TABLE */
+.symbol-table{width:100%;border-collapse:collapse;font-size:13px}
+.symbol-table th{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);font-weight:600;padding:10px 16px;text-align:left;border-bottom:1px solid var(--border)}
+.symbol-table td{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text-secondary)}
+.symbol-table tr:hover td{background:var(--bg-glass-hover)}
+.symbol-cell{font-family:var(--font-mono);font-size:1rem;font-weight:700;color:var(--neon-teal)}
+.unit-cell{font-family:var(--font-mono);font-size:12px;color:var(--neon-blue)}
+/* HIGHLIGHT BOX */
+.highlight-box{background:rgba(0,212,168,0.05);border:1px solid rgba(0,212,168,0.18);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin:1.25rem 0}
+.highlight-box p{font-size:13px;color:var(--text-secondary);line-height:1.75;margin:0}
+.highlight-box strong{color:var(--text-primary);font-weight:500}
+/* STAT ROW */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin:2rem 0}
+.stat-block{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:1.25rem 1rem;text-align:center}
+.stat-value{font-family:var(--font-display);font-size:1.75rem;font-weight:700;background:linear-gradient(135deg,var(--neon-teal),var(--neon-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.25rem}
+.stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px}
+/* CLOSING */
+.closing-banner{text-align:center;padding:5rem 2rem;position:relative;overflow:hidden;background:var(--bg-secondary)}
+.closing-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(0,212,168,0.1) 0%,transparent 60%)}
+.closing-title{font-family:var(--font-display);font-size:clamp(1.5rem,4vw,2.5rem);font-weight:700;color:var(--text-primary);margin-bottom:1rem;position:relative}
+.closing-title span{background:linear-gradient(135deg,var(--neon-teal),var(--neon-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.closing-sub{font-size:15px;color:var(--text-secondary);max-width:500px;margin:0 auto;position:relative}
+/* ORGANELLE FACTORY GRID */
+.factory-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem}
+.factory-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;position:relative;overflow:hidden;transition:all 0.3s}
+.factory-card:hover{border-color:var(--border-bright);transform:translateY(-2px)}
+.factory-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--fc-stripe,linear-gradient(90deg,var(--neon-teal),var(--neon-blue)))}
+.fc-icon{font-size:2rem;margin-bottom:0.75rem}
+.fc-name{font-family:var(--font-display);font-size:0.95rem;font-weight:700;color:var(--text-primary);margin-bottom:0.2rem}
+.fc-role{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:0.6rem}
+.fc-desc{font-size:12px;color:var(--text-secondary);line-height:1.65}
+.fc-fact{font-size:11px;margin-top:0.6rem;padding:6px 10px;border-radius:var(--radius-sm);background:rgba(255,255,255,0.03);border:1px solid var(--border);color:var(--text-muted)}
+/* COMPARE TABLE */
+.compare-wrap{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden}
+.compare-table{width:100%;border-collapse:collapse;font-size:13px}
+.compare-table th{font-family:var(--font-display);font-size:12px;font-weight:600;padding:14px 20px;text-align:left;border-bottom:1px solid var(--border)}
+.compare-table th.th-pro{color:var(--neon-amber);background:rgba(255,181,71,0.05)}
+.compare-table th.th-eu{color:var(--neon-teal);background:rgba(0,212,168,0.05)}
+.compare-table th.th-feat{color:var(--text-muted)}
+.compare-table td{padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text-secondary);vertical-align:top}
+.compare-table tr:hover td{background:var(--bg-glass-hover)}
+.compare-table td.td-pro{color:var(--neon-amber)}
+.compare-table td.td-eu{color:var(--neon-teal)}
+.compare-table td.td-absent{color:var(--text-muted);font-style:italic}
+/* OSMOSIS VISUAL */
+.osmo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.osmo-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;transition:all 0.3s}
+.osmo-card:hover{transform:translateY(-2px);border-color:var(--border-bright)}
+.osmo-type{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;padding:4px 12px;border-radius:100px;border:1px solid;display:inline-block;margin-bottom:0.75rem;font-weight:600}
+.osmo-iso .osmo-type{color:var(--neon-teal);border-color:rgba(0,212,168,0.3);background:rgba(0,212,168,0.1)}
+.osmo-hypo .osmo-type{color:var(--neon-blue);border-color:rgba(79,158,255,0.3);background:rgba(79,158,255,0.1)}
+.osmo-hyper .osmo-type{color:var(--neon-pink);border-color:rgba(255,107,172,0.3);background:rgba(255,107,172,0.1)}
+.osmo-cell{width:80px;height:80px;border-radius:50%;margin:0 auto 0.75rem;display:flex;align-items:center;justify-content:center;font-size:1.5rem;transition:all 0.3s;border:2px solid}
+.osmo-iso .osmo-cell{background:rgba(0,212,168,0.12);border-color:rgba(0,212,168,0.3)}
+.osmo-hypo .osmo-cell{background:rgba(79,158,255,0.12);border-color:rgba(79,158,255,0.3);transform:scale(1.15)}
+.osmo-hyper .osmo-cell{background:rgba(255,107,172,0.08);border-color:rgba(255,107,172,0.25);transform:scale(0.8)}
+.osmo-title{font-family:var(--font-display);font-size:0.9rem;font-weight:700;margin-bottom:0.35rem}
+.osmo-iso .osmo-title{color:var(--neon-teal)}
+.osmo-hypo .osmo-title{color:var(--neon-blue)}
+.osmo-hyper .osmo-title{color:var(--neon-pink)}
+.osmo-desc{font-size:11.5px;color:var(--text-secondary);line-height:1.6}
+/* CELL THEORY TIMELINE */
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:flex;gap:1.25rem;align-items:flex-start;padding:1.25rem 0;border-bottom:1px solid var(--border)}
+.tl-item:last-child{border-bottom:none}
+.tl-year-wrap{display:flex;flex-direction:column;align-items:center;gap:0.4rem;flex-shrink:0;width:60px}
+.tl-year{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--neon-teal)}
+.tl-dot{width:12px;height:12px;border-radius:50%;background:var(--neon-teal);box-shadow:0 0 8px rgba(0,212,168,0.5)}
+.tl-line{width:2px;flex:1;background:var(--border);margin-top:2px}
+.tl-content{}
+.tl-who{font-family:var(--font-display);font-size:0.95rem;font-weight:600;color:var(--text-primary);margin-bottom:0.25rem}
+.tl-what{font-size:13px;color:var(--text-secondary);line-height:1.6}
+/* DIVISION COMPARE */
+.division-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.div-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;position:relative;overflow:hidden}
+.div-card.mitosis::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-teal),var(--neon-blue))}
+.div-card.meiosis::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-purple),var(--neon-pink))}
+.div-badge{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;padding:4px 12px;border-radius:100px;border:1px solid;display:inline-block;margin-bottom:1rem;font-weight:600}
+.mitosis .div-badge{color:var(--neon-teal);border-color:rgba(0,212,168,0.3);background:rgba(0,212,168,0.08)}
+.meiosis .div-badge{color:var(--neon-purple);border-color:rgba(155,109,255,0.3);background:rgba(155,109,255,0.08)}
+.div-title{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:0.75rem}
+.mitosis .div-title{color:var(--neon-teal)}
+.meiosis .div-title{color:var(--neon-purple)}
+.div-rows{display:flex;flex-direction:column;gap:0.5rem}
+.div-row{display:flex;gap:0.75rem;font-size:12px}
+.div-lbl{color:var(--text-muted);min-width:90px;flex-shrink:0}
+.div-val{color:var(--text-secondary)}
+/* RESPONSIVE */
+@media(max-width:768px){.triple-grid{grid-template-columns:1fr}.osmo-grid{grid-template-columns:1fr}.scientist-card{grid-template-columns:1fr}.scientist-avatar{margin:0 auto}.division-grid{grid-template-columns:1fr}.top-nav{padding:0 1rem}}
+@media(max-width:540px){.flow-chain{flex-direction:column}.flow-arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+  <div class="nav-logo">🔬 Exploration · Gr.9 · Ch.2</div>
+  <div class="nav-links">
+    <a class="nav-link" href="#objectives">Objectives</a>
+    <a class="nav-link" href="#intro">Cell Basics</a>
+    <a class="nav-link" href="#microscopy">Microscopy</a>
+    <a class="nav-link" href="#membrane">Cell Membrane</a>
+    <a class="nav-link" href="#osmosis">Osmosis</a>
+    <a class="nav-link" href="#cell-wall">Cell Wall</a>
+    <a class="nav-link" href="#interior">Cell Interior</a>
+    <a class="nav-link" href="#organelles">Organelles</a>
+    <a class="nav-link" href="#division">Cell Division</a>
+    <a class="nav-link" href="#cell-theory">Cell Theory</a>
+    <a class="nav-link" href="#scientists">Scientists</a>
+    <a class="nav-link" href="#curiosities">Curiosities</a>
+  </div>
+</nav>
+
+<div class="main">
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      Grade 9 · Chapter 2 · Biology
+    </div>
+    <h1 class="hero-title">
+      <span class="line1">Cell:</span>
+      <span class="line2">The Building Block of Life</span>
+    </h1>
+    <p class="hero-desc">From the hot springs of Ladakh to the cells in your fingertips — every living thing is built from the same fundamental unit. Explore the structure, function, and division of cells: the microscopic factories that make life possible.</p>
+    <div class="hero-badges">
+      <span class="hero-badge badge-teal">🔬 Cell Structure</span>
+      <span class="hero-badge badge-blue">💧 Osmosis &amp; Diffusion</span>
+      <span class="hero-badge badge-purple">🧬 DNA &amp; Nucleus</span>
+      <span class="hero-badge badge-pink">⚡ Mitosis &amp; Meiosis</span>
+      <span class="hero-badge badge-amber">🏭 Cell Organelles</span>
+    </div>
+    <div style="margin-top:2rem">
+      <div style="display:flex;gap:1rem;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;display:flex;gap:1rem;align-items:flex-start">
+          <div style="font-size:2rem;padding:8px;background:rgba(0,212,168,0.08);border-radius:var(--radius-md);flex-shrink:0">🔬</div>
+          <div>
+            <div style="font-family:var(--font-display);font-size:0.9rem;font-weight:600;color:var(--text-primary);margin-bottom:0.3rem">Structural Unit</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.6">Every living organism — from a single bacterium to a blue whale — is made of cells. The cell is where life happens.</div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:200px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;display:flex;gap:1rem;align-items:flex-start">
+          <div style="font-size:2rem;padding:8px;background:rgba(79,158,255,0.08);border-radius:var(--radius-md);flex-shrink:0">⚙️</div>
+          <div>
+            <div style="font-family:var(--font-display);font-size:0.9rem;font-weight:600;color:var(--text-primary);margin-bottom:0.3rem">Functional Unit</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.6">Cells produce energy, synthesise proteins, remove waste, divide, communicate, and die — all in a coordinated way.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ OBJECTIVES ══ -->
+<section class="section" id="objectives">
+  <div class="sec-header">
+    <div class="sec-tag">Learning Objectives</div>
+    <h2 class="sec-title">What You Will Learn</h2>
+    <p class="sec-subtitle">After completing this chapter, you will be able to:</p>
+  </div>
+  <div class="obj-grid">
+    <div class="obj-card"><div class="obj-num">01</div><div class="obj-text"><strong>Explain why cells need microscopes</strong> to study — understand the limit of resolution of the human eye and how magnification works.</div></div>
+    <div class="obj-card"><div class="obj-num">02</div><div class="obj-text"><strong>Describe the structure and role</strong> of the cell membrane, cell wall, and cytoplasm.</div></div>
+    <div class="obj-card"><div class="obj-num">03</div><div class="obj-text"><strong>Explain osmosis and diffusion</strong> — how water and particles move across membranes using concentration gradients.</div></div>
+    <div class="obj-card"><div class="obj-num">04</div><div class="obj-text"><strong>Distinguish between prokaryotic and eukaryotic cells</strong> with their key structural differences.</div></div>
+    <div class="obj-card"><div class="obj-num">05</div><div class="obj-text"><strong>Identify and describe the function</strong> of each cell organelle — nucleus, ER, Golgi, mitochondria, chloroplast, lysosomes, vacuoles, ribosomes.</div></div>
+    <div class="obj-card"><div class="obj-num">06</div><div class="obj-text"><strong>Compare mitosis and meiosis</strong> — their purposes, products, and where they occur.</div></div>
+    <div class="obj-card"><div class="obj-num">07</div><div class="obj-text"><strong>State the three tenets of Cell Theory</strong> and understand who developed them and when.</div></div>
+    <div class="obj-card"><div class="obj-num">08</div><div class="obj-text"><strong>Understand contact inhibition, tumours, and programmed cell death</strong> — how cells regulate their growth.</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ S1: CELL BASICS ══ -->
+<div class="full-bg" id="intro">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 1 · Origin &amp; Overview</div>
+    <h2 class="sec-title">Cell: The Basic Unit of Life</h2>
+    <p class="sec-subtitle">Where life began and what it is built from</p>
+  </div>
+  <div class="highlight-box">
+    <p>Life is widely believed to have <strong>originated in water</strong>. Some researchers suggest it began in small warm pools with changing conditions — not the open ocean. India's <strong>Puga Valley hot springs in Ladakh</strong> (near boiling point, even in cold climate) closely resemble conditions on early Earth ~3.5 billion years ago. Scientists from the Birbal Sahni Institute of Palaeosciences, Lucknow, found that calcium carbonate deposits there may have protected early organic molecules and helped form the first cell membrane.</p>
+  </div>
+  <div class="concept-grid" style="margin-top:1.5rem">
+    <div class="concept-card teal">
+      <div class="concept-icon">🦠</div>
+      <div class="concept-title">Unicellular Organisms</div>
+      <div class="concept-body">Entire organism = <strong style="color:var(--neon-teal)">one single cell</strong>. That one cell must perform all life functions — nutrition, respiration, excretion, reproduction.<br><br><em>Examples: Bacteria, Yeast, Amoeba</em></div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🌿</div>
+      <div class="concept-title">Multicellular Organisms</div>
+      <div class="concept-body">Built from <strong style="color:var(--neon-blue)">millions of specialised cells</strong> that work together. Cells → Tissues → Organs → Organ Systems.<br><br><em>Examples: Plants, Fish, Birds, Humans</em></div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🏗️</div>
+      <div class="concept-title">Organisation of Life</div>
+      <div class="concept-body">Similar cells → <strong style="color:var(--neon-purple)">Tissue</strong> → Different tissues → <strong style="color:var(--neon-purple)">Organ</strong> → Several organs → <strong style="color:var(--neon-purple)">Organ System</strong>.<br><br><em>Example: Nasal pores + trachea + lungs = Respiratory System</em></div>
+    </div>
+  </div>
+  <div class="highlight-box">
+    <p>Even in multicellular organisms, the cell <strong>remains the fundamental unit of structure and function</strong>. No matter how complex the organism, all life processes ultimately happen at the cellular level.</p>
+  </div>
+
+  <!-- Think It Over -->
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">💭</div><div class="ponder-label">Think It Over</div></div>
+    <div class="ponder-q">
+      Where does a cell come from? How have technological interventions helped us understand structures beyond the naked eye? How is the cell both a structural and functional unit? How does a cell multiply?
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ S2: MICROSCOPY ══ -->
+<section class="section" id="microscopy">
+  <div class="sec-header">
+    <div class="sec-tag">Section 2 · How to Study Cells</div>
+    <h2 class="sec-title">Microscopy: Seeing the Invisible</h2>
+    <p class="sec-subtitle">Technological tools that unlocked the world of cells</p>
+  </div>
+  <div class="concept-grid" style="margin-bottom:2rem">
+    <div class="concept-card blue">
+      <div class="concept-icon">👁️</div>
+      <div class="concept-title">Limit of Resolution — Human Eye</div>
+      <div class="concept-body">At a distance of 25 cm (near point), the human eye can distinguish two points separated by at least <strong style="color:var(--neon-blue)">0.1 mm</strong>. Anything closer appears as one point. This is the <em>limit of resolution</em> of the unaided eye.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🔬</div>
+      <div class="concept-title">Light Microscope</div>
+      <div class="concept-body">Uses a <strong style="color:var(--neon-teal)">convex lens system</strong> (objective + eyepiece) to magnify objects. Can resolve structures down to ~1 µm. Used in school labs with 10×, 40× objective lenses. Total magnification = eyepiece × objective.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">⚡</div>
+      <div class="concept-title">Electron Microscope</div>
+      <div class="concept-body">Uses a <strong style="color:var(--neon-purple)">beam of electrons</strong> instead of light. Resolves structures at the <em>nanometre scale</em> — reveals fine details of organelles, cell membranes, and even individual proteins. One nanometre = 0.000001 mm.</div>
+    </div>
+  </div>
+
+  <!-- Robert Hooke milestone -->
+  <div style="background:var(--bg-card);border:1px solid rgba(255,181,71,0.2);border-radius:var(--radius-xl);padding:1.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden">
+    <div style="position:absolute;right:1.5rem;top:1rem;font-size:3rem;opacity:0.07">🏛️</div>
+    <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-amber);font-weight:600;margin-bottom:0.5rem">Historical Milestone · 1665</div>
+    <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.5rem">Robert Hooke — First Person to Observe a Cell</div>
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.7">Using a self-designed microscope capable of <strong style="color:var(--neon-amber)">200–300× magnification</strong>, Hooke examined a thin slice of cork. He observed small box-like compartments and named them <strong style="color:var(--neon-amber)">'cells'</strong> — from the Latin word for small rooms. This was the first time a cell was ever described by a human.</div>
+  </div>
+
+  <!-- Magnification scale reference -->
+  <div class="sec-tag" style="margin-bottom:1rem">Size Reference — What Each Tool Can See</div>
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;margin-bottom:1.5rem">
+    <table class="symbol-table">
+      <thead>
+        <tr><th>Object</th><th>Approximate Size</th><th>Visible With</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Human height</td><td class="symbol-cell">~1.7 m</td><td class="unit-cell">Unaided eye</td></tr>
+        <tr><td>Chicken egg</td><td class="symbol-cell">~35 mm</td><td class="unit-cell">Unaided eye</td></tr>
+        <tr><td>Amoeba</td><td class="symbol-cell">~1 mm</td><td class="unit-cell">Unaided eye (barely)</td></tr>
+        <tr><td>Most plant &amp; animal cells</td><td class="symbol-cell">10–100 µm</td><td class="unit-cell">Light microscope</td></tr>
+        <tr><td>Nucleus / Most bacteria</td><td class="symbol-cell">1–10 µm</td><td class="unit-cell">Light microscope</td></tr>
+        <tr><td>Mitochondrion</td><td class="symbol-cell">~1–2 µm</td><td class="unit-cell">Light microscope</td></tr>
+        <tr><td>Ribosomes / Viruses</td><td class="symbol-cell">10–100 nm</td><td class="unit-cell">Electron microscope</td></tr>
+        <tr><td>Proteins / Lipids</td><td class="symbol-cell">1–10 nm</td><td class="unit-cell">Electron microscope</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Activity 2.1 -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🧅 Activity 2.1</span>
+      <span class="activity-title">Estimate the Size of a Cell</span>
+    </div>
+    <div class="activity-body">Use a transparent ruler and an onion peel slide to estimate the real size of a cell.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--text-primary)">Step 1:</strong> Place ruler on microscope stage; measure diameter of circular field of view in mm</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--text-primary)">Step 2:</strong> Convert mm → µm (1 mm = 1000 µm). If diameter = 5 mm → 5000 µm</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--text-primary)">Step 3:</strong> Place onion peel slide. Count cells along the diameter (e.g., 25 cells)</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--text-primary)">Formula:</strong> Cell size = Field diameter (µm) ÷ Number of cells = 5000 ÷ 25 = <strong style="color:var(--neon-teal)">200 µm per cell</strong></div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--text-primary)">Magnification check:</strong> If both eyepiece and objective are 10×, total = 100×. A 200 µm cell appears 100 times larger under the microscope.</div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-block"><div class="stat-value">0.1mm</div><div class="stat-label">Eye Resolution Limit</div></div>
+    <div class="stat-block"><div class="stat-value">1 µm</div><div class="stat-label">Light Microscope Limit</div></div>
+    <div class="stat-block"><div class="stat-value">1 nm</div><div class="stat-label">Electron Microscope Limit</div></div>
+    <div class="stat-block"><div class="stat-value">1665</div><div class="stat-label">Hooke Discovers Cells</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ S3: CELL MEMBRANE ══ -->
+<div class="full-bg" id="membrane">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 3 · Cell Structure</div>
+    <h2 class="sec-title">Cell Membrane — The Universal Feature</h2>
+    <p class="sec-subtitle">The gatekeeper that defines every cell</p>
+  </div>
+  <div class="concept-grid" style="margin-bottom:2rem">
+    <div class="concept-card teal">
+      <div class="concept-icon">🛡️</div>
+      <div class="concept-title">What Is the Cell Membrane?</div>
+      <div class="concept-body">A <strong style="color:var(--neon-teal)">thin boundary</strong> (7–10 nm thick) that surrounds every cell. Also called the <em>plasma membrane</em>. It defines the cell's individuality and separates cell contents from the external environment.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🔑</div>
+      <div class="concept-title">Selectively Permeable</div>
+      <div class="concept-body">The membrane <strong style="color:var(--neon-blue)">does not let everything through</strong>. It allows some substances (like water, oxygen, CO₂) to pass freely while blocking others (like large molecules, ions). This selective control is critical for cell function.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🧱</div>
+      <div class="concept-title">Fluid-Mosaic Model</div>
+      <div class="concept-body">The membrane structure is explained by the <strong style="color:var(--neon-purple)">fluid-mosaic model</strong>: a lipid bilayer with embedded proteins. "Fluid" because molecules move; "mosaic" because proteins are embedded like tiles.</div>
+    </div>
+  </div>
+
+  <!-- Fluid Mosaic breakdown -->
+  <div class="sec-tag" style="margin-bottom:1rem">Fluid-Mosaic Model — Key Features</div>
+  <div class="flow-chain" style="margin-bottom:1.5rem">
+    <div class="flow-node highlight">
+      <div class="flow-node-icon">🫙</div>
+      <div class="flow-node-title">Lipid Bilayer</div>
+      <div class="flow-node-sub">2 layers of fat molecules. Heads face out (water-attracting), tails face inward (water-repelling)</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="flow-node-icon">🔵</div>
+      <div class="flow-node-title">Embedded Proteins</div>
+      <div class="flow-node-sub">Act as gatekeepers — channels and carriers for substances to pass through</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node highlight">
+      <div class="flow-node-icon">💧</div>
+      <div class="flow-node-title">Fluid Nature</div>
+      <div class="flow-node-sub">Molecules can move sideways, flip, and rotate within the bilayer</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="flow-node-icon">🧩</div>
+      <div class="flow-node-title">Mosaic Pattern</div>
+      <div class="flow-node-sub">Proteins arranged like tiles give the "mosaic" appearance</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p>The cell membrane is only <strong>7–10 nm</strong> thick — that is about 7,000 times thinner than a single human hair. Yet it controls everything that enters and exits the cell. It is made of <strong>lipids (fats) and proteins</strong>.</p>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ S4: OSMOSIS ══ -->
+<section class="section" id="osmosis">
+  <div class="sec-header">
+    <div class="sec-tag">Section 4 · Transport Across Membranes</div>
+    <h2 class="sec-title">Osmosis and Diffusion</h2>
+    <p class="sec-subtitle">How water and particles move — with and without membranes</p>
+  </div>
+
+  <div class="concept-grid" style="margin-bottom:2rem">
+    <div class="concept-card blue">
+      <div class="concept-icon">🌊</div>
+      <div class="concept-title">Diffusion</div>
+      <div class="concept-body">The <strong style="color:var(--neon-blue)">net movement of particles</strong> from a region of <em>higher concentration</em> to a region of <em>lower concentration</em>. Occurs without a membrane. Driven by concentration gradient. Example: fragrance spreading in air.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">💧</div>
+      <div class="concept-title">Osmosis</div>
+      <div class="concept-body">The <strong style="color:var(--neon-teal)">diffusion of water</strong> across a <em>selectively permeable membrane</em>, from a region of high water concentration (dilute solution) to low water concentration (concentrated solution). Requires a membrane.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🌱</div>
+      <div class="concept-title">Osmosis in Plants</div>
+      <div class="concept-body">Water from the soil enters root cells <strong style="color:var(--neon-purple)">by osmosis</strong> — soil water is more dilute than cell sap. This is how plants absorb water. When a plant wilts, its vacuoles have lost water by osmosis.</div>
+    </div>
+  </div>
+
+  <!-- Osmosis visual: three solution types -->
+  <div class="sec-tag" style="margin-bottom:1rem">Effect of Different Solutions on a Cell</div>
+  <div class="osmo-grid" style="margin-bottom:2rem">
+    <div class="osmo-card osmo-iso">
+      <div class="osmo-type">Isotonic</div>
+      <div class="osmo-cell">⚖️</div>
+      <div class="osmo-title">No Net Water Movement</div>
+      <div class="osmo-desc">Solute concentration outside = solute concentration inside. Cell remains the same size. No net osmosis occurs.</div>
+    </div>
+    <div class="osmo-card osmo-hypo">
+      <div class="osmo-type">Hypotonic</div>
+      <div class="osmo-cell">💧</div>
+      <div class="osmo-title">Cell Swells (Turgid)</div>
+      <div class="osmo-desc">Solute concentration outside &lt; concentration inside. Water enters the cell by osmosis. Cell swells. In plants → turgidity. In animals → may burst (lysis).</div>
+    </div>
+    <div class="osmo-card osmo-hyper">
+      <div class="osmo-type">Hypertonic</div>
+      <div class="osmo-cell">🥀</div>
+      <div class="osmo-title">Cell Shrinks (Plasmolysis)</div>
+      <div class="osmo-desc">Solute concentration outside &gt; concentration inside. Water leaves the cell. Cell shrinks. In plants → plasmolysis (membrane pulls away from wall). In animals → crenation.</div>
+    </div>
+  </div>
+
+  <!-- Activity 2.2 -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🥔 Activity 2.2</span>
+      <span class="activity-title">Potato Osmosis Experiment</span>
+    </div>
+    <div class="activity-body">Cut a potato into two equal pieces. Measure initial weight. Place one in plain water (Beaker A), one in 20% salt solution (Beaker B). Leave for 1 hour. Measure final weight.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--text-primary)">Beaker A (plain water):</strong> Potato swells → gained weight. Cell is in hypotonic solution; water enters cells by osmosis.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--text-primary)">Beaker B (salt solution):</strong> Potato shrinks → lost weight. Cell is in hypertonic solution; water leaves cells by osmosis.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--text-primary)">Why equal-sized pieces?</strong> To make it a fair test — the control variable must be the same so results are comparable.</div>
+    </div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>1.</strong> What argument would you give for a cell wall in plants (fixed) vs animals (mobile)?<br>
+      <strong>2.</strong> If a plant cell's wall became as flexible as a membrane, what would happen?<br>
+      <strong>3.</strong> Why must both potato pieces be cut equally and weighed before the experiment?
+    </div>
+  </div>
+
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🌱</div>
+    <div class="curiosity-tag">What If…</div>
+    <div class="curiosity-title">Mung bean seeds soaked for 12 hours, then placed in concentrated solution</div>
+    <div class="curiosity-body">The seeds absorbed water during soaking (hypotonic conditions — turgid). Placing them in concentrated solution creates hypertonic conditions. Water would leave the seeds by osmosis — they would shrink and feel rubbery. This is the same principle behind food preservation using salt and sugar (as done by farmer Deepa with amla and lemons). <span class="curiosity-highlight">High solute concentration outside bacteria and fungi draws water out of them by osmosis, preventing their growth.</span></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ S5: CELL WALL ══ -->
+<div class="full-bg" id="cell-wall">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 5 · Outer Covering</div>
+    <h2 class="sec-title">Cell Wall — The Outer Shield</h2>
+    <p class="sec-subtitle">Present in plants, fungi, and bacteria — absent in animal cells</p>
+  </div>
+  <div class="concept-grid" style="margin-bottom:2rem">
+    <div class="concept-card teal">
+      <div class="concept-icon">🧱</div>
+      <div class="concept-title">What Is the Cell Wall?</div>
+      <div class="concept-body">An <strong style="color:var(--neon-teal)">additional rigid layer</strong> outside the cell membrane. Present in plant, fungal, and bacterial cells. <strong>Absent in animal cells.</strong> Provides structural support and protection. Although rigid, it is permeable — water and minerals pass through.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🌾</div>
+      <div class="concept-title">Composition</div>
+      <div class="concept-body">Plant cell wall is primarily made of <strong style="color:var(--neon-blue)">cellulose</strong> — a carbohydrate built from many glucose units linked together. Cellulose in our diet is dietary fibre/roughage that helps digestion. Fungi and bacteria have different cell wall materials.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🌿</div>
+      <div class="concept-title">Why Plants Need It</div>
+      <div class="concept-body">Plants can't move to escape wind or rain. The cell wall <strong style="color:var(--neon-purple)">maintains shape</strong>, keeps leaves and flowers firm, and helps the plant stand upright. It prevents the cell from bursting in hypotonic conditions — the wall withstands pressure.</div>
+    </div>
+  </div>
+
+  <!-- Comparison: Plant cell vs Animal cell in sugar solution -->
+  <div class="example-card" style="border-left-color:var(--neon-teal)">
+    <div class="example-header">
+      <span class="example-num" style="color:var(--neon-teal);background:rgba(0,212,168,0.1);border-color:rgba(0,212,168,0.25)">Activity 2.3</span>
+      <span class="example-emoji">🔬</span>
+      <span class="example-title">Plant vs Animal Cell in Sugar Solution</span>
+    </div>
+    <div class="example-question">Prepare slides of Rhoeo (Cradle lily) leaf peel cells and human cheek cells. Add 20% sugar solution. Observe under microscope after 30 minutes. What do you find?</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem">
+      <div style="background:rgba(0,212,168,0.06);border:1px solid rgba(0,212,168,0.2);border-radius:var(--radius-sm);padding:0.75rem 1rem;font-size:12px">
+        <div style="color:var(--neon-teal);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.4rem">🌿 Plant Cell (Rhoeo)</div>
+        <div style="color:var(--text-secondary);line-height:1.6">Outer boundary (cell wall) <strong style="color:var(--text-primary)">stays the same</strong>. Inner content shrinks as membrane pulls away from wall. This is <em>plasmolysis</em>. Cell wall maintains shape.</div>
+      </div>
+      <div style="background:rgba(255,107,172,0.06);border:1px solid rgba(255,107,172,0.2);border-radius:var(--radius-sm);padding:0.75rem 1rem;font-size:12px">
+        <div style="color:var(--neon-pink);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.4rem">🫀 Animal Cell (Cheek)</div>
+        <div style="color:var(--text-secondary);line-height:1.6">No cell wall to provide support. The whole cell <strong style="color:var(--text-primary)">shrinks considerably</strong>. Without a rigid wall, animal cells can change shape — which is actually useful for movement and flexibility.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Onion vs Cheek cells observation -->
+  <div class="highlight-box">
+    <p><strong>Onion peel cells</strong> are box-shaped and regularly arranged — because the rigid cell wall forces a fixed shape. <strong>Cheek cells</strong> are irregularly arranged and variable in shape — animal cells lack the rigidity-giving cell wall, so they can deform freely. This structural difference reflects the different needs of plant and animal tissues.</p>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ S6: CELL INTERIOR / PROKARYOTE vs EUKARYOTE ══ -->
+<section class="section" id="interior">
+  <div class="sec-header">
+    <div class="sec-tag">Section 6 · Cell Interior</div>
+    <h2 class="sec-title">Prokaryotic vs Eukaryotic Cells</h2>
+    <p class="sec-subtitle">Two fundamental types of cells — the great divide of life</p>
+  </div>
+  <div class="triple-grid" style="margin-bottom:2rem">
+    <div class="triple-card c1">
+      <div class="triple-label">Prokaryotic</div>
+      <span class="triple-icon">🦠</span>
+      <div class="triple-title">Prokaryotic Cell</div>
+      <div class="triple-desc"><em>Pro</em> = primitive, <em>karyon</em> = nucleus. No well-defined nucleus. DNA is in the cytoplasm in a region called the <strong>nucleoid</strong>. No membrane-bound organelles. Most cellular activities in cytoplasm.</div>
+      <div class="triple-example">Examples: Bacteria (including thermophiles in Puga Valley)</div>
+    </div>
+    <div class="triple-card c2">
+      <div class="triple-label">Eukaryotic</div>
+      <span class="triple-icon">🧬</span>
+      <div class="triple-title">Eukaryotic Cell</div>
+      <div class="triple-desc"><em>Eu</em> = true, <em>karyon</em> = nucleus. Has a <strong>well-defined, membrane-bound nucleus</strong>. Has membrane-bound organelles. Much larger and more complex. Different processes compartmentalised.</div>
+      <div class="triple-example">Examples: Plant cells, Animal cells, Fungi</div>
+    </div>
+    <div class="triple-card c3">
+      <div class="triple-label">Three Basics</div>
+      <span class="triple-icon">🏠</span>
+      <div class="triple-title">Every Cell Has</div>
+      <div class="triple-desc">All cells, regardless of type, share three fundamental components: a <strong>cell membrane</strong> (plasma membrane), <strong>cytoplasm</strong> (semi-fluid jelly-like substance), and <strong>genetic material</strong> (in nucleus or nucleoid).</div>
+      <div class="triple-example">Universal truth: no cell exists without these three</div>
+    </div>
+  </div>
+
+  <!-- Comparison table -->
+  <div class="compare-wrap" style="margin-bottom:2rem">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th class="th-feat">Characteristic</th>
+          <th class="th-pro">Prokaryotic Cell</th>
+          <th class="th-eu">Eukaryotic Cell</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Nucleus</td><td class="td-pro">Absent (nucleoid region)</td><td class="td-eu">Present (membrane-bound)</td></tr>
+        <tr><td>Typical diameter</td><td class="td-pro">1 to 10 µm</td><td class="td-eu">10 to 100 µm</td></tr>
+        <tr><td>Membrane-bound organelles</td><td class="td-pro td-absent">Absent</td><td class="td-eu">Present</td></tr>
+        <tr><td>Number of cells</td><td class="td-pro">Usually unicellular</td><td class="td-eu">Unicellular or multicellular</td></tr>
+        <tr><td>Cell wall</td><td class="td-pro">Usually present</td><td class="td-eu">Present in plants/fungi, absent in animals</td></tr>
+        <tr><td>DNA form</td><td class="td-pro">Single circular molecule</td><td class="td-eu">Multiple linear chromosomes</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="beyond-card">
+    <div class="beyond-tag">Ready to Go Beyond</div>
+    <div class="beyond-title">🦠 Viruses, Viroids, and Prions — Acellular Agents</div>
+    <div class="beyond-body">These infectious agents are <span class="beyond-highlight">too small for light microscopes</span>. <strong>Viruses</strong> have genetic material + protein coat. <strong>Viroids</strong> have genetic material but no protein coat. <strong>Prions</strong> are misfolded proteins with no genetic material at all. They are acellular (no cells) — and thus challenge our definition of life itself. They infect, replicate, and cause disease without following normal cellular rules.</div>
+  </div>
+
+  <!-- Activity 2.4 -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">📊 Activity 2.4</span>
+      <span class="activity-title">Compare Bacterial, Plant, and Animal Cell Diagrams</span>
+    </div>
+    <div class="activity-body">Study diagrams of all three cell types. Record which structures are present or absent in each. This builds the foundation for understanding specialisation and evolution of cells.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div>Cell membrane: Present in ALL three (bacterial, plant, animal)</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div>Cell wall: Present in bacterial and plant; <strong style="color:var(--neon-pink)">ABSENT in animal</strong></div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div>Well-defined nucleus: Only in plant and animal (eukaryotes); <strong style="color:var(--neon-pink)">ABSENT in bacterial (prokaryote)</strong></div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div>Chloroplast/Vacuole: Only in plant cells; Lysosomes: mainly in animal cells</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div>Ribosomes: Present in ALL three (they make proteins universally)</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ S7: ORGANELLES ══ -->
+<div class="full-bg" id="organelles">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 7 · Cell Organelles</div>
+    <h2 class="sec-title">The Cell as a Living Factory</h2>
+    <p class="sec-subtitle">Each organelle is a specialised department with a specific job</p>
+  </div>
+  <div class="highlight-box" style="margin-bottom:2rem">
+    <p>A cell is like a <strong>tiny living factory</strong> where each organelle is a department. The nucleus is the control room. Mitochondria are the power plants. Ribosomes are the manufacturing lines. The Golgi apparatus is the post office. Lysosomes are the recycling centre. All departments work simultaneously and in coordination.</p>
+  </div>
+
+  <!-- NUCLEUS -->
+  <div class="example-card" style="border-left-color:var(--neon-purple);margin-bottom:1.5rem">
+    <div class="example-header">
+      <span class="example-num" style="color:var(--neon-purple);background:rgba(155,109,255,0.1);border-color:rgba(155,109,255,0.25)">Organelle 1</span>
+      <span class="example-emoji">🧬</span>
+      <span class="example-title">Nucleus — House of Coded Instructions</span>
+    </div>
+    <div class="example-answer">
+      The nucleus has a <strong style="color:var(--text-primary)">double-layered nuclear membrane</strong> with pores that allow material exchange with the cytoplasm. Inside: the <strong style="color:var(--neon-purple)">nucleolus</strong> (where ribosomal subunits are made) and <strong style="color:var(--neon-purple)">chromosomes</strong>.
+    </div>
+    <div class="think-prompts" style="margin-top:0.75rem">
+      <div class="think-prompt"><div class="think-prompt-dot" style="background:var(--neon-purple)"></div><strong>Chromosomes</strong> contain DNA + proteins. DNA carries genetic information. Visible as rod-shapes only when cell is dividing.</div>
+      <div class="think-prompt"><div class="think-prompt-dot" style="background:var(--neon-purple)"></div><strong>Genes</strong> are functional segments of DNA. In a non-dividing cell, DNA exists as loose <em>chromatin</em> — tangled threads. Before division, chromatin condenses into distinct chromosomes.</div>
+      <div class="think-prompt"><div class="think-prompt-dot" style="background:var(--neon-purple)"></div><strong>Prokaryotes:</strong> DNA is a single circular molecule in the nucleoid region — no membrane around it.</div>
+    </div>
+  </div>
+
+  <!-- FACTORY GRID — ALL ORGANELLES -->
+  <div class="factory-grid">
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#ff6bac,#ffb547)">
+      <div class="fc-icon">🏭</div>
+      <div class="fc-name">Ribosomes</div>
+      <div class="fc-role" style="color:var(--neon-pink)">Protein Factories</div>
+      <div class="fc-desc">Tiny structures present freely in cytoplasm or attached to Endoplasmic Reticulum. Site of <strong>protein synthesis</strong>. Present in ALL cells — prokaryotic and eukaryotic. Assembled from subunits made in the nucleolus.</div>
+      <div class="fc-fact">Found in every living cell — the most ancient and universal organelle</div>
+    </div>
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#4f9eff,#9b6dff)">
+      <div class="fc-icon">🕸️</div>
+      <div class="fc-name">Endoplasmic Reticulum (ER)</div>
+      <div class="fc-role" style="color:var(--neon-blue)">Manufacturing &amp; Transport Network</div>
+      <div class="fc-desc">Large network spreading through cytoplasm, continuous with the nuclear membrane. Two types: <strong>RER</strong> (has ribosomes → makes &amp; secretes proteins; e.g., pancreatic cells) and <strong>SER</strong> (no ribosomes → makes fats, hormones, and stores them).</div>
+      <div class="fc-fact">RER looks rough; SER looks smooth — under electron microscope</div>
+    </div>
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#ffb547,#ff6bac)">
+      <div class="fc-icon">📦</div>
+      <div class="fc-name">Golgi Apparatus</div>
+      <div class="fc-role" style="color:var(--neon-amber)">Packaging &amp; Shipping Centre</div>
+      <div class="fc-desc">Stacks of flattened sac-like structures. The cell's <strong>post office</strong>: modifies, sorts, and packages proteins and lipids into vesicles for transport, secretion, or lysosome formation. Functionally linked to ER and cell membrane.</div>
+      <div class="fc-fact">First observed by Camillo Golgi in 1898 in barn owl nerve cells</div>
+    </div>
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#ff5f72,#ffb547)">
+      <div class="fc-icon">♻️</div>
+      <div class="fc-name">Lysosomes</div>
+      <div class="fc-role" style="color:#ff9ea8">Clean-up System</div>
+      <div class="fc-desc">Single membrane-bound sacs filled with <strong>digestive enzymes</strong>. Break down waste proteins, carbs, fats, and damaged organelles. Products are released back to cytoplasm for reuse. Keep the cell clean and healthy.</div>
+      <div class="fc-fact">Sperm cells use lysosomal enzymes to penetrate egg during fertilisation</div>
+    </div>
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#ffb547,#00d4a8)">
+      <div class="fc-icon">⚡</div>
+      <div class="fc-name">Mitochondria</div>
+      <div class="fc-role" style="color:var(--neon-amber)">Powerhouse of the Cell</div>
+      <div class="fc-desc">Double-membrane organelle. Outer membrane is smooth; inner membrane is folded into <strong>cristae</strong> (increases surface area for reactions). Site of <strong>cellular respiration</strong> — glucose is broken down to release energy stored as <strong>ATP</strong>.</div>
+      <div class="fc-fact">Has own DNA and ribosomes — evolved from ancient bacteria (endosymbiosis)</div>
+    </div>
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#3dd68c,#00d4a8)">
+      <div class="fc-icon">☀️</div>
+      <div class="fc-name">Chloroplasts</div>
+      <div class="fc-role" style="color:var(--neon-green)">Food Factories (Plants Only)</div>
+      <div class="fc-desc">Double-membrane plastid containing <strong>chlorophyll</strong> (green pigment). Absorbs sunlight for <strong>photosynthesis</strong>. Inside: <strong>stroma</strong> (semi-fluid) with disc-shaped membranes that hold chlorophyll. Sugars synthesised here.</div>
+      <div class="fc-fact">Also has own DNA and ribosomes — shares evolutionary history with cyanobacteria</div>
+    </div>
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#ff6bac,#9b6dff)">
+      <div class="fc-icon">🎨</div>
+      <div class="fc-name">Chromoplasts &amp; Leucoplasts</div>
+      <div class="fc-role" style="color:var(--neon-pink)">Colour &amp; Storage Plastids (Plants)</div>
+      <div class="fc-desc"><strong>Chromoplasts</strong> (chroma = colour): contain yellow, orange, or red pigments — source of fruit and flower colours. Attract pollinators and seed-dispersers. <strong>Leucoplasts</strong> (leukos = white): colourless, store starch, oils, or proteins (e.g., potato, taro/Colocasia).</div>
+      <div class="fc-fact">White flowers may have chromoplasts with non-visible pigments or reflect all wavelengths</div>
+    </div>
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#4f9eff,#00d4a8)">
+      <div class="fc-icon">🫙</div>
+      <div class="fc-name">Vacuoles</div>
+      <div class="fc-role" style="color:var(--neon-blue)">Storage &amp; Support</div>
+      <div class="fc-desc">In mature <strong>plant cells</strong>: one large central vacuole filled with <strong>cell sap</strong> (water, minerals, sugars, waste). Maintains cell pressure → keeps plant firm (turgor). When dehydrated → plant wilts. In <strong>animal cells</strong>: smaller, temporary vacuoles for storage.</div>
+      <div class="fc-fact">A plant vacuole can occupy up to 90% of the cell's volume</div>
+    </div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>4.</strong> Do white flowers contain any pigment? Give reasons.<br>
+      <strong>5.</strong> Draw a well-labelled plant or animal cell. Clues: Nucleus = dark round body; ER = network extending from nuclear envelope; Mitochondria and chloroplasts = rod-shaped.<br>
+      <strong>6.</strong> Why does a cell have many small mitochondria rather than one giant one? How does this relate to surface area?
+    </div>
+  </div>
+
+  <!-- Curiosity: RBC nuclei -->
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🩸</div>
+    <div class="curiosity-tag">Threads of Curiosity</div>
+    <div class="curiosity-title">Red Blood Cells Have No Nucleus — and That's the Point</div>
+    <div class="curiosity-body">Mature human <span class="curiosity-highlight">Red Blood Cells (RBCs) are enucleate</span> — they lose their nucleus during development. This is a deliberate adaptation: removing the nucleus frees space for more <span class="curiosity-highlight">haemoglobin</span>, allowing each RBC to carry more oxygen. The trade-off: without a nucleus, RBCs cannot repair or divide. Their lifespan is only about <span class="curiosity-highlight">120 days</span>, after which they must be replaced. Mature platelets are also enucleate. Can you think of other cells without nuclei?</div>
+  </div>
+
+  <!-- Scientist: Camillo Golgi -->
+  <div class="scientist-card" style="margin-top:1.5rem">
+    <div>
+      <div class="scientist-avatar">🔬</div>
+      <div class="pills-row" style="margin-top:1rem;justify-content:center;flex-direction:column;gap:6px">
+        <span class="pill badge-amber" style="text-align:center">Italian Scientist</span>
+        <span class="pill badge-teal" style="text-align:center">1843 – 1926</span>
+      </div>
+    </div>
+    <div>
+      <div class="scientist-tag">Meet a Scientist</div>
+      <div class="scientist-name">Camillo Golgi</div>
+      <div class="scientist-dates">1843 – 1926 · Italian · Nobel Prize 1906</div>
+      <div class="scientist-contribution">In 1898, Golgi observed a thread-like network in the <strong style="color:var(--neon-amber)">nerve cells of a barn owl</strong> using special staining techniques. He called it the "Golgi apparatus." Early microscopes couldn't resolve it clearly — many scientists doubted its existence. Only decades later, with the electron microscope, was its structure confirmed beyond doubt.</div>
+      <div class="scientist-key">
+        <div class="scientist-key-label">Key Takeaway</div>
+        <div class="scientist-key-text">Scientific discoveries sometimes precede the technology to verify them. Golgi trusted his observations even when tools were limited. <strong style="color:var(--text-primary)">The apparatus was later confirmed and named in his honour.</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ S8: CELL DIVISION ══ -->
+<section class="section" id="division">
+  <div class="sec-header">
+    <div class="sec-tag">Section 8 · Growth &amp; Division</div>
+    <h2 class="sec-title">How Normal Cells Grow and Divide</h2>
+    <p class="sec-subtitle">The process that allows growth, repair, and reproduction</p>
+  </div>
+
+  <div class="highlight-box" style="margin-bottom:2rem">
+    <p>When you get a cut on your skin, it heals. When hair falls out, it grows back. This is because cells <strong>grow and divide to replace damaged or dead cells</strong>. Growth in your body is not because cells get bigger — it's because cells <strong>divide to form new cells</strong>. Every day, ~100 billion cells in the human body are replaced (about 1% of total cells).</p>
+  </div>
+
+  <!-- Mitosis vs Meiosis comparison -->
+  <div class="division-grid" style="margin-bottom:2rem">
+    <div class="div-card mitosis">
+      <div class="div-badge">Mitosis</div>
+      <div class="div-title">Mitosis — Growth &amp; Repair</div>
+      <div class="div-rows">
+        <div class="div-row"><div class="div-lbl">Daughter cells</div><div class="div-val"><strong style="color:var(--neon-teal)">2 identical cells</strong> (same DNA as parent)</div></div>
+        <div class="div-row"><div class="div-lbl">Chromosomes</div><div class="div-val">Same number as parent cell</div></div>
+        <div class="div-row"><div class="div-lbl">Purpose</div><div class="div-val">Growth, repair, maintenance, asexual reproduction</div></div>
+        <div class="div-row"><div class="div-lbl">Where occurs</div><div class="div-val">All body (somatic) cells</div></div>
+        <div class="div-row"><div class="div-lbl">Divisions</div><div class="div-val">One division → 2 cells</div></div>
+        <div class="div-row"><div class="div-lbl">Genetic result</div><div class="div-val">Genetically identical (clones)</div></div>
+      </div>
+    </div>
+    <div class="div-card meiosis">
+      <div class="div-badge">Meiosis</div>
+      <div class="div-title">Meiosis — Sexual Reproduction</div>
+      <div class="div-rows">
+        <div class="div-row"><div class="div-lbl">Daughter cells</div><div class="div-val"><strong style="color:var(--neon-purple)">4 genetically varied cells</strong> (gametes)</div></div>
+        <div class="div-row"><div class="div-lbl">Chromosomes</div><div class="div-val"><strong>Half</strong> the parent's chromosome number</div></div>
+        <div class="div-row"><div class="div-lbl">Purpose</div><div class="div-val">Sexual reproduction, genetic diversity</div></div>
+        <div class="div-row"><div class="div-lbl">Where occurs</div><div class="div-val">Reproductive organs only (testes, ovaries, anthers, ovaries of plants)</div></div>
+        <div class="div-row"><div class="div-lbl">Divisions</div><div class="div-val">Two divisions → 4 cells</div></div>
+        <div class="div-row"><div class="div-lbl">Genetic result</div><div class="div-val">Genetically varied (children ≠ identical copies)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Meiosis process flow -->
+  <div class="sec-tag" style="margin-bottom:1rem">Meiosis: Two-Step Process</div>
+  <div class="flow-chain" style="margin-bottom:1.5rem">
+    <div class="flow-node">
+      <div class="flow-node-icon">🧬</div>
+      <div class="flow-node-title">Parent Cell</div>
+      <div class="flow-node-sub">Full chromosome number (e.g., 46 in humans)</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node highlight">
+      <div class="flow-node-icon">✂️</div>
+      <div class="flow-node-title">Division I</div>
+      <div class="flow-node-sub">Chromosome number halved → 2 cells with 23 each</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="flow-node-icon">🔄</div>
+      <div class="flow-node-title">Division II</div>
+      <div class="flow-node-sub">(Like mitosis) Each cell divides again</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node highlight">
+      <div class="flow-node-icon">🥚</div>
+      <div class="flow-node-title">4 Gametes</div>
+      <div class="flow-node-sub">Each with half the chromosomes — sperm or egg</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="flow-node-icon">❤️</div>
+      <div class="flow-node-title">Fertilisation</div>
+      <div class="flow-node-sub">Gametes fuse → full chromosome number restored</div>
+    </div>
+  </div>
+
+  <!-- Activity 2.5 -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🧅 Activity 2.5</span>
+      <span class="activity-title">Observe Cell Division in Onion Root Tip</span>
+    </div>
+    <div class="activity-body">Grow onion roots in water for 5–6 days. Cut root tips, fix in aceto-alcohol, stain with aceto-carmine, squash on a slide. Observe under microscope.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div>Onion root tip cells divide continuously — the actively growing region</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div>Different cells will be at different stages of division — they won't all look the same</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div>Chromosomes become visible as dark, condensed rod-shaped structures during division</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div>Eukaryotic cells divide in a controlled, orderly manner through the <strong style="color:var(--neon-teal)">cell cycle</strong></div>
+    </div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>7.</strong> If skin cells started dividing by meiosis instead of mitosis, what would happen when you get a cut? <strong>Think carefully about chromosome numbers.</strong>
+    </div>
+  </div>
+
+  <!-- Bridging Science and Society: Cell Culture -->
+  <div class="beyond-card">
+    <div class="beyond-tag">Bridging Science and Society</div>
+    <div class="beyond-title">🧫 Cell Culture — Growing Cells Outside the Body</div>
+    <div class="beyond-body">Scientists can grow plant and animal cells outside the body in special nutrient-rich media. This is called <span class="beyond-highlight">cell culture</span>. The right temperature, pH, and moisture under sterile conditions must be maintained. Cell culture is used to: study how cells work; produce biochemicals, food ingredients, medicines, and vaccines; test drugs without using whole organisms; and grow tissues for transplant research. It is a cornerstone of modern biotechnology.</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ S9: CELL THEORY ══ -->
+<div class="full-bg" id="cell-theory">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 9 · Unifying Principle</div>
+    <h2 class="sec-title">Cell Theory — The Foundation of Biology</h2>
+    <p class="sec-subtitle">Three simple statements that unify all of life</p>
+  </div>
+
+  <!-- Timeline -->
+  <div class="timeline" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:1.5rem;margin-bottom:2rem">
+    <div class="tl-item">
+      <div class="tl-year-wrap">
+        <div class="tl-year">1838</div>
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-who">Matthias Schleiden (German Botanist)</div>
+        <div class="tl-what">Proposed that all <strong style="color:var(--neon-teal)">plants are made up of cells</strong>. First formal statement linking cells to all plant life.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year-wrap">
+        <div class="tl-year">1839</div>
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-who">Theodor Schwann (German Zoologist)</div>
+        <div class="tl-what">Proposed that all <strong style="color:var(--neon-teal)">animals are also made up of cells</strong>. Extended Schleiden's plant finding to all animal life.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year-wrap">
+        <div class="tl-year">1855</div>
+        <div class="tl-dot"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-who">Rudolf Virchow (German Scientist)</div>
+        <div class="tl-what">Added the third tenet: <strong style="color:var(--neon-teal)">"All cells arise from pre-existing cells"</strong> (Omnis cellula e cellula). Explained life's continuity.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Three Tenets -->
+  <div class="triple-grid" style="margin-bottom:2rem">
+    <div class="triple-card c1">
+      <div class="triple-label">Tenet 1</div>
+      <span class="triple-icon">🌍</span>
+      <div class="triple-title">All Life = Cells</div>
+      <div class="triple-desc">All living organisms are made up of <strong>one or more cells</strong>. From the tiniest bacterium to the tallest tree — cells are universal.</div>
+      <div class="triple-example">Unifies biology from bacteria to humans</div>
+    </div>
+    <div class="triple-card c2">
+      <div class="triple-label">Tenet 2</div>
+      <span class="triple-icon">⚙️</span>
+      <div class="triple-title">Cell = Basic Unit</div>
+      <div class="triple-desc">The cell is the <strong>basic unit of structure and function</strong> in all living beings. All biological processes ultimately occur at the cellular level.</div>
+      <div class="triple-example">Even in complex organisms — the cell is fundamental</div>
+    </div>
+    <div class="triple-card c3">
+      <div class="triple-label">Tenet 3</div>
+      <span class="triple-icon">♻️</span>
+      <div class="triple-title">Cell from Cell</div>
+      <div class="triple-desc">All cells arise from <strong>pre-existing cells</strong>. No new cell spontaneously generates — cells can only come from other cells by division.</div>
+      <div class="triple-example">Explains life's continuity through cell division</div>
+    </div>
+  </div>
+
+  <!-- Contact inhibition and cancer -->
+  <div class="concept-grid" style="margin-bottom:1.5rem">
+    <div class="concept-card teal">
+      <div class="concept-icon">🛑</div>
+      <div class="concept-title">Contact Inhibition</div>
+      <div class="concept-body">In many animal cells, cell division <strong style="color:var(--neon-teal)">stops when cells touch neighbouring cells</strong>. This natural brake prevents overgrowth and maintains proper tissue structure. Plant cells do not show contact inhibition due to rigid walls.</div>
+    </div>
+    <div class="concept-card pink">
+      <div class="concept-icon">⚠️</div>
+      <div class="concept-title">Cancer Cells</div>
+      <div class="concept-body">Cancer cells <strong style="color:var(--neon-pink)">lose contact inhibition</strong> and divide uncontrollably. This leads to tumour formation. Tumours may be benign (localised) or malignant (invasive — spreading to other tissues/organs).</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">💀</div>
+      <div class="concept-title">Programmed Cell Death (PCD)</div>
+      <div class="concept-body">Cells have a <strong style="color:var(--neon-purple)">genetically programmed lifespan</strong>. PCD (apoptosis) is an organised, deliberate process of cell destruction — essential for normal development. Example: during embryo development, cells between fingers are deliberately destroyed to form distinct digits.</div>
+    </div>
+  </div>
+
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🧬</div>
+    <div class="curiosity-tag">Threads of Curiosity</div>
+    <div class="curiosity-title">How Do Cancer Cells Grow and Spread?</div>
+    <div class="curiosity-body">Normal cells grow, age, and die in a controlled manner. Sometimes, the control system breaks down — abnormal cells start dividing without stopping. This forms <span class="curiosity-highlight">tumours</span> (masses of abnormal cells). <strong>Benign tumours</strong> stay localised. <strong>Malignant tumours</strong> (cancer) invade neighbouring tissues and spread through blood to distant organs, forming new tumours (metastasis). Cancer treatment targets these out-of-control dividing cells.</div>
+  </div>
+
+  <div class="beyond-card">
+    <div class="beyond-tag">Ready to Go Beyond</div>
+    <div class="beyond-title">⚖️ Programmed Cell Death — How Cells Monitor Growth</div>
+    <div class="beyond-body">Cells maintain balance through <span class="beyond-highlight">Programmed Cell Death (PCD)</span> — a genetically regulated, organised self-destruction. It is essential for: normal development (forming fingers by eliminating cells between digits); removing damaged or infected cells; regulating immune responses. Without PCD, we would have <span class="beyond-highlight">webbed hands</span> as embryos. This balance between cell division and cell death is fundamental to healthy life.</div>
+  </div>
+
+  <!-- Threads of Curiosity: J. Craig Venter synthetic cell -->
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🤖</div>
+    <div class="curiosity-tag">Threads of Curiosity · 2010</div>
+    <div class="curiosity-title">J. Craig Venter — The First Synthetic DNA Cell</div>
+    <div class="curiosity-body">In 2010, Venter's team sequenced the complete DNA of <em>Mycoplasma mycoides</em>, then chemically synthesised a copy. They transplanted this synthetic DNA into a related bacterium (whose own DNA was removed). The cell began growing and dividing following the <span class="curiosity-highlight">instructions from the synthetic DNA</span>. This proved that DNA controls cell structure and activity. However, <span class="curiosity-highlight">the cell itself was not created from scratch</span> — only the DNA was synthetic; the cytoplasm and membrane came from an existing living cell. The ethical questions this raises are still debated: What is the future of synthetic cells? What are the related ethical issues?</div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ S10: SCIENTISTS ══ -->
+<section class="section" id="scientists">
+  <div class="sec-header">
+    <div class="sec-tag">Meet Scientists</div>
+    <h2 class="sec-title">Scientists Who Shaped Cell Biology</h2>
+  </div>
+
+  <!-- Arun Kumar Sharma -->
+  <div class="scientist-card" style="margin-bottom:1.5rem">
+    <div>
+      <div class="scientist-avatar">🌿</div>
+      <div class="pills-row" style="margin-top:1rem;justify-content:center;flex-direction:column;gap:6px">
+        <span class="pill badge-teal" style="text-align:center">Indian Botanist</span>
+        <span class="pill badge-purple" style="text-align:center">1924 – 2013</span>
+      </div>
+    </div>
+    <div>
+      <div class="scientist-tag">Meet a Scientist</div>
+      <div class="scientist-name">Arun Kumar Sharma</div>
+      <div class="scientist-dates">1924 – 2013 · Indian Botanist · Padma Bhushan</div>
+      <div class="scientist-contribution">A famous Indian scientist known for his work on <strong style="color:var(--neon-teal)">chromosomes</strong>. As a botanist, he contributed to plant taxonomy, evolution, and development. He invented many laboratory methods to study chromosomes in plants — methods still used today in cytogenetics research.</div>
+      <div class="scientist-contribution">Received the <strong style="color:var(--text-primary)">Shanti Swarup Bhatnagar Award</strong> and <strong style="color:var(--text-primary)">Padma Bhushan</strong> for his outstanding contributions to botany.</div>
+      <div class="scientist-key">
+        <div class="scientist-key-label">Key Takeaway</div>
+        <div class="scientist-key-text">Sharma's work bridged classical botany and modern genetics. His chromosome studies in plants helped understand plant evolution and diversity. <strong style="color:var(--text-primary)">Indian scientists have made foundational contributions to cell biology.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gottlieb Haberlandt -->
+  <div class="scientist-card">
+    <div>
+      <div class="scientist-avatar">🌱</div>
+      <div class="pills-row" style="margin-top:1rem;justify-content:center;flex-direction:column;gap:6px">
+        <span class="pill badge-amber" style="text-align:center">Austrian Botanist</span>
+        <span class="pill badge-blue" style="text-align:center">1854 – 1945</span>
+      </div>
+    </div>
+    <div>
+      <div class="scientist-tag">Meet a Scientist</div>
+      <div class="scientist-name">Gottlieb Haberlandt</div>
+      <div class="scientist-dates">1854 – 1945 · Austrian Botanist</div>
+      <div class="scientist-contribution">In 1902, Haberlandt proposed a radical idea: <strong style="color:var(--neon-amber)">any living plant cell — even a fully mature one from permanent tissue — can develop into a complete plant</strong> if given the right nutrients and conditions. He called this special ability <em>totipotency</em>.</div>
+      <div class="scientist-contribution">This visionary idea, dismissed at the time, later became the foundation for <strong style="color:var(--text-primary)">Plant Tissue Culture Technology</strong> — used today to propagate plants, conserve endangered species, and produce disease-free crops at scale.</div>
+      <div class="scientist-key">
+        <div class="scientist-key-label">Key Takeaway</div>
+        <div class="scientist-key-text">Totipotency: every plant cell carries the complete genetic blueprint to become an entire organism. <strong style="color:var(--text-primary)">This idea, ahead of its time by decades, now underpins an entire agricultural biotechnology industry.</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ CURIOSITIES ══ -->
+<div class="full-bg" id="curiosities">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">All Curiosities &amp; Beyond</div>
+    <h2 class="sec-title">Premium Knowledge Panels</h2>
+    <p class="sec-subtitle">Threads of Curiosity and Ready to Go Beyond — all in one place</p>
+  </div>
+
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🩸</div>
+    <div class="curiosity-tag">Threads of Curiosity</div>
+    <div class="curiosity-title">Sperm Cells and the Role of Lysosomes in Fertilisation</div>
+    <div class="curiosity-body">Human sperm cells contain lysosomal enzymes in a specialised structure called the <span class="curiosity-highlight">acrosome</span>. When a sperm meets an egg, these enzymes are released and break down the outer protective layer (zona pellucida) of the egg, allowing the sperm to penetrate and fertilisation to occur. Without these lysosomes, reproduction would be impossible in humans and many animals. This is a perfect example of <span class="curiosity-highlight">organelle specialisation for a specific function</span>.</div>
+  </div>
+
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🌿</div>
+    <div class="curiosity-tag">Threads of Curiosity</div>
+    <div class="curiosity-title">Why Do Mitochondria and Chloroplasts Have Their Own DNA?</div>
+    <div class="curiosity-body">Both mitochondria and chloroplasts have their own DNA and ribosomes — they can make some of their own proteins independently. This suggests they were once <span class="curiosity-highlight">free-living bacteria</span> that were engulfed by larger cells billions of years ago and became permanent residents. This is called the <span class="curiosity-highlight">endosymbiotic theory</span>. Mitochondria resemble alpha-proteobacteria; chloroplasts resemble cyanobacteria. Today they cannot survive outside the cell — but their bacterial ancestry is still written in their genome.</div>
+  </div>
+
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🔬</div>
+    <div class="curiosity-tag">Threads of Curiosity · Puga Valley, Ladakh</div>
+    <div class="curiosity-title">Hot Springs and the Origin of Life — Research from Birbal Sahni Institute, Lucknow</div>
+    <div class="curiosity-body">Scientists from the <span class="curiosity-highlight">Birbal Sahni Institute of Palaeosciences, Lucknow</span>, studied the hot springs of Puga Valley, Ladakh. These springs maintain near-boiling temperatures even in freezing climate — similar to early Earth conditions ~3.5 billion years ago. They found that calcium carbonate forms rapidly around these springs. These deposits may have: (1) protected early organic molecules from UV radiation, and (2) helped form the <span class="curiosity-highlight">first cell membrane</span>. The thermophile bacteria living in these springs (unicellular, heat-loving) may be living models of early life forms.</div>
+  </div>
+
+  <div class="beyond-card">
+    <div class="beyond-tag">Ready to Go Beyond</div>
+    <div class="beyond-title">🔬 Electron Microscopy — Seeing at the Nanometre Scale</div>
+    <div class="beyond-body">Electron microscopes use a <span class="beyond-highlight">beam of electrons</span> instead of visible light to create images. Because electrons have a much shorter wavelength than light, they can resolve structures at the nanometre (nm) scale — a thousand times better than light microscopes. They revealed the fine structure of ribosomes, membrane proteins, the cristae of mitochondria, and the detailed architecture of viruses. The Scanning Electron Microscope (SEM) creates 3D surface images (like the stunning stomata on a <em>Colocasia</em> leaf). The Transmission Electron Microscope (TEM) reveals internal structure. These instruments transformed cell biology from a science of outlines into a science of molecular detail.</div>
+  </div>
+
+  <div class="beyond-card">
+    <div class="beyond-tag">Ready to Go Beyond</div>
+    <div class="beyond-title">🌱 What Is Totipotency? — Haberlandt's Vision Made Real</div>
+    <div class="beyond-body">Haberlandt proposed in 1902 that every plant cell is <span class="beyond-highlight">totipotent</span> — containing the full genetic instructions to develop into a complete organism. Modern Plant Tissue Culture proves this: a single cell from a carrot root, cultured in the right medium, can grow into an entire carrot plant. This has enabled: rapid propagation of orchids and banana plants; regeneration of virus-free crop varieties; conservation of endangered plant species; production of secondary metabolites (medicines); and the entire field of <span class="beyond-highlight">transgenic plant technology</span>. All from one idea by one botanist in 1902.</div>
+  </div>
+
+  <div class="beyond-card">
+    <div class="beyond-tag">Ready to Go Beyond · Synthetic Biology</div>
+    <div class="beyond-title">🤖 J. Craig Venter's Synthetic Cell — Where Are We Headed?</div>
+    <div class="beyond-body">Venter's 2010 experiment created the first cell controlled by synthetic DNA. It raised profound questions: What is the future of synthetic cells built entirely from non-living chemicals? If a truly synthetic cell is made, who owns it? Can it be patented? Could synthetic organisms escape labs and affect ecosystems? What are the military, medical, and ecological implications? <span class="beyond-highlight">The science is advancing faster than the ethical frameworks to govern it</span> — making this one of the most important scientific-ethical frontiers of the 21st century. Scientists, ethicists, policymakers, and the public must all be part of this conversation.</div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ SUMMARY ══ -->
+<section class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Chapter Summary</div>
+    <h2 class="sec-title">At a Glance — Key Points</h2>
+  </div>
+  <div class="concept-grid">
+    <div class="concept-card teal">
+      <div class="concept-icon">🔬</div>
+      <div class="concept-title">Cell = Basic Unit</div>
+      <div class="concept-body">The cell is the basic structural and functional unit of all living organisms. The limit of resolution of the human eye is 0.1 mm; cells need microscopes to be studied.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🛡️</div>
+      <div class="concept-title">Universal Membrane</div>
+      <div class="concept-body">All cells have a selectively permeable cell membrane (plasma membrane). Plants, fungi, and bacteria also have a cell wall outside. Animal cells lack a cell wall.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">💧</div>
+      <div class="concept-title">Osmosis &amp; Diffusion</div>
+      <div class="concept-body">Diffusion = movement of particles high → low concentration (no membrane needed). Osmosis = diffusion of water across a selectively permeable membrane.</div>
+    </div>
+    <div class="concept-card amber">
+      <div class="concept-icon">🦠</div>
+      <div class="concept-title">Prokaryote vs Eukaryote</div>
+      <div class="concept-body">Prokaryotes: no nucleus (nucleoid), no membrane-bound organelles (1–10 µm). Eukaryotes: true nucleus, membrane-bound organelles (10–100 µm), unicellular or multicellular.</div>
+    </div>
+    <div class="concept-card pink">
+      <div class="concept-icon">🏭</div>
+      <div class="concept-title">Organelles = Factory Departments</div>
+      <div class="concept-body">Nucleus (control), Ribosomes (protein synthesis), ER (transport), Golgi (packaging), Lysosomes (cleanup), Mitochondria (energy/ATP), Chloroplasts (photosynthesis), Vacuoles (storage).</div>
+    </div>
+    <div class="concept-card green">
+      <div class="concept-icon">✂️</div>
+      <div class="concept-title">Mitosis vs Meiosis</div>
+      <div class="concept-body">Mitosis → 2 identical daughter cells (same chromosomes) for growth/repair. Meiosis → 4 genetically varied cells (half chromosomes) for sexual reproduction.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">📜</div>
+      <div class="concept-title">Cell Theory (1838–1855)</div>
+      <div class="concept-body">1. All organisms are made of cells. 2. Cell is the basic unit of life. 3. All cells arise from pre-existing cells. (Schleiden → Schwann → Virchow)</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">⚖️</div>
+      <div class="concept-title">Growth Control</div>
+      <div class="concept-body">Normal cells: contact inhibition → orderly growth. Cancer cells: lose inhibition → uncontrolled growth → tumours. PCD maintains balance through programmed self-destruction.</div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-block"><div class="stat-value">~37T</div><div class="stat-label">Cells in Human Body</div></div>
+    <div class="stat-block"><div class="stat-value">7–10nm</div><div class="stat-label">Cell Membrane Thickness</div></div>
+    <div class="stat-block"><div class="stat-value">120</div><div class="stat-label">Days RBC Lifespan</div></div>
+    <div class="stat-block"><div class="stat-value">1838</div><div class="stat-label">Cell Theory Begins</div></div>
+    <div class="stat-block"><div class="stat-value">4</div><div class="stat-label">Products of Meiosis</div></div>
+  </div>
+</section>
+
+<!-- CLOSING BANNER -->
+<div class="closing-banner">
+  <div class="closing-title">Every Living Thing Is<br><span>Built From These Tiny Marvels</span></div>
+  <p class="closing-sub">From a thermophile in Ladakh's hot springs to the trillion cells in your body — the cell is where life begins, continues, and is passed on.</p>
+  <div style="margin-top:2rem;display:flex;flex-wrap:wrap;gap:1rem;justify-content:center">
+    <span class="hero-badge badge-teal">🔬 Chapter 2 Complete</span>
+    <span class="hero-badge badge-blue">Grade 9 · Exploration</span>
+    <span class="hero-badge badge-purple">Cell Biology Mastered</span>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+const sections=document.querySelectorAll('section[id],div[id]');
+const navLinks=document.querySelectorAll('.nav-link');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id=e.target.id;
+      navLinks.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));
+    }
+  });
+},{rootMargin:'-40% 0px -55% 0px'});
+sections.forEach(s=>obs.observe(s));
+navLinks.forEach(link=>{
+  link.addEventListener('click',e=>{
+    const href=link.getAttribute('href');
+    if(href&&href.startsWith('#')){
+      e.preventDefault();
+      const target=document.querySelector(href);
+      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 13 — Earth as a System: Energy, Matter, and Life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-primary:#0a0b0f;--bg-secondary:#0f1117;--bg-card:#13151c;
+  --bg-glass:rgba(255,255,255,0.03);--bg-glass-hover:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.08);--border-bright:rgba(255,255,255,0.15);
+  --neon-blue:#4f9eff;--neon-purple:#9b6dff;--neon-teal:#00d4a8;
+  --neon-pink:#ff6bac;--neon-amber:#ffb547;--neon-green:#3dd68c;
+  --neon-ch13:#3dd68c;
+  --text-primary:#f0f2ff;--text-secondary:#8b90a8;--text-muted:#4a4f6a;
+  --font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);font-size:15px;line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg-secondary)}::-webkit-scrollbar-thumb{background:var(--neon-ch13);border-radius:3px}
+
+/* ── NAV ── */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,11,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;gap:2rem;height:56px}
+.nav-logo{font-family:var(--font-display);font-weight:700;font-size:15px;color:var(--neon-ch13);letter-spacing:0.5px;white-space:nowrap}
+.nav-links{display:flex;gap:0.25rem;overflow-x:auto;scrollbar-width:none;flex:1}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-link{font-size:12px;font-weight:500;color:var(--text-secondary);padding:6px 12px;border-radius:var(--radius-sm);white-space:nowrap;cursor:pointer;transition:all 0.2s;text-decoration:none;border:none;background:none}
+.nav-link:hover{color:var(--text-primary);background:var(--bg-glass-hover)}
+.nav-link.active{color:var(--neon-ch13);background:rgba(61,214,140,0.1)}
+.main{padding-top:56px}
+
+/* ── HERO ── */
+.hero{position:relative;overflow:hidden;min-height:520px;display:flex;align-items:center;padding:5rem 2rem 4rem;background:var(--bg-secondary)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(61,214,140,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(61,214,140,0.04) 1px,transparent 1px);background-size:40px 40px}
+.hero-glow-1{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(61,214,140,0.1) 0%,transparent 70%);top:-200px;right:-200px}
+.hero-glow-2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,168,0.08) 0%,transparent 70%);bottom:-150px;left:100px}
+.hero-content{position:relative;z-index:2;max-width:900px;margin:0 auto;width:100%}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--neon-ch13);background:rgba(61,214,140,0.1);border:1px solid rgba(61,214,140,0.2);padding:6px 14px;border-radius:100px;margin-bottom:1.5rem}
+.hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-ch13);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero-title{font-family:var(--font-display);font-size:clamp(2rem,5vw,3.5rem);font-weight:700;line-height:1.15;margin-bottom:1.5rem}
+.hero-title .line1{display:block;color:var(--text-primary)}
+.hero-title .line2{display:block;background:linear-gradient(135deg,var(--neon-ch13),var(--neon-teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:16px;color:var(--text-secondary);max-width:600px;margin-bottom:2rem;line-height:1.8}
+.hero-badges{display:flex;flex-wrap:wrap;gap:10px}
+.hero-badge{font-size:12px;font-weight:500;padding:6px 14px;border-radius:100px;border:1px solid}
+.badge-teal{color:var(--neon-teal);border-color:rgba(0,212,168,0.3);background:rgba(0,212,168,0.08)}
+.badge-blue{color:var(--neon-blue);border-color:rgba(79,158,255,0.3);background:rgba(79,158,255,0.08)}
+.badge-purple{color:var(--neon-purple);border-color:rgba(155,109,255,0.3);background:rgba(155,109,255,0.08)}
+.badge-pink{color:var(--neon-pink);border-color:rgba(255,107,172,0.3);background:rgba(255,107,172,0.08)}
+.badge-amber{color:var(--neon-amber);border-color:rgba(255,181,71,0.3);background:rgba(255,181,71,0.08)}
+.badge-green{color:var(--neon-green);border-color:rgba(61,214,140,0.3);background:rgba(61,214,140,0.08)}
+
+/* ── LAYOUT ── */
+.section{padding:4rem 2rem;max-width:1100px;margin:0 auto}
+.full-bg{background:var(--bg-secondary)}
+.full-bg .section{max-width:none;padding-left:max(2rem,calc(50vw - 550px));padding-right:max(2rem,calc(50vw - 550px))}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border-bright),transparent)}
+
+/* ── SECTION HEADERS ── */
+.sec-header{margin-bottom:2.5rem}
+.sec-tag{font-family:var(--font-mono);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon-ch13);margin-bottom:0.75rem}
+.sec-title{font-family:var(--font-display);font-size:1.75rem;font-weight:700;color:var(--text-primary);margin-bottom:0.5rem}
+.sec-subtitle{font-size:14px;color:var(--text-secondary)}
+
+/* ── OBJ CARDS ── */
+.obj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+.obj-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;display:flex;gap:1rem;align-items:flex-start;transition:border-color 0.2s,background 0.2s}
+.obj-card:hover{border-color:var(--border-bright);background:var(--bg-glass-hover)}
+.obj-num{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch13);background:rgba(61,214,140,0.1);border:1px solid rgba(61,214,140,0.2);min-width:28px;height:28px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;margin-top:2px}
+.obj-text{font-size:13px;color:var(--text-secondary);line-height:1.6}
+.obj-text strong{color:var(--text-primary);font-weight:500}
+
+/* ── CONCEPT CARDS ── */
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem}
+.concept-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;position:relative;overflow:hidden;transition:all 0.3s}
+.concept-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent-start,var(--neon-ch13)),var(--accent-end,var(--neon-teal)))}
+.concept-card:hover{border-color:var(--border-bright);transform:translateY(-2px);background:var(--bg-glass-hover)}
+.concept-icon{font-size:28px;margin-bottom:1rem}
+.concept-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary);margin-bottom:0.5rem}
+.concept-body{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.concept-card.sky{--accent-start:#00d4a8;--accent-end:#4f9eff}
+.concept-card.blue{--accent-start:#4f9eff;--accent-end:#9b6dff}
+.concept-card.teal{--accent-start:#00d4a8;--accent-end:#4f9eff}
+.concept-card.purple{--accent-start:#9b6dff;--accent-end:#ff6bac}
+.concept-card.pink{--accent-start:#ff6bac;--accent-end:#ffb547}
+.concept-card.amber{--accent-start:#ffb547;--accent-end:#00d4a8}
+.concept-card.green{--accent-start:#3dd68c;--accent-end:#00d4a8}
+.concept-card.earth{--accent-start:#3dd68c;--accent-end:#4f9eff}
+
+/* ── HIGHLIGHT BOX ── */
+.highlight-box{background:rgba(61,214,140,0.05);border:1px solid rgba(61,214,140,0.18);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin:1.25rem 0}
+.highlight-box p{font-size:13px;color:var(--text-secondary);line-height:1.75;margin:0}
+.highlight-box strong{color:var(--text-primary);font-weight:500}
+
+/* ── FLOW ── */
+.flow-chain{display:flex;align-items:center;gap:0;flex-wrap:wrap}
+.flow-node{flex:1;min-width:120px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem 0.75rem;text-align:center}
+.flow-node-icon{font-size:1.75rem;margin-bottom:0.4rem}
+.flow-node-title{font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:0.2rem}
+.flow-node-sub{font-size:11px;color:var(--text-secondary)}
+.flow-arrow{color:var(--neon-ch13);font-size:1.25rem;padding:0 4px;flex-shrink:0}
+.flow-node.highlight{border-color:rgba(61,214,140,0.4);background:rgba(61,214,140,0.05)}
+
+/* ── EXAMPLE CARDS ── */
+.example-card{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--neon-ch13);border-radius:0 var(--radius-lg) var(--radius-lg) 0;padding:1.5rem;margin-bottom:1.25rem}
+.example-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.example-num{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch13);background:rgba(61,214,140,0.1);border:1px solid rgba(61,214,140,0.25);padding:3px 10px;border-radius:100px}
+.example-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary)}
+.example-emoji{font-size:1.5rem}
+.example-question{font-size:13px;color:var(--text-secondary);margin-bottom:1rem;font-style:italic;padding:10px 14px;background:rgba(255,255,255,0.02);border-radius:var(--radius-sm);border:1px solid var(--border)}
+.example-answer-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon-ch13);margin-bottom:0.5rem;font-weight:600}
+.example-answer{font-size:13px;color:var(--text-secondary);line-height:1.7}
+
+/* ── ACTIVITY CARDS ── */
+.activity-card{background:linear-gradient(135deg,rgba(61,214,140,0.06),rgba(0,212,168,0.06));border:1px solid rgba(61,214,140,0.2);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.25rem}
+.activity-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.activity-badge{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch13);background:rgba(61,214,140,0.12);border:1px solid rgba(61,214,140,0.3);padding:4px 12px;border-radius:100px}
+.activity-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary)}
+.activity-body{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.think-prompts{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem}
+.think-prompt{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text-secondary);padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);border:1px solid var(--border)}
+.think-prompt-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-ch13);margin-top:5px;flex-shrink:0}
+
+/* ── PONDER ── */
+.ponder-card{background:rgba(255,181,71,0.05);border:1px solid rgba(255,181,71,0.2);border-radius:var(--radius-lg);padding:1.5rem;margin:1.5rem 0}
+.ponder-header{display:flex;align-items:center;gap:10px;margin-bottom:0.75rem}
+.ponder-icon{font-size:1.25rem}
+.ponder-label{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-amber);text-transform:uppercase;letter-spacing:1.5px}
+.ponder-q{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.ponder-q strong{color:var(--neon-amber);font-weight:500}
+
+/* ── CURIOSITY ── */
+.curiosity-card{background:var(--bg-card);border:1px solid rgba(61,214,140,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.curiosity-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba(61,214,140,0.05) 0%,transparent 50%);pointer-events:none}
+.curiosity-glyph{position:absolute;right:1.5rem;top:1.25rem;font-size:3rem;opacity:0.08}
+.curiosity-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch13);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.curiosity-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-ch13)}
+.curiosity-title{font-family:var(--font-display);font-size:1.15rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.curiosity-body{font-size:13px;color:var(--text-secondary);line-height:1.75;position:relative}
+.curiosity-highlight{color:var(--neon-ch13);font-weight:500}
+
+/* ── BRIDGING ── */
+.bridging-card{background:rgba(61,214,140,0.04);border:1px solid rgba(61,214,140,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.bridging-card::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(61,214,140,0.05) 0%,transparent 70%);pointer-events:none}
+.bridging-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-green);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.bridging-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-green)}
+.bridging-title{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.bridging-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+.bridging-highlight{color:var(--neon-green);font-weight:500}
+
+/* ── SCIENTIST SPOTLIGHT ── */
+.scientist-card{background:var(--bg-card);border:1px solid rgba(61,214,140,0.25);border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.scientist-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch13),var(--neon-teal))}
+.scientist-card::after{content:'';position:absolute;top:0;right:0;width:250px;height:250px;background:radial-gradient(circle,rgba(61,214,140,0.07) 0%,transparent 65%);pointer-events:none}
+.scientist-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch13);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.scientist-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-ch13)}
+.scientist-name{font-family:var(--font-display);font-size:1.4rem;font-weight:700;color:var(--text-primary);margin-bottom:0.25rem}
+.scientist-role{font-size:13px;color:var(--neon-ch13);margin-bottom:1rem;font-weight:500}
+.scientist-body{font-size:13px;color:var(--text-secondary);line-height:1.8}
+.scientist-highlight{color:var(--neon-ch13);font-weight:500}
+
+/* ── KEY TERM PILL ── */
+.key-term{display:inline-block;font-family:var(--font-mono);font-size:11px;font-weight:600;padding:2px 10px;border-radius:100px;background:rgba(61,214,140,0.1);border:1px solid rgba(61,214,140,0.25);color:var(--neon-ch13);margin:2px}
+
+/* ── KNOWLEDGE PANEL ── */
+.know-panel{background:var(--bg-card);border:1px solid rgba(61,214,140,0.25);border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.know-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch13),var(--neon-teal),var(--neon-purple))}
+.know-panel::after{content:'';position:absolute;top:0;right:0;width:300px;height:300px;background:radial-gradient(circle,rgba(61,214,140,0.06) 0%,transparent 60%);pointer-events:none}
+
+/* ── TRIPLE GRID ── */
+.triple-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.triple-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;transition:all 0.3s;position:relative;overflow:hidden}
+.triple-card:hover{transform:translateY(-4px);border-color:var(--card-accent)}
+.triple-card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,var(--card-glow,rgba(61,214,140,0.05)) 0%,transparent 70%);pointer-events:none}
+.triple-card.c1{--card-accent:var(--neon-ch13);--card-glow:rgba(61,214,140,0.06)}
+.triple-card.c2{--card-accent:var(--neon-teal);--card-glow:rgba(0,212,168,0.06)}
+.triple-card.c3{--card-accent:var(--neon-purple);--card-glow:rgba(155,109,255,0.06)}
+.triple-card.c4{--card-accent:var(--neon-blue);--card-glow:rgba(79,158,255,0.06)}
+.triple-card.c5{--card-accent:var(--neon-amber);--card-glow:rgba(255,181,71,0.06)}
+.triple-label{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:100px;border:1px solid;display:inline-block;margin-bottom:1rem;font-weight:600}
+.triple-card.c1 .triple-label{color:var(--neon-ch13);border-color:rgba(61,214,140,0.3);background:rgba(61,214,140,0.1)}
+.triple-card.c2 .triple-label{color:var(--neon-teal);border-color:rgba(0,212,168,0.3);background:rgba(0,212,168,0.1)}
+.triple-card.c3 .triple-label{color:var(--neon-purple);border-color:rgba(155,109,255,0.3);background:rgba(155,109,255,0.1)}
+.triple-card.c4 .triple-label{color:var(--neon-blue);border-color:rgba(79,158,255,0.3);background:rgba(79,158,255,0.1)}
+.triple-card.c5 .triple-label{color:var(--neon-amber);border-color:rgba(255,181,71,0.3);background:rgba(255,181,71,0.1)}
+.triple-icon{font-size:2.5rem;margin-bottom:0.75rem;display:block}
+.triple-title{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:0.5rem}
+.triple-card.c1 .triple-title{color:var(--neon-ch13)}
+.triple-card.c2 .triple-title{color:var(--neon-teal)}
+.triple-card.c3 .triple-title{color:var(--neon-purple)}
+.triple-card.c4 .triple-title{color:var(--neon-blue)}
+.triple-card.c5 .triple-title{color:var(--neon-amber)}
+.triple-desc{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:1rem}
+.triple-example{font-size:11px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;color:var(--text-secondary);font-style:italic}
+
+/* ── EQUATION / FORMULA BOX ── */
+.eq-box{background:var(--bg-card);border:1px solid rgba(61,214,140,0.25);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;position:relative;overflow:hidden;margin-bottom:1rem}
+.eq-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon-ch13),var(--neon-teal))}
+.eq-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch13);font-weight:600;margin-bottom:0.75rem}
+.eq-formula{font-family:var(--font-mono);font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:0.5rem;letter-spacing:1px}
+.eq-explain{font-size:12px;color:var(--text-secondary);line-height:1.6}
+.eq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+
+/* ── COMPARE TABLE ── */
+.compare-wrap{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;margin-bottom:1.5rem}
+.compare-table{width:100%;border-collapse:collapse;font-size:13px}
+.compare-table th{font-family:var(--font-display);font-size:12px;font-weight:600;padding:14px 20px;text-align:left;border-bottom:1px solid var(--border)}
+.compare-table th.th-a{color:var(--neon-ch13);background:rgba(61,214,140,0.05)}
+.compare-table th.th-b{color:var(--neon-teal);background:rgba(0,212,168,0.05)}
+.compare-table th.th-c{color:var(--neon-purple);background:rgba(155,109,255,0.05)}
+.compare-table th.th-feat{color:var(--text-muted)}
+.compare-table td{padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text-secondary);vertical-align:top}
+.compare-table tr:hover td{background:var(--bg-glass-hover)}
+.compare-table td.td-a{color:var(--neon-ch13)}
+.compare-table td.td-b{color:var(--neon-teal)}
+.compare-table td.td-c{color:var(--neon-purple)}
+
+/* ── STAT ROW ── */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin:2rem 0}
+.stat-block{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:1.25rem 1rem;text-align:center}
+.stat-value{font-family:var(--font-display);font-size:1.75rem;font-weight:700;background:linear-gradient(135deg,var(--neon-ch13),var(--neon-teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.25rem}
+.stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px}
+
+/* ── NOTE BOX ── */
+.note-box{background:rgba(255,181,71,0.05);border:1px solid rgba(255,181,71,0.2);border-left:3px solid var(--neon-amber);border-radius:0 var(--radius-md) var(--radius-md) 0;padding:1rem 1.25rem;margin:1rem 0;font-size:13px;color:var(--text-secondary);line-height:1.7}
+.note-box strong{color:var(--neon-amber);font-weight:600}
+
+/* ── SAFETY BOX ── */
+.safety-box{background:rgba(255,107,172,0.05);border:1px solid rgba(255,107,172,0.2);border-left:3px solid var(--neon-pink);border-radius:0 var(--radius-md) var(--radius-md) 0;padding:1rem 1.25rem;margin:1rem 0;font-size:13px;color:var(--text-secondary);line-height:1.7}
+.safety-box strong{color:var(--neon-pink);font-weight:600}
+
+/* ── THINK SCIENTIST ── */
+.think-scientist-card{background:rgba(61,214,140,0.04);border:1px solid rgba(61,214,140,0.2);border-radius:var(--radius-xl);padding:1.75rem;margin-bottom:1.5rem}
+.think-scientist-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch13);font-weight:600;margin-bottom:0.75rem}
+.think-scientist-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+
+/* ── EM SPECTRUM BAR ── */
+.spectrum-bar{display:grid;grid-template-columns:repeat(7,1fr);gap:0;margin:1.5rem 0;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.spec-band{padding:1.2rem 0.5rem;text-align:center}
+.spec-band-label{font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.3rem}
+.spec-band-sub{font-size:10px;color:var(--text-secondary);line-height:1.4}
+.spec-gamma{background:rgba(155,109,255,0.15);border-right:1px solid var(--border)}.spec-gamma .spec-band-label{color:#c084fc}
+.spec-xray{background:rgba(99,102,241,0.12);border-right:1px solid var(--border)}.spec-xray .spec-band-label{color:#818cf8}
+.spec-uv{background:rgba(79,158,255,0.12);border-right:1px solid var(--border)}.spec-uv .spec-band-label{color:var(--neon-blue)}
+.spec-vis{background:linear-gradient(135deg,rgba(79,158,255,0.1),rgba(61,214,140,0.1),rgba(255,181,71,0.1));border-right:1px solid var(--border)}.spec-vis .spec-band-label{color:var(--neon-ch13)}
+.spec-ir{background:rgba(255,181,71,0.12);border-right:1px solid var(--border)}.spec-ir .spec-band-label{color:var(--neon-amber)}
+.spec-micro{background:rgba(255,107,172,0.1);border-right:1px solid var(--border)}.spec-micro .spec-band-label{color:var(--neon-pink)}
+.spec-radio{background:rgba(0,212,168,0.08)}.spec-radio .spec-band-label{color:var(--neon-teal)}
+
+/* ── SPHERE CARDS (big) ── */
+.sphere-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+.sphere-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;transition:all 0.3s;border-top:3px solid var(--sc,var(--neon-ch13))}
+.sphere-card:hover{transform:translateY(-3px);border-color:var(--sc)}
+.sphere-icon{font-size:2.2rem;margin-bottom:0.75rem;display:block}
+.sphere-name{font-family:var(--font-display);font-weight:700;font-size:1rem;margin-bottom:0.4rem}
+.sphere-desc{font-size:12px;color:var(--text-secondary);line-height:1.6}
+.sphere-example{font-size:11px;font-family:var(--font-mono);margin-top:0.5rem;padding:4px 10px;border-radius:100px;display:inline-block;border:1px solid}
+
+/* ── CYCLE FLOW ── */
+.cycle-flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;margin:1.5rem 0}
+.cycle-step{padding:1.25rem 1rem;text-align:center;border-right:1px solid var(--border);position:relative}
+.cycle-step:last-child{border-right:none}
+.cycle-step-icon{font-size:1.75rem;margin-bottom:0.5rem}
+.cycle-step-label{font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-bottom:0.3rem}
+.cycle-step-body{font-size:11px;color:var(--text-secondary);line-height:1.5}
+.cycle-step.cs1 .cycle-step-label{color:var(--neon-ch13)}
+.cycle-step.cs2 .cycle-step-label{color:var(--neon-teal)}
+.cycle-step.cs3 .cycle-step-label{color:var(--neon-blue)}
+.cycle-step.cs4 .cycle-step-label{color:var(--neon-amber)}
+.cycle-step.cs5 .cycle-step-label{color:var(--neon-pink)}
+
+/* ── ALBEDO TABLE ── */
+.albedo-row{display:flex;align-items:center;gap:1rem;padding:0.75rem 1rem;border-bottom:1px solid var(--border);font-size:13px}
+.albedo-row:last-child{border-bottom:none}
+.albedo-material{flex:1;color:var(--text-primary);font-weight:500}
+.albedo-bar-wrap{flex:2;height:8px;background:var(--bg-primary);border-radius:4px;overflow:hidden}
+.albedo-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--neon-ch13),var(--neon-teal))}
+.albedo-val{font-family:var(--font-mono);font-size:11px;color:var(--neon-ch13);min-width:70px;text-align:right}
+
+/* ── LAYER DIAGRAM ── */
+.atmos-layers{display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin:1.5rem 0}
+.atmos-layer{padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;border-bottom:1px solid var(--border)}
+.atmos-layer:last-child{border-bottom:none}
+.atmos-layer-name{font-family:var(--font-display);font-size:0.95rem;font-weight:700}
+.atmos-layer-alt{font-family:var(--font-mono);font-size:11px}
+.atmos-layer-feat{font-size:12px;color:var(--text-secondary);max-width:320px;text-align:right;line-height:1.5}
+.al-tropo{background:rgba(61,214,140,0.06)}.al-tropo .atmos-layer-name,.al-tropo .atmos-layer-alt{color:var(--neon-ch13)}
+.al-strato{background:rgba(79,158,255,0.06)}.al-strato .atmos-layer-name,.al-strato .atmos-layer-alt{color:var(--neon-blue)}
+.al-meso{background:rgba(155,109,255,0.06)}.al-meso .atmos-layer-name,.al-meso .atmos-layer-alt{color:var(--neon-purple)}
+.al-thermo{background:rgba(255,181,71,0.06)}.al-thermo .atmos-layer-name,.al-thermo .atmos-layer-alt{color:var(--neon-amber)}
+.al-exo{background:rgba(255,107,172,0.06)}.al-exo .atmos-layer-name,.al-exo .atmos-layer-alt{color:var(--neon-pink)}
+
+/* ── N CYCLE STEPS ── */
+.n-step-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1.5rem 0}
+.n-step{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;border-top:2px solid var(--ns-color,var(--neon-ch13))}
+.n-step-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;font-weight:700;color:var(--ns-color,var(--neon-ch13));margin-bottom:0.5rem}
+.n-step-title{font-family:var(--font-display);font-size:0.9rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem}
+.n-step-body{font-size:12px;color:var(--text-secondary);line-height:1.6}
+
+/* ── IMPACT CARDS ── */
+.impact-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem;display:flex;gap:1rem;align-items:flex-start}
+.impact-icon{font-size:1.75rem;flex-shrink:0;margin-top:2px}
+.impact-content-title{font-family:var(--font-display);font-size:0.95rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem}
+.impact-content-body{font-size:13px;color:var(--text-secondary);line-height:1.65}
+.impact-card.danger{border-color:rgba(255,107,172,0.2);background:rgba(255,107,172,0.03)}
+.impact-card.danger .impact-content-title{color:var(--neon-pink)}
+.impact-card.warn{border-color:rgba(255,181,71,0.2);background:rgba(255,181,71,0.03)}
+.impact-card.warn .impact-content-title{color:var(--neon-amber)}
+
+/* ── INDIA SCIENCE ── */
+.india-card{background:linear-gradient(135deg,rgba(255,181,71,0.06),rgba(61,214,140,0.06));border:1px solid rgba(255,181,71,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.india-card::before{content:'🇮🇳';position:absolute;right:1.5rem;top:1rem;font-size:3rem;opacity:0.12}
+.india-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-amber);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.india-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-amber)}
+.india-title{font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.india-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+
+/* ── CLOSING ── */
+.closing-banner{text-align:center;padding:5rem 2rem;position:relative;overflow:hidden;background:var(--bg-secondary)}
+.closing-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(61,214,140,0.1) 0%,transparent 60%)}
+.closing-title{font-family:var(--font-display);font-size:clamp(1.5rem,4vw,2.5rem);font-weight:700;color:var(--text-primary);margin-bottom:1rem;position:relative}
+.closing-title span{background:linear-gradient(135deg,var(--neon-ch13),var(--neon-teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.closing-sub{font-size:15px;color:var(--text-secondary);max-width:500px;margin:0 auto;position:relative}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .triple-grid{grid-template-columns:1fr}
+  .top-nav{padding:0 1rem}
+  .eq-grid{grid-template-columns:1fr}
+  .spectrum-bar{grid-template-columns:repeat(4,1fr)}
+  .atmos-layer{flex-direction:column;align-items:flex-start}
+  .atmos-layer-feat{text-align:left;max-width:100%}
+}
+@media(max-width:540px){.flow-chain{flex-direction:column}.flow-arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav class="top-nav">
+  <div class="nav-logo">🌍 Exploration · Gr.9 · Ch.13</div>
+  <div class="nav-links">
+    <a class="nav-link" href="#objectives">Objectives</a>
+    <a class="nav-link" href="#spheres">Earth's Spheres</a>
+    <a class="nav-link" href="#solar">Solar Radiation</a>
+    <a class="nav-link" href="#surface">Surface Heating</a>
+    <a class="nav-link" href="#atmosphere">Atmosphere</a>
+    <a class="nav-link" href="#winds">Winds &amp; Currents</a>
+    <a class="nav-link" href="#water-cycle">Water Cycle</a>
+    <a class="nav-link" href="#carbon-cycle">Carbon Cycle</a>
+    <a class="nav-link" href="#nitrogen-cycle">Nitrogen Cycle</a>
+    <a class="nav-link" href="#oxygen-cycle">Oxygen Cycle</a>
+    <a class="nav-link" href="#human-impact">Human Impact</a>
+    <a class="nav-link" href="#scientist">Scientists</a>
+    <a class="nav-link" href="#summary">Summary</a>
+  </div>
+</nav>
+
+<div class="main">
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      Grade 9 · Chapter 13 · Earth &amp; Environmental Science
+    </div>
+    <h1 class="hero-title">
+      <span class="line1">Earth as a System:</span>
+      <span class="line2">Energy, Matter, and Life</span>
+    </h1>
+    <p class="hero-desc">From the Himalayan glaciers to the ocean plankton, from the southwest monsoon to carbon buried deep in coal — Earth is one interconnected system where a change in any sphere ripples through all others. Understand the flows, decode the planet.</p>
+    <div class="hero-badges">
+      <span class="hero-badge badge-green">🌐 Five Spheres</span>
+      <span class="hero-badge badge-blue">☀️ Solar Radiation &amp; Albedo</span>
+      <span class="hero-badge badge-teal">💨 Winds &amp; Ocean Currents</span>
+      <span class="hero-badge badge-amber">🔄 Biogeochemical Cycles</span>
+      <span class="hero-badge badge-purple">🌫️ Greenhouse Effect</span>
+      <span class="hero-badge badge-pink">⚠️ Human Impact</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ THINK IT OVER ══ -->
+<div class="full-bg">
+<div class="section" style="padding-top:2.5rem;padding-bottom:2.5rem">
+  <div class="sec-tag">Think It Over · Chapter 13 Hook Questions</div>
+  <div class="obj-grid">
+    <div class="obj-card"><div class="obj-num">Q1</div><div class="obj-text">How does the <strong>warming of Arabian Sea water</strong> affect the southwest monsoon in India?</div></div>
+    <div class="obj-card"><div class="obj-num">Q2</div><div class="obj-text">If a <strong>large forest is cleared</strong>, how can that affect the flow of a river in that area?</div></div>
+    <div class="obj-card"><div class="obj-num">Q3</div><div class="obj-text">What might happen to <strong>coastal cities</strong> in India if glaciers and polar ice keep melting faster?</div></div>
+    <div class="obj-card"><div class="obj-num">Q4</div><div class="obj-text">How would increasing <strong>CO₂ levels</strong> in the atmosphere affect ocean plankton?</div></div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ LEARNING OBJECTIVES ══ -->
+<section class="section" id="objectives">
+  <div class="sec-header">
+    <div class="sec-tag">Learning Objectives · Chapter 13</div>
+    <h2 class="sec-title">What You Will Learn</h2>
+    <p class="sec-subtitle">By the end of this chapter, you will be able to understand Earth as one interconnected system</p>
+  </div>
+  <div class="obj-grid">
+    <div class="obj-card"><div class="obj-num">01</div><div class="obj-text">Identify and describe Earth's five spheres — <strong>geosphere, hydrosphere, cryosphere, atmosphere, and biosphere</strong> — and explain their interconnections.</div></div>
+    <div class="obj-card"><div class="obj-num">02</div><div class="obj-text">Explain how <strong>solar radiation (EM waves)</strong> heats Earth's surface unevenly and understand concepts of insolation, albedo, and the solar constant.</div></div>
+    <div class="obj-card"><div class="obj-num">03</div><div class="obj-text">Describe how <strong>uneven heating</strong> drives local winds (valley/mountain breezes), planetary winds, and ocean currents including gyres.</div></div>
+    <div class="obj-card"><div class="obj-num">04</div><div class="obj-text">Explain the structure and roles of Earth's <strong>atmospheric layers</strong>, including the greenhouse effect and the ozone layer.</div></div>
+    <div class="obj-card"><div class="obj-num">05</div><div class="obj-text">Describe the <strong>water, carbon, nitrogen, and oxygen biogeochemical cycles</strong> and explain how they link living and non-living systems.</div></div>
+    <div class="obj-card"><div class="obj-num">06</div><div class="obj-text">Analyse how <strong>human activities</strong> — burning fossil fuels, deforestation, fertiliser overuse — disrupt Earth's cycles and what can be done to restore balance.</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ EARTH'S SPHERES ══ -->
+<div class="full-bg" id="spheres">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 13.0 · Earth as a System</div>
+    <h2 class="sec-title">Earth's Five Interacting Spheres</h2>
+    <p class="sec-subtitle">Life on Earth is powered by a constant flow of energy and matter through five interconnected realms</p>
+  </div>
+
+  <div class="highlight-box">
+    <p>Earth is not a collection of separate parts — it is <strong>one system</strong> made up of interacting spheres. The Sun is the primary energy source, but Earth's hot interior and chemical reactions in air, water, and rocks also drive energy and matter flows. A change in any sphere triggers changes in all others.</p>
+  </div>
+
+  <div class="sphere-grid">
+    <div class="sphere-card" style="--sc:#8b5cf6">
+      <span class="sphere-icon">🏔️</span>
+      <div class="sphere-name" style="color:#8b5cf6">Geosphere</div>
+      <div class="sphere-desc">Solid rocks, soil, landforms, and Earth's interior</div>
+      <div class="sphere-example" style="color:#8b5cf6;border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.08)">Deccan Plateau · Thar Desert</div>
+    </div>
+    <div class="sphere-card" style="--sc:var(--neon-blue)">
+      <span class="sphere-icon">🌊</span>
+      <div class="sphere-name" style="color:var(--neon-blue)">Hydrosphere</div>
+      <div class="sphere-desc">Liquid water — oceans, rivers, lakes, groundwater</div>
+      <div class="sphere-example" style="color:var(--neon-blue);border-color:rgba(79,158,255,0.3);background:rgba(79,158,255,0.08)">Ganga · Brahmaputra · Oceans</div>
+    </div>
+    <div class="sphere-card" style="--sc:var(--neon-teal)">
+      <span class="sphere-icon">🧊</span>
+      <div class="sphere-name" style="color:var(--neon-teal)">Cryosphere</div>
+      <div class="sphere-desc">Solid water — ice sheets, glaciers, snow cover</div>
+      <div class="sphere-example" style="color:var(--neon-teal);border-color:rgba(0,212,168,0.3);background:rgba(0,212,168,0.08)">Himalayan Glaciers · Ladakh Snow</div>
+    </div>
+    <div class="sphere-card" style="--sc:var(--neon-blue)">
+      <span class="sphere-icon">🌬️</span>
+      <div class="sphere-name" style="color:var(--neon-blue)">Atmosphere</div>
+      <div class="sphere-desc">The air surrounding Earth, held by gravity</div>
+      <div class="sphere-example" style="color:var(--neon-blue);border-color:rgba(79,158,255,0.3);background:rgba(79,158,255,0.08)">78% N₂ · 21% O₂ · Other gases</div>
+    </div>
+    <div class="sphere-card" style="--sc:var(--neon-ch13)">
+      <span class="sphere-icon">🌿</span>
+      <div class="sphere-name" style="color:var(--neon-ch13)">Biosphere</div>
+      <div class="sphere-desc">All living organisms and their habitats</div>
+      <div class="sphere-example" style="color:var(--neon-ch13);border-color:rgba(61,214,140,0.3);background:rgba(61,214,140,0.08)">Mangroves · Forests · Plankton</div>
+    </div>
+  </div>
+
+  <!-- Activity 13.1 -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🔬 Activity 13.1</span>
+      <span class="activity-title">Let Us Explore — How the Spheres Connect</span>
+    </div>
+    <div class="activity-body">Observe features of Earth's surface (mountains, glaciers, lakes, vegetation, animals, atmosphere). Identify one example from each sphere. Then explore interconnections.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Snow → Lake:</strong> Snow (cryosphere) melts in summer due to solar heating (atmosphere) and flows into streams → lakes (hydrosphere). Less snowfall = lower lake levels in summer.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Less snowfall → less grass:</strong> If lake levels drop, the grass available for sheep and other animals also decreases — connecting cryosphere → hydrosphere → biosphere.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Arabian Sea warming → Monsoon disruption:</strong> Warmer sea → more evaporation → fluctuations in southwest monsoon → floods in some areas, droughts in others (hydrosphere ↔ atmosphere ↔ geosphere ↔ biosphere).</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Glacier melt → coastal flooding:</strong> Rising atmospheric temperature → accelerated melting of glaciers (cryosphere) → rising sea levels → threat to coastal cities → habitat loss in biosphere.</div>
+    </div>
+  </div>
+
+  <!-- Interconnection flow -->
+  <div style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--text-primary);margin:1.5rem 0 1rem">A Disturbance in One Sphere Cascades Through All Others</div>
+  <div class="flow-chain">
+    <div class="flow-node highlight"><div class="flow-node-icon">🌡️</div><div class="flow-node-title">Atmosphere Warms</div><div class="flow-node-sub">↑ CO₂, ↑ Temperature</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node"><div class="flow-node-icon">🧊</div><div class="flow-node-title">Glaciers Melt</div><div class="flow-node-sub">Cryosphere shrinks</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node"><div class="flow-node-icon">🌊</div><div class="flow-node-title">Sea Level Rises</div><div class="flow-node-sub">Hydrosphere expands</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node"><div class="flow-node-icon">🏙️</div><div class="flow-node-title">Coasts Flood</div><div class="flow-node-sub">Geosphere affected</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node"><div class="flow-node-icon">🦁</div><div class="flow-node-title">Habitat Loss</div><div class="flow-node-sub">Biosphere disrupted</div></div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ SOLAR RADIATION ══ -->
+<section class="section" id="solar">
+  <div class="sec-header">
+    <div class="sec-tag">Section 13.1 · Uneven Heating of the Earth</div>
+    <h2 class="sec-title">Solar Radiation — Earth's Energy Engine</h2>
+    <p class="sec-subtitle">The Sun's electromagnetic waves drive virtually every process on Earth — but they don't hit everywhere equally</p>
+  </div>
+
+  <div class="concept-grid" style="margin-bottom:2rem">
+    <div class="concept-card earth">
+      <div class="concept-icon">☀️</div>
+      <div class="concept-title">EM Waves — How Sunlight Travels</div>
+      <div class="concept-body">Solar radiation reaches Earth as <strong style="color:var(--neon-ch13)">electromagnetic (EM) waves</strong> that travel through vacuum at the speed of light (3 × 10⁸ m s⁻¹). Unlike sound waves (mechanical, needs medium), EM waves need no medium. They span gamma rays to radio waves.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🔵</div>
+      <div class="concept-title">The Solar Spectrum — What Reaches Earth</div>
+      <div class="concept-body">About <strong style="color:var(--neon-blue)">99% of the Sun's energy</strong> falls within three ranges: Ultraviolet (UV), Visible light, and Infrared (IR). Gamma/X-rays are filtered by the upper atmosphere. Microwaves and radio waves carry too little energy to warm Earth significantly.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🔆</div>
+      <div class="concept-title">What Each Range Does</div>
+      <div class="concept-body"><strong style="color:var(--neon-teal)">UV:</strong> Mostly absorbed by the ozone layer (100–400 nm). <strong style="color:var(--neon-teal)">Visible:</strong> Reaches surface, powers photosynthesis, warms land/water. <strong style="color:var(--neon-teal)">Infrared:</strong> Warms Earth's surface, which re-radiates heat trapped by greenhouse gases.</div>
+    </div>
+  </div>
+
+  <!-- EM Spectrum visual -->
+  <div style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:1rem">The Electromagnetic Spectrum — High to Low Frequency</div>
+  <div class="spectrum-bar">
+    <div class="spec-band spec-gamma"><div class="spec-band-label">γ Rays</div><div class="spec-band-sub">Filtered by upper atmosphere</div></div>
+    <div class="spec-band spec-xray"><div class="spec-band-label">X-Rays</div><div class="spec-band-sub">Filtered by upper atmosphere</div></div>
+    <div class="spec-band spec-uv"><div class="spec-band-label">UV</div><div class="spec-band-sub">100–400 nm · Ozone absorbs most</div></div>
+    <div class="spec-band spec-vis"><div class="spec-band-label">Visible ✓</div><div class="spec-band-sub">Powers photosynthesis · Warms surface</div></div>
+    <div class="spec-band spec-ir"><div class="spec-band-label">Infrared ✓</div><div class="spec-band-sub">Warms surface · Greenhouse effect</div></div>
+    <div class="spec-band spec-micro"><div class="spec-band-label">Micro</div><div class="spec-band-sub">Too little energy to warm Earth</div></div>
+    <div class="spec-band spec-radio"><div class="spec-band-label">Radio</div><div class="spec-band-sub">Too little energy to warm Earth</div></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);font-family:var(--font-mono);margin-top:4px;padding:0 4px">
+    <span>← Higher frequency / Shorter wavelength</span>
+    <span>Lower frequency / Longer wavelength →</span>
+  </div>
+
+  <div class="safety-box" style="margin-top:1.5rem">
+    <strong>UV Radiation Caution (Ready to Go Beyond):</strong> UV rays (100–400 nm) have much higher energy than visible light. Prolonged exposure damages eyes and skin and increases cancer risk. Use UV-protective glasses and sunscreen. UV is useful in water purifiers (kills germs) and fluorescent lights.
+  </div>
+
+  <!-- Insolation & Solar Constant -->
+  <div style="margin-top:2.5rem;font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin-bottom:1rem">13.1 Insolation and the Solar Constant</div>
+
+  <div class="stat-row">
+    <div class="stat-block"><div class="stat-value">3×10⁸</div><div class="stat-label">m s⁻¹ · Speed of Light</div></div>
+    <div class="stat-block"><div class="stat-value">1.4 kW</div><div class="stat-label">m⁻² · Solar Constant</div></div>
+    <div class="stat-block"><div class="stat-value">~1 kW</div><div class="stat-label">m⁻² · Max Insolation at Surface</div></div>
+    <div class="stat-block"><div class="stat-value">99%</div><div class="stat-label">Sun's energy in UV+Vis+IR</div></div>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card green">
+      <div class="concept-icon">📡</div>
+      <div class="concept-title">Insolation</div>
+      <div class="concept-body">The amount of the Sun's radiation that actually reaches Earth's surface is called <strong style="color:var(--neon-ch13)">insolation</strong>. It is responsible for warming the surface and atmosphere. It is less than the solar constant due to absorption/scattering by gases, clouds, and dust.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🌞</div>
+      <div class="concept-title">Solar Constant</div>
+      <div class="concept-body">The average solar energy received per unit time per unit area perpendicular to the Sun's rays at the top of Earth's atmosphere. Value: approximately <strong style="color:var(--neon-blue)">1.4 kW m⁻² (= 1400 J s⁻¹ m⁻²)</strong>. Helps scientists understand energy balance and climate.</div>
+    </div>
+    <div class="concept-card amber">
+      <div class="concept-icon">🇮🇳</div>
+      <div class="concept-title">India's Solar Advantage</div>
+      <div class="concept-body">India's tropical and sub-tropical location means it receives <strong style="color:var(--neon-amber)">abundant sunlight year-round</strong>. This drives the southwest monsoon and offers huge potential for solar energy. Even a fraction of the Thar Desert covered with panels could supply India's electricity needs.</div>
+    </div>
+  </div>
+
+  <!-- Example 13.1 -->
+  <div class="example-card" style="margin-top:2rem">
+    <div class="example-header">
+      <span class="example-num">Example 13.1</span>
+      <div class="example-emoji">⚡</div>
+      <div class="example-title">Solar Energy Calculation</div>
+    </div>
+    <div class="example-question">How much solar energy will be received by a 1 m² area in one hour, if the insolation on the surface of the Earth is 1 kW m⁻²?</div>
+    <div class="example-answer-label">Solution</div>
+    <div class="example-answer">
+      Use: <strong style="color:var(--neon-ch13)">E = Intensity × Area × Time</strong><br><br>
+      E = 1 × 1000 J s⁻¹ m⁻² × 1 m² × 3600 s<br>
+      <strong style="color:var(--neon-teal)">E = 3,600,000 J = 3.6 × 10⁶ J</strong><br><br>
+      This is approximately equal to:<br>
+      • The energy needed to melt 5 kg of ice and heat the water to 100 °C<br>
+      • <strong>One unit of electricity (1 kWh)</strong> used in a household (as shown on an electricity bill)
+    </div>
+  </div>
+
+  <!-- Think as a Scientist -->
+  <div class="think-scientist-card">
+    <div class="think-scientist-tag">🧪 Think as a Scientist</div>
+    <div class="think-scientist-body">Estimate how much of Earth's surface would need to be covered with solar panels to supply all of India's electric power. Find India's total power consumption, assume ~1 kW m⁻² insolation and some efficiency fraction for panels. You will find that <strong style="color:var(--neon-ch13)">even a fraction of the Thar Desert's area</strong> could meet India's entire electricity needs — a staggering illustration of solar energy's potential.</div>
+  </div>
+
+  <!-- Bridging Science and Society: Anna Mani -->
+  <div class="bridging-card">
+    <div class="bridging-tag">Bridging Science and Society</div>
+    <div class="bridging-title">Anna Mani — India's Solar Radiation Pioneer</div>
+    <div class="bridging-body">
+      <span class="bridging-highlight">Anna Mani</span>, India's pioneering atmospheric scientist, mapped solar insolation across the entire country in the 1950s. Together with S. Rangarajan, she published <em>Solar Radiation Over India</em> in 1982 — creating the nation's first <span class="bridging-highlight">insolation atlas</span>. Her measurements revealed India's vast solar energy potential, which is now being realised through large-scale solar deployments, setting global benchmarks for a sustainable, solar-powered energy future.
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SURFACE HEATING ══ -->
+<div class="full-bg" id="surface">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 13.1.1–13.1.2 · Surface Interactions</div>
+    <h2 class="sec-title">How Solar Radiation Interacts with Earth's Surface</h2>
+    <p class="sec-subtitle">Not all surfaces absorb the same amount — colour, material, and latitude all matter</p>
+  </div>
+
+  <!-- Albedo -->
+  <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin-bottom:1rem">13.1.1 Albedo — The Reflectivity of Surfaces</div>
+
+  <div class="concept-grid" style="margin-bottom:2rem">
+    <div class="concept-card earth">
+      <div class="concept-icon">🪞</div>
+      <div class="concept-title">What is Albedo?</div>
+      <div class="concept-body">The <strong style="color:var(--neon-ch13)">fraction of solar radiation reflected by a surface</strong> is called its albedo (Latin: "whiteness"). High albedo → more reflection → surface stays cooler. Low albedo → less reflection, more absorption → surface heats up quickly.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🌑</div>
+      <div class="concept-title">Dark vs Light Surfaces</div>
+      <div class="concept-body">Dark surfaces (black soil, asphalt roads) absorb more sunlight → heat up faster. Light coloured surfaces (snow, ice, light soil) reflect more → stay cooler. This is why dark coloured clothes feel hotter than white ones in summer.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">📊</div>
+      <div class="concept-title">Climate Significance</div>
+      <div class="concept-body">Snow and ice (albedo 0.50–0.90) reflect most incoming radiation → polar regions stay cold. Oceans and black soil have low albedo → absorb more heat. When ice melts, the exposed ocean absorbs more heat → accelerating warming (a positive feedback loop).</div>
+    </div>
+  </div>
+
+  <!-- Activity 13.2 Albedo Table -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🔬 Activity 13.2</span>
+      <span class="activity-title">Albedo Values of Common Materials</span>
+    </div>
+    <div class="activity-body">Research and complete the albedo values of common materials from authentic sources.</div>
+    <div class="compare-wrap" style="margin-top:1rem">
+      <div style="padding:0.5rem 1.25rem;border-bottom:1px solid var(--border);font-family:var(--font-display);font-size:12px;font-weight:600;display:flex;gap:1rem"><span style="flex:1;color:var(--text-muted)">Material</span><span style="flex:2;color:var(--text-muted)">Albedo Range</span><span style="min-width:70px;text-align:right;color:var(--text-muted)">Value</span></div>
+      <div class="albedo-row"><span class="albedo-material">Snow</span><div class="albedo-bar-wrap"><div class="albedo-bar" style="width:85%"></div></div><span class="albedo-val">0.80 – 0.90</span></div>
+      <div class="albedo-row"><span class="albedo-material">Ice</span><div class="albedo-bar-wrap"><div class="albedo-bar" style="width:60%"></div></div><span class="albedo-val">0.50 – 0.70</span></div>
+      <div class="albedo-row"><span class="albedo-material">Crushed Rock</span><div class="albedo-bar-wrap"><div class="albedo-bar" style="width:28%"></div></div><span class="albedo-val">0.25 – 0.30</span></div>
+      <div class="albedo-row"><span class="albedo-material">Light Coloured Soil</span><div class="albedo-bar-wrap"><div class="albedo-bar" style="width:25%"></div></div><span class="albedo-val">0.20 – 0.30</span></div>
+      <div class="albedo-row"><span class="albedo-material">Black Soil</span><div class="albedo-bar-wrap"><div class="albedo-bar" style="width:10%"></div></div><span class="albedo-val">0.05 – 0.15</span></div>
+      <div class="albedo-row"><span class="albedo-material">Ocean Water</span><div class="albedo-bar-wrap"><div class="albedo-bar" style="width:8%"></div></div><span class="albedo-val">0.06 – 0.10</span></div>
+    </div>
+  </div>
+
+  <div class="note-box"><strong>Key Pattern:</strong> Snow and ice have HIGH albedo → reflect most radiation → polar regions stay cold. Black soil and ocean water have LOW albedo → absorb more → relatively warmer. This difference drives global temperature gradients.</div>
+
+  <!-- Urban Heat Island -->
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🏙️</div>
+    <div class="curiosity-tag">Threads of Curiosity</div>
+    <div class="curiosity-title">Urban Heat Island Effect</div>
+    <div class="curiosity-body">Cities are warmer than surrounding rural areas, especially during summer and at night. Buildings of steel, concrete, brick, and asphalt roads all <span class="curiosity-highlight">absorb and retain solar heat</span>, then re-radiate it, warming cities more. This increases air conditioning demand, further stressing urban ecosystems. Rural areas and forests stay cooler through <span class="curiosity-highlight">shade and plant transpiration</span>. Traditional mud and wooden houses re-radiate less heat and stay cool. The urban heat island effect shows how human land use can alter the local climate.</div>
+  </div>
+
+  <!-- Latitude -->
+  <div style="margin-top:2rem;font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin-bottom:1rem">13.1.2 Latitude and Earth's Shape — Why the Tropics Are Hot and Poles Are Cold</div>
+
+  <div class="triple-grid">
+    <div class="triple-card c1">
+      <div class="triple-label">Equator</div>
+      <span class="triple-icon">🌅</span>
+      <div class="triple-title">Concentrated Rays</div>
+      <div class="triple-desc">Sun's rays strike nearly perpendicularly — concentrated over a small area → intense heating → relatively warm year-round.</div>
+      <div class="triple-example">Equatorial regions remain warm throughout the year</div>
+    </div>
+    <div class="triple-card c2">
+      <div class="triple-label">Mid-Latitudes</div>
+      <span class="triple-icon">🌄</span>
+      <div class="triple-title">Angled Rays</div>
+      <div class="triple-desc">Sun's rays strike at an angle → spread over a larger area → less intense heating → seasonal temperature variations.</div>
+      <div class="triple-example">India, Europe — seasonal climate variations</div>
+    </div>
+    <div class="triple-card c3">
+      <div class="triple-label">Poles</div>
+      <span class="triple-icon">❄️</span>
+      <div class="triple-title">Spread-Out Rays</div>
+      <div class="triple-desc">Sun's rays strike at very shallow angles → spread over a very large area → much weaker heating → very cold conditions.</div>
+      <div class="triple-example">Polar regions experience frigid conditions</div>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top:1.5rem">
+    <p>Earth's <strong>spherical shape + axial tilt</strong> → uneven solar radiation distribution → temperature differences between equator and poles → drives <strong>global winds and ocean currents</strong>. The Earth's tilt also causes <strong>seasons</strong> and variation in day length throughout the year.</p>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ ATMOSPHERE ══ -->
+<section class="section" id="atmosphere">
+  <div class="sec-header">
+    <div class="sec-tag">Section 13.1.3 · Role of the Atmosphere</div>
+    <h2 class="sec-title">Earth's Atmosphere — A Layered Protector</h2>
+    <p class="sec-subtitle">The air surrounding Earth has a precise layered structure that regulates energy, weather, and life</p>
+  </div>
+
+  <div class="highlight-box">
+    <p>The atmosphere is held in place by Earth's gravity. It consists mainly of <strong>nitrogen (78%)</strong> and <strong>oxygen (21%)</strong> along with small amounts of argon, carbon dioxide, water vapour, and other gases. It plays two crucial roles: absorbing incoming harmful radiation, and trapping outgoing heat.</p>
+  </div>
+
+  <!-- Atmospheric Layers -->
+  <div style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--text-primary);margin:1.5rem 0 1rem">Layers of Earth's Atmosphere</div>
+  <div class="atmos-layers">
+    <div class="atmos-layer al-tropo">
+      <div>
+        <div class="atmos-layer-name">Troposphere</div>
+        <div class="atmos-layer-alt">0 – 12 km above surface</div>
+      </div>
+      <div class="atmos-layer-feat">Home of virtually ALL weather — clouds, rain, storms, wind. Temperature DECREASES with height (~6.5 °C/km). Warm air rises → drives winds and storms. Troposphere height is max above equator, lowest at poles.</div>
+    </div>
+    <div class="atmos-layer al-strato">
+      <div>
+        <div class="atmos-layer-name">Stratosphere</div>
+        <div class="atmos-layer-alt">12 – 50 km above surface</div>
+      </div>
+      <div class="atmos-layer-feat">Contains the ozone layer. Ozone absorbs UV rays and heats the atmosphere → temperature INCREASES with height. This calms the layer (no vertical mixing) and keeps weather in the troposphere.</div>
+    </div>
+    <div class="atmos-layer al-meso">
+      <div>
+        <div class="atmos-layer-name">Mesosphere</div>
+        <div class="atmos-layer-alt">50 – 80 km</div>
+      </div>
+      <div class="atmos-layer-feat">Meteors burn up here. Minor role in surface climate regulation.</div>
+    </div>
+    <div class="atmos-layer al-thermo">
+      <div>
+        <div class="atmos-layer-name">Thermosphere</div>
+        <div class="atmos-layer-alt">80 – ~700 km</div>
+      </div>
+      <div class="atmos-layer-feat">Extremely thin air; absorbs X-rays and UV. Aurora borealis occurs here. Minor role in surface climate.</div>
+    </div>
+    <div class="atmos-layer al-exo">
+      <div>
+        <div class="atmos-layer-name">Exosphere</div>
+        <div class="atmos-layer-alt">&gt;700 km · Outer Space starts ~100 km</div>
+      </div>
+      <div class="atmos-layer-feat">Outermost, extremely thin — gradually merges into space. Satellites orbit here.</div>
+    </div>
+  </div>
+
+  <!-- Greenhouse Effect -->
+  <div style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--text-primary);margin:1.5rem 0 1rem">The Greenhouse Effect — Earth's Natural Thermostat</div>
+
+  <div class="concept-grid">
+    <div class="concept-card green">
+      <div class="concept-icon">🏡</div>
+      <div class="concept-title">How It Works (Natural)</div>
+      <div class="concept-body">Earth's surface absorbs sunlight and re-radiates it as <strong style="color:var(--neon-ch13)">infrared (heat) radiation</strong>. Greenhouse gases — CO₂, CH₄, water vapour — absorb this outgoing heat, preventing it from escaping into space. This keeps Earth warm enough to support life.</div>
+    </div>
+    <div class="concept-card amber">
+      <div class="concept-icon">🔥</div>
+      <div class="concept-title">Enhanced Greenhouse Effect (Human)</div>
+      <div class="concept-body">Excess CO₂ from burning fossil fuels <strong style="color:var(--neon-amber)">enhances the greenhouse effect</strong>, causing global warming. Without checks, this could make Earth uninhabitable. Venus — with a runaway greenhouse effect — is hotter than Mercury despite being farther from the Sun.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🔬</div>
+      <div class="concept-title">Without Atmosphere</div>
+      <div class="concept-body">Without the atmosphere's greenhouse effect, <strong style="color:var(--neon-blue)">Earth would be far too cold</strong> to support life as we know it. The atmosphere acts as a blanket — the challenge is that excess greenhouse gases make the blanket too thick.</div>
+    </div>
+  </div>
+
+  <!-- Ozone Layer Curiosity -->
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🛡️</div>
+    <div class="curiosity-tag">Threads of Curiosity</div>
+    <div class="curiosity-title">Why is the Ozone Layer So Important?</div>
+    <div class="curiosity-body">
+      The ozone layer shields life on Earth by absorbing harmful UV radiation. When ozone molecules are destroyed faster than naturally formed, the layer thins. In the late 20th century, <span class="curiosity-highlight">chlorofluorocarbons (CFCs)</span> — used in refrigerators and aerosols — caused severe ozone loss over Antarctica, forming the "ozone hole." Increased UV radiation harms ecosystems and causes skin cancer. The <span class="curiosity-highlight">Montreal Protocol</span> (a global agreement) reduced CFC use, and the ozone layer is now slowly recovering — showing the power of international scientific cooperation.
+    </div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      Visit <strong>https://phet.colorado.edu/en/simulations/greenhouse-effect</strong> and study how greenhouse gas concentration affects surface temperature. What happens when you double CO₂ in the simulation?
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ WINDS & CURRENTS ══ -->
+<div class="full-bg" id="winds">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 13.2 · Wind and Ocean Currents</div>
+    <h2 class="sec-title">Uneven Heating Drives Winds and Ocean Currents</h2>
+    <p class="sec-subtitle">Pressure differences from uneven heating set air and water in motion — from valley breezes to global gyres</p>
+  </div>
+
+  <div class="highlight-box">
+    <p>Wind is the movement of air from a <strong>high pressure region to a low pressure region</strong>. These pressure differences are mainly caused by the uneven heating of Earth's surface by the Sun — the same idea that explains sea/land breezes also drives planetary-scale circulation.</p>
+  </div>
+
+  <!-- Local Winds -->
+  <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin:1.5rem 0 1rem">13.2.1 Local Winds — Valley and Mountain Breezes</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:2rem">
+    <div class="concept-card blue">
+      <div class="concept-icon">🏔️☀️</div>
+      <div class="concept-title">Valley Breeze (Daytime)</div>
+      <div class="concept-body">During the day, mountain slopes facing the Sun heat up faster than the valley floor. Warm air over the slopes <strong style="color:var(--neon-blue)">rises (low pressure)</strong>. Cooler air from the valley moves up the slopes to replace it. This upslope airflow is a <strong>valley breeze</strong>.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🌙❄️</div>
+      <div class="concept-title">Mountain Breeze (Nighttime)</div>
+      <div class="concept-body">After sunset, slopes lose heat faster → cooler and denser than the valley. Cool dense air <strong style="color:var(--neon-purple)">flows downslope (high pressure)</strong> into the valley. This downslope airflow is a <strong>mountain breeze</strong>. Common in Shimla, Dehradun, Himalayan valleys.</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p>Local winds <strong>influence agriculture</strong> in mountain regions by regulating temperature and moisture — cool mountain breezes help maintain soil moisture and reduce plant stress during hot days, supporting crop health.</p>
+  </div>
+
+  <!-- Planetary Winds -->
+  <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin:2rem 0 1rem">13.2.2 Planetary Winds — Global Pressure Belts</div>
+
+  <div class="cycle-flow">
+    <div class="cycle-step cs1"><div class="cycle-step-icon">🌡️</div><div class="cycle-step-label">Equatorial Low</div><div class="cycle-step-body">Intense solar heating → warm air rises → low pressure belt at equator (0°)</div></div>
+    <div class="cycle-step cs2"><div class="cycle-step-icon">⬆️</div><div class="cycle-step-label">Poleward Flow</div><div class="cycle-step-body">Rising air moves poleward at higher altitudes, cools, and sinks</div></div>
+    <div class="cycle-step cs3"><div class="cycle-step-icon">🔽</div><div class="cycle-step-label">Sub-Tropical High</div><div class="cycle-step-body">Cool air sinks at 30° N and S → subtropical high pressure belts</div></div>
+    <div class="cycle-step cs4"><div class="cycle-step-icon">↔️</div><div class="cycle-step-label">Sub-Polar Low</div><div class="cycle-step-body">Surface air from 30° moves to 60° N/S → meets cold polar air → sub-polar lows</div></div>
+    <div class="cycle-step cs5"><div class="cycle-step-icon">❄️</div><div class="cycle-step-label">Polar High</div><div class="cycle-step-body">Very cold dense air at poles sinks → polar high pressure belts at 90° N/S</div></div>
+  </div>
+
+  <div class="note-box"><strong>Coriolis Effect:</strong> Earth's rotation deflects planetary winds from their straight paths. In the Northern Hemisphere, winds curve to the right; in the Southern Hemisphere, to the left. This is why winds follow curved paths rather than moving directly from high to low pressure.</div>
+
+  <!-- Ocean Currents -->
+  <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin:2rem 0 1rem">13.2.3 Ocean Currents — Global Heat Conveyor</div>
+
+  <div class="concept-grid">
+    <div class="concept-card earth">
+      <div class="concept-icon">🌀</div>
+      <div class="concept-title">What Drives Ocean Currents?</div>
+      <div class="concept-body">Four factors: <strong style="color:var(--neon-ch13)">planetary winds</strong> (drag surface water by friction), <strong>temperature differences</strong> (warm water is less dense, stays at surface; cold water sinks), <strong>salinity differences</strong> (denser high-salinity water sinks), and <strong>Earth's rotation</strong> (Coriolis effect).</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🔄</div>
+      <div class="concept-title">Gyres — Ocean's Circular Patterns</div>
+      <div class="concept-body">Earth's rotation deflects moving water masses into large circular patterns called <strong style="color:var(--neon-teal)">gyres</strong>. These rotate <strong>clockwise</strong> in the Northern Hemisphere and <strong>counter-clockwise</strong> in the Southern Hemisphere. Continents modify gyre paths by blocking and redirecting currents.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🌡️</div>
+      <div class="concept-title">Climate Role of Ocean Currents</div>
+      <div class="concept-body">Ocean currents transport heat from equator to poles, <strong style="color:var(--neon-blue)">reducing global temperature differences</strong>. The warm <strong>North Atlantic Drift</strong> (extension of the Gulf Stream) keeps northwestern European ports ice-free in winter, enabling trade. Currents also transport nutrients, supporting vast marine ecosystems.</div>
+    </div>
+  </div>
+
+  <!-- India's Scientific Contribution -->
+  <div class="india-card">
+    <div class="india-tag">India's Scientific Contributions</div>
+    <div class="india-title">Indian Institute of Tropical Meteorology (IITM), Pune</div>
+    <div class="india-body">Scientists at IITM, Pune, run advanced computer models that couple energy flows between atmosphere, oceans, land, and ice to simulate the Indian monsoon. These models use data from satellites, buoys in the Indian Ocean, and even stations in Antarctica to improve seasonal forecasts and study how global warming may change monsoon rainfall patterns across India.</div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>2.</strong> How does the cool mountain breeze benefit agriculture — crops and soil?<br><br>
+      <strong>3.</strong> What happens to warm surface water from the equator as it travels toward the poles? What impact does this movement have on the regions it passes through?
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ BIOGEOCHEMICAL CYCLES INTRO ══ -->
+<section class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 13.3 · Matter Cycles</div>
+    <h2 class="sec-title">Biogeochemical Cycles — Nature's Recycling System</h2>
+    <p class="sec-subtitle">Essential elements cycle continuously between living organisms and the non-living environment, sustaining all life</p>
+  </div>
+  <div class="highlight-box">
+    <p>Living organisms constantly exchange matter and energy with air, water, soil, and rocks. This continuous interaction between <strong>abiotic (non-living)</strong> and <strong>biotic (living)</strong> components results in the transfer of matter across Earth's spheres. The cyclic movement of matter and energy between these components is called the <strong>biogeochemical cycle</strong>. These cycles recycle carbon, nitrogen, oxygen, and water — keeping them available to support life indefinitely.</p>
+  </div>
+  <div class="concept-grid">
+    <div class="concept-card blue"><div class="concept-icon">💧</div><div class="concept-title">Water Cycle (Hydrological)</div><div class="concept-body">Evaporation → condensation → precipitation → infiltration → runoff. Links all five spheres. Climate change intensifies the cycle — more extreme rainfall and droughts.</div></div>
+    <div class="concept-card green"><div class="concept-icon">🌿</div><div class="concept-title">Carbon Cycle</div><div class="concept-body">Fast cycle (days–years): photosynthesis, respiration, decomposition. Slow cycle (millions of years): fossil fuel formation. Human burning of fossil fuels is disrupting the balance.</div></div>
+    <div class="concept-card purple"><div class="concept-icon">⚗️</div><div class="concept-title">Nitrogen Cycle</div><div class="concept-body">N₂ → fixed by bacteria → nitrites/nitrates → assimilated by plants → eaten by animals → decomposed → denitrified back to N₂. Essential for proteins and nucleic acids.</div></div>
+    <div class="concept-card amber"><div class="concept-icon">🔵</div><div class="concept-title">Oxygen Cycle</div><div class="concept-body">Photosynthesis produces O₂; respiration and combustion consume it. Balance between production (plants) and consumption (animals, fires, industry) circulates oxygen through all spheres.</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ WATER CYCLE ══ -->
+<div class="full-bg" id="water-cycle">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 13.3.1 · Hydrological Cycle</div>
+    <h2 class="sec-title">The Water Cycle</h2>
+    <p class="sec-subtitle">Water continuously moves through evaporation, condensation, precipitation, and infiltration</p>
+  </div>
+
+  <div class="cycle-flow">
+    <div class="cycle-step cs1"><div class="cycle-step-icon">☀️</div><div class="cycle-step-label">Evaporation</div><div class="cycle-step-body">Solar energy evaporates water from oceans, rivers, lakes into the atmosphere</div></div>
+    <div class="cycle-step cs2"><div class="cycle-step-icon">🌿</div><div class="cycle-step-label">Transpiration</div><div class="cycle-step-body">Plants release water vapour through stomata (transpiration)</div></div>
+    <div class="cycle-step cs3"><div class="cycle-step-icon">☁️</div><div class="cycle-step-label">Condensation</div><div class="cycle-step-body">Water vapour cools and condenses into cloud droplets</div></div>
+    <div class="cycle-step cs4"><div class="cycle-step-icon">🌧️</div><div class="cycle-step-label">Precipitation</div><div class="cycle-step-body">Falls as rain, hail, or snow back to Earth's surface</div></div>
+    <div class="cycle-step cs5"><div class="cycle-step-icon">🏔️</div><div class="cycle-step-label">Runoff &amp; Infiltration</div><div class="cycle-step-body">Flows to oceans via rivers; seeps into soil as groundwater</div></div>
+  </div>
+
+  <div style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--text-primary);margin:1.5rem 0 1rem">How Water Connects All Spheres</div>
+  <div class="concept-grid">
+    <div class="concept-card earth">
+      <div class="concept-icon">🏔️→💧</div>
+      <div class="concept-title">Water Dissolves Minerals</div>
+      <div class="concept-body">Water seeping through soil and rocks <strong style="color:var(--neon-ch13)">dissolves minerals</strong> from the geosphere, transporting nutrients to oceans where they support marine life in the biosphere.</div>
+    </div>
+    <div class="concept-card amber">
+      <div class="concept-icon">🌡️→🌊</div>
+      <div class="concept-title">Climate Change Disrupts the Cycle</div>
+      <div class="concept-body">Warmer atmosphere holds more moisture → <strong style="color:var(--neon-amber)">heavier rains</strong> (intensified monsoons) in some areas and droughts elsewhere. Melting glaciers raise sea levels, threatening coastal cities like Mumbai and Chennai.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🌊→🌾</div>
+      <div class="concept-title">Agriculture at Risk</div>
+      <div class="concept-body">Intense rainfall increases runoff → more soil erosion → less infiltration → reduced groundwater recharge → makes <strong style="color:var(--neon-blue)">sustaining agriculture harder</strong> during dry months.</div>
+    </div>
+  </div>
+
+  <div class="note-box"><strong>Water Cycle Links All Five Spheres:</strong> Cryosphere (glaciers) → Hydrosphere (rivers and oceans) → Atmosphere (moisture) → Geosphere (soil erosion, infiltration) → Biosphere (crops, fisheries). All are affected by global warming.</div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q"><strong>3.</strong> Explain how climate change affects the water cycle with examples from India.</div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ CARBON CYCLE ══ -->
+<section class="section" id="carbon-cycle">
+  <div class="sec-header">
+    <div class="sec-tag">Section 13.3.2 · Carbon Cycle</div>
+    <h2 class="sec-title">The Carbon Cycle — Backbone of Life</h2>
+    <p class="sec-subtitle">Carbon circulates between atmosphere, biosphere, geosphere, and hydrosphere across vastly different timescales</p>
+  </div>
+
+  <div class="highlight-box">
+    <p>Carbon forms the backbone of life — every protein, carbohydrate, fat and DNA molecule contains carbon. It circulates between the <strong>atmosphere</strong> (CO₂ gas), <strong>biosphere</strong> (plants and animals), <strong>geosphere</strong> (carbonate rocks, coal, oil), and <strong>hydrosphere</strong> (dissolved CO₂, marine shells).</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:1.5rem 0">
+    <div class="concept-card green">
+      <div class="concept-icon">⚡</div>
+      <div class="concept-title">Fast Carbon Cycle (Days → Years)</div>
+      <div class="concept-body">
+        <strong style="color:var(--neon-ch13)">Photosynthesis:</strong> Plants absorb CO₂ → convert to glucose using sunlight.<br>
+        <strong style="color:var(--neon-ch13)">Respiration:</strong> Plants/animals release CO₂ back to atmosphere.<br>
+        <strong style="color:var(--neon-ch13)">Decomposition:</strong> Dead organisms broken down → CO₂ released.<br>
+        <strong style="color:var(--neon-ch13)">Ocean exchange:</strong> Atmosphere and ocean water continuously exchange CO₂.
+      </div>
+    </div>
+    <div class="concept-card amber">
+      <div class="concept-icon">⏳</div>
+      <div class="concept-title">Slow Carbon Cycle (Millions of Years)</div>
+      <div class="concept-body">
+        <strong style="color:var(--neon-amber)">Fossil formation:</strong> Dead organisms buried and compressed over millions of years → coal, oil, gas.<br>
+        <strong style="color:var(--neon-amber)">Burning fossil fuels:</strong> Releases this stored carbon back as CO₂ in just decades (very fast on geological timescales).<br>
+        <strong style="color:var(--neon-amber)">Carbonate rocks:</strong> Marine organisms form shells → sink → stored as carbonate rocks.
+      </div>
+    </div>
+  </div>
+
+  <!-- Ocean role -->
+  <div class="concept-card blue" style="margin-bottom:1.5rem">
+    <div class="concept-icon">🌊</div>
+    <div class="concept-title">Ocean's Role in the Carbon Cycle</div>
+    <div class="concept-body">Ocean water absorbs atmospheric CO₂ to form carbonate and bicarbonate ions. <strong style="color:var(--neon-blue)">Phytoplankton</strong> use them for photosynthesis. Some marine organisms build shells from them. When organisms die, they sink to the ocean floor — storing carbon for long periods. The ocean holds ~71% of all global carbon, acting as a major carbon sink and regulating atmospheric CO₂ levels.</div>
+  </div>
+
+  <!-- Keeling Curve stats -->
+  <div style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:1rem">The Keeling Curve — Rising Atmospheric CO₂ (1960–2025)</div>
+  <div class="stat-row">
+    <div class="stat-block"><div class="stat-value">315</div><div class="stat-label">ppm CO₂ in 1960</div></div>
+    <div class="stat-block"><div class="stat-value">~424</div><div class="stat-label">ppm CO₂ in 2025</div></div>
+    <div class="stat-block"><div class="stat-value">+35%</div><div class="stat-label">Rise since 1960</div></div>
+    <div class="stat-block"><div class="stat-value">71%</div><div class="stat-label">Global carbon in oceans</div></div>
+    <div class="stat-block"><div class="stat-value">~1%</div><div class="stat-label">Global carbon in atmosphere</div></div>
+    <div class="stat-block"><div class="stat-value">49%</div><div class="stat-label">Carbon of dry weight of organisms</div></div>
+  </div>
+
+  <div class="safety-box"><strong>The Critical Imbalance:</strong> While some CO₂ is necessary to keep Earth warm enough for life, <strong>excessive CO₂ intensifies the greenhouse effect</strong> → global warming → glacier and Arctic ice melting → sea level rise → more extreme weather → in India, more intense monsoons. Though fossil fuels still power much electricity, India is rapidly expanding renewable energy sources.</div>
+
+  <!-- Carbon curiosity -->
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🌊</div>
+    <div class="curiosity-tag">Threads of Curiosity</div>
+    <div class="curiosity-title">Carbon — The World's Hidden Reserves</div>
+    <div class="curiosity-body">Carbon constitutes approximately <span class="curiosity-highlight">49% of the dry weight of living organisms</span>. Out of total global carbon, 71% is found in oceans — this oceanic reservoir regulates the amount of CO₂ in the atmosphere. Meanwhile, the atmosphere holds only about <span class="curiosity-highlight">1% of the total global carbon</span> — yet this small fraction has an outsized effect on Earth's climate.</div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q"><strong>4.</strong> The CO₂ dissolved in the ocean is disturbed when global temperature increases. What will happen to marine life — consider phytoplankton, coral reefs, and shell-forming organisms?</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ NITROGEN CYCLE ══ -->
+<div class="full-bg" id="nitrogen-cycle">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 13.3.3 · Nitrogen Cycle</div>
+    <h2 class="sec-title">The Nitrogen Cycle</h2>
+    <p class="sec-subtitle">Nitrogen is essential for proteins and nucleic acids — but the abundant N₂ in air must first be "fixed" before life can use it</p>
+  </div>
+
+  <div class="highlight-box">
+    <p>Nitrogen is essential for proteins and nucleic acids. The largest reservoir is the atmosphere — but <strong>N₂ gas is non-reactive</strong> and cannot be used directly by plants or animals. It must first be converted to soluble compounds by specialised microorganisms.</p>
+  </div>
+
+  <div class="n-step-grid">
+    <div class="n-step" style="--ns-color:var(--neon-ch13)">
+      <div class="n-step-label">Step 1</div>
+      <div class="n-step-title">Nitrogen Fixation</div>
+      <div class="n-step-body"><em>Rhizobium</em> (legume root nodules) and <em>Azotobacter</em> (soil) convert atmospheric N₂ → ammonia (NH₃). Lightning also fixes tiny amounts of nitrogen as oxides.</div>
+    </div>
+    <div class="n-step" style="--ns-color:var(--neon-teal)">
+      <div class="n-step-label">Step 2</div>
+      <div class="n-step-title">Nitrification</div>
+      <div class="n-step-body"><em>Nitrosomonas</em> converts ammonia → nitrite (NO₂⁻). <em>Nitrobacter</em> converts nitrite → nitrate (NO₃⁻). Nitrates are the form most usable by plants.</div>
+    </div>
+    <div class="n-step" style="--ns-color:var(--neon-blue)">
+      <div class="n-step-label">Step 3</div>
+      <div class="n-step-title">Assimilation</div>
+      <div class="n-step-body">Plants absorb nitrates from soil through their roots. Animals obtain nitrogen by consuming plants or other animals. Nitrogen becomes proteins and nucleic acids.</div>
+    </div>
+    <div class="n-step" style="--ns-color:var(--neon-amber)">
+      <div class="n-step-label">Step 4</div>
+      <div class="n-step-title">Ammonification</div>
+      <div class="n-step-body">When plants and animals die or produce waste, decomposers (bacteria and fungi) break down organic matter → returning ammonia/ammonium to the soil.</div>
+    </div>
+    <div class="n-step" style="--ns-color:var(--neon-pink)">
+      <div class="n-step-label">Step 5</div>
+      <div class="n-step-title">Denitrification</div>
+      <div class="n-step-body">Denitrifying bacteria (<em>Pseudomonas</em>) convert nitrates → N₂ gas, releasing nitrogen back to the atmosphere. Completes the cycle.</div>
+    </div>
+  </div>
+
+  <!-- Bacteria overview -->
+  <div class="compare-wrap" style="margin-top:1rem">
+    <table class="compare-table">
+      <thead><tr><th class="th-feat">Organism</th><th class="th-a">Role in Nitrogen Cycle</th><th class="th-b">Where Found</th></tr></thead>
+      <tbody>
+        <tr><td><em>Rhizobium</em></td><td class="td-a">Nitrogen fixation: N₂ → NH₃</td><td class="td-b">Root nodules of legumes (beans, peas, dal)</td></tr>
+        <tr><td><em>Azotobacter</em></td><td class="td-a">Nitrogen fixation: N₂ → NH₃</td><td class="td-b">Free-living in soil</td></tr>
+        <tr><td><em>Nitrosomonas</em></td><td class="td-a">Nitrification: NH₃ → NO₂⁻</td><td class="td-b">Soil</td></tr>
+        <tr><td><em>Nitrobacter</em></td><td class="td-a">Nitrification: NO₂⁻ → NO₃⁻</td><td class="td-b">Soil</td></tr>
+        <tr><td><em>Pseudomonas</em></td><td class="td-a">Denitrification: NO₃⁻ → N₂</td><td class="td-b">Soil (anaerobic conditions)</td></tr>
+        <tr><td>Bacteria &amp; Fungi (Decomposers)</td><td class="td-a">Ammonification: organic N → NH₃</td><td class="td-b">Soil, dead organic matter</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Haber-Bosch Ready to Go Beyond -->
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🌾</div>
+    <div class="curiosity-tag">Ready to Go Beyond</div>
+    <div class="curiosity-title">The Haber-Bosch Process — "Bread from Air"</div>
+    <div class="curiosity-body">Today, most nitrogen is fixed artificially via the <span class="curiosity-highlight">Haber-Bosch process</span> (early 1900s) — making ammonia from atmospheric N₂. This produces most of the world's fertilisers, enabling India's Green Revolution and feeding billions. <span class="curiosity-highlight">More than half the nitrogen atoms in your body</span> came from the Haber-Bosch process. However, the reaction uses ~1–2% of global energy, and fertiliser overuse has degraded soil and water quality through eutrophication.</div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ OXYGEN CYCLE ══ -->
+<section class="section" id="oxygen-cycle">
+  <div class="sec-header">
+    <div class="sec-tag">Section 13.3.4 · Oxygen Cycle</div>
+    <h2 class="sec-title">The Oxygen Cycle</h2>
+    <p class="sec-subtitle">The balance between photosynthesis (production) and respiration/combustion (consumption) keeps oxygen levels stable</p>
+  </div>
+
+  <div class="triple-grid">
+    <div class="triple-card c1">
+      <div class="triple-label">Production</div>
+      <span class="triple-icon">🌿</span>
+      <div class="triple-title">Photosynthesis</div>
+      <div class="triple-desc">Plants use sunlight, CO₂, and water to produce glucose and O₂. The primary source of atmospheric oxygen. Phytoplankton do this in oceans.</div>
+      <div class="triple-example">6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂</div>
+    </div>
+    <div class="triple-card c2">
+      <div class="triple-label">Consumption</div>
+      <span class="triple-icon">🫁</span>
+      <div class="triple-title">Respiration</div>
+      <div class="triple-desc">All living organisms use O₂ to break down glucose for energy, releasing CO₂. Happens 24/7 in all cells — the reverse of photosynthesis.</div>
+      <div class="triple-example">C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + energy</div>
+    </div>
+    <div class="triple-card c3">
+      <div class="triple-label">Also Consumes</div>
+      <span class="triple-icon">🔥</span>
+      <div class="triple-title">Combustion</div>
+      <div class="triple-desc">Burning of fossil fuels and biomass uses large amounts of O₂ and releases CO₂. Industrial combustion has significantly shifted the O₂/CO₂ balance.</div>
+      <div class="triple-example">Fuel + O₂ → CO₂ + H₂O + energy</div>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top:1.5rem">
+    <p>Oxygen also exists in combined forms — in the Earth's crust as metal oxides and minerals, and in the air as CO₂. The <strong>balance between photosynthesis (production) and respiration + combustion (consumption)</strong> circulates oxygen between the atmosphere, land, oceans, and living organisms. About <strong>21% of the atmosphere</strong> is free O₂.</p>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>5.</strong> What would happen to plants and animals on Earth if the biogeochemical cycles were disrupted and stopped? Explain by giving examples for water, carbon, and nitrogen cycles.<br><br>
+      <strong>What if...</strong> Photosynthesis stopped — what would happen on Earth?
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ HUMAN IMPACT ══ -->
+<div class="full-bg" id="human-impact">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 13.4 · Human Impact</div>
+    <h2 class="sec-title">Human Impact on Earth's Processes</h2>
+    <p class="sec-subtitle">Human activities are disrupting biogeochemical cycles across all five spheres — but solutions exist</p>
+  </div>
+
+  <div class="highlight-box">
+    <p>Over the past 50 years, there has been significant change in Earth's natural systems. <strong>Rising CO₂</strong> from fossil fuels leads to extreme weather and biodiversity loss. Human actions disrupt biogeochemical cycles across all spheres simultaneously — but both local and global solutions can help restore balance.</p>
+  </div>
+
+  <!-- Impact Cards -->
+  <div class="impact-card danger">
+    <div class="impact-icon">🏭</div>
+    <div>
+      <div class="impact-content-title">Burning Fossil Fuels — Carbon Cycle Disruption</div>
+      <div class="impact-content-body">Burning coal, oil, and gas releases long-stored carbon as CO₂ almost instantly. This saturates natural carbon sinks (forests, oceans). Excess CO₂ intensifies the greenhouse effect → global warming → melting glaciers → rising sea levels → more extreme monsoons. India is rapidly increasing renewable energy to reduce this impact.</div>
+    </div>
+  </div>
+
+  <div class="impact-card danger">
+    <div class="impact-icon">🌊</div>
+    <div>
+      <div class="impact-content-title">Ocean Acidification — Marine Ecosystem Threat</div>
+      <div class="impact-content-body">Excess atmospheric CO₂ increases ocean absorption → makes seawater more acidic. This threatens tiny plankton and coral reefs — the foundation of marine food chains. Warmer ocean water also reduces the ocean's capacity to absorb CO₂, weakening it as a carbon sink.</div>
+    </div>
+  </div>
+
+  <div class="impact-card warn">
+    <div class="impact-icon">🌱</div>
+    <div>
+      <div class="impact-content-title">Fertiliser Overuse — Eutrophication</div>
+      <div class="impact-content-body">Overuse of nitrogen fertilisers in agriculture adds excessive nitrates to rivers and lakes → causes widespread algal blooms → algae deplete oxygen → fish die. This process is called <strong>eutrophication</strong>. It threatens freshwater bodies and coastal fisheries across India and the world.</div>
+    </div>
+  </div>
+
+  <div class="impact-card warn">
+    <div class="impact-icon">🌳</div>
+    <div>
+      <div class="impact-content-title">Deforestation — Multiple Cycle Disruptions</div>
+      <div class="impact-content-body">Clearing forests simultaneously: reduces photosynthesis (less CO₂ uptake) + reduces transpiration (less local rainfall) + alters surface albedo + removes root systems (soil erosion increases) + destroys habitats (biodiversity loss). All five spheres are affected at once, making deforestation one of the most damaging human activities.</div>
+    </div>
+  </div>
+
+  <div class="impact-card danger">
+    <div class="impact-icon">🚗</div>
+    <div>
+      <div class="impact-content-title">Vehicular Emissions — Smog and Ground-Level Ozone</div>
+      <div class="impact-content-body">Vehicular emissions react with sunlight to form ground-level smog and ozone — harmful to health (unlike the beneficial stratospheric ozone that blocks UV). These pollutants make city air unhealthy and contribute to the urban heat island effect.</div>
+    </div>
+  </div>
+
+  <!-- Solutions -->
+  <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin:2rem 0 1rem">What Can Be Done — Restoring Balance</div>
+
+  <div class="concept-grid">
+    <div class="concept-card earth">
+      <div class="concept-icon">🌐</div>
+      <div class="concept-title">Global Cooperation</div>
+      <div class="concept-body">The <strong style="color:var(--neon-ch13)">Montreal Protocol</strong> successfully reduced CFCs and began ozone layer recovery — proof that global cooperation works. The Kyoto Protocol and Paris Agreement aimed at CO₂ reduction but have been less successful in achieving targets.</div>
+    </div>
+    <div class="concept-card green">
+      <div class="concept-icon">♻️</div>
+      <div class="concept-title">Individual Actions</div>
+      <div class="concept-body">Save energy, conserve water, reduce waste, reuse and recycle materials. India has planted billions of trees, expanded solar and renewable energy significantly, and promoted sustainable farming practices.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">☀️</div>
+      <div class="concept-title">Renewable Energy Transition</div>
+      <div class="concept-body">Switching from fossil fuels to solar, wind, and other renewable sources is critical. India is setting global benchmarks with rapid solar expansion. Even small individual choices in energy use contribute to the larger change.</div>
+    </div>
+  </div>
+
+  <!-- Mission LiFE -->
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🌱</div>
+    <div class="curiosity-tag">Threads of Curiosity</div>
+    <div class="curiosity-title">Mission LiFE — Lifestyle for Environment</div>
+    <div class="curiosity-body">
+      <span class="curiosity-highlight">Mission LiFE</span> is an India-led global initiative introduced at the UN Climate Change Conference in 2021. It encourages people to adopt mindful, eco-friendly lifestyles. Traditional practices and ancient texts in India have long recognised that the Earth functions as an interconnected system. The Earth works through the flow of energy and cycling of matter across spheres. <span class="curiosity-highlight">Unsustainable consumption disturbs this balance</span>. By promoting simple habits — saving energy, conserving resources — Mission LiFE highlights how individual and community actions can build a sustainable future.
+    </div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q"><strong>6.</strong> Discuss how human activities increase the concentration of greenhouse gases in the atmosphere. What would you do as an individual to reduce greenhouse gas emissions?</div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ SCIENTIST SPOTLIGHT ══ -->
+<section class="section" id="scientist">
+  <div class="sec-header">
+    <div class="sec-tag">Meet the Scientists</div>
+    <h2 class="sec-title">The Scientists Behind Earth's Understanding</h2>
+    <p class="sec-subtitle">Indian atmospheric scientists who shaped our knowledge of Earth's systems</p>
+  </div>
+
+  <div class="scientist-card">
+    <div class="scientist-tag">Meet a Scientist · India's Solar Pioneer</div>
+    <div class="scientist-name">Anna Mani</div>
+    <div class="scientist-role">Atmospheric Scientist · India's Solar Radiation Mapper</div>
+    <div class="scientist-body">
+      Anna Mani was India's pioneering atmospheric scientist who systematically mapped <span class="scientist-highlight">solar insolation across India</span> in the 1950s — a monumental task in an era before satellites. She and S. Rangarajan published <em>Solar Radiation Over India</em> in 1982, creating the country's first insolation atlas. Her pioneering measurements revealed India's vast solar energy potential, which today is being realised through large-scale solar deployments that set global benchmarks. Her work laid the scientific foundation for India's solar revolution.
+    </div>
+  </div>
+
+  <div class="scientist-card">
+    <div class="scientist-tag">Meet a Scientist · India's Ozone Pioneer</div>
+    <div class="scientist-name">K.R. Ramanathan</div>
+    <div class="scientist-role">Atmospheric Scientist · Ozone Researcher &amp; Monsoon Pioneer</div>
+    <div class="scientist-body">
+      K.R. Ramanathan, India's pioneering atmospheric scientist, undertook an extraordinary feat — climbing to <span class="scientist-highlight">18,000 feet in the Himalayas in 1934</span> to measure ozone levels. He discovered that ozone levels were lower than expected, laying the foundation for understanding how UV absorption varies with altitude and pollution levels. He later led early <span class="scientist-highlight">monsoon forecasting efforts</span>, contributing to India's ability to predict the vital seasonal rains that agriculture depends on.
+    </div>
+  </div>
+
+  <div class="india-card">
+    <div class="india-tag">India's Scientific Contributions</div>
+    <div class="india-title">IITM Pune — Simulating the Indian Monsoon</div>
+    <div class="india-body">Scientists at the Indian Institute of Tropical Meteorology (IITM), Pune, run advanced computer models coupling energy flows between atmosphere, oceans, land, and ice to simulate the Indian monsoon. These models use data from satellites, buoys in the Indian Ocean, and even stations in Antarctica to improve seasonal forecasts and study how global warming may change monsoon rainfall patterns across India — crucial for the country's 1.4 billion people who depend on the monsoon for agriculture and water.</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ KEY TERMS & SUMMARY ══ -->
+<div class="full-bg" id="summary">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Chapter Summary · At a Glance</div>
+    <h2 class="sec-title">Key Takeaways — Chapter 13</h2>
+    <p class="sec-subtitle">The essential ideas that define Earth as one interconnected system</p>
+  </div>
+
+  <!-- Know Panel - Key Points -->
+  <div class="know-panel" style="margin-bottom:2rem">
+    <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--text-primary);margin-bottom:1.25rem;position:relative">At a Glance — Core Principles</div>
+    <div class="obj-grid" style="position:relative">
+      <div class="obj-card"><div class="obj-num">✓</div><div class="obj-text">The electromagnetic radiation received from the Sun is the <strong>primary source of energy</strong> on Earth.</div></div>
+      <div class="obj-card"><div class="obj-num">✓</div><div class="obj-text">Most <strong>weather processes</strong> — evaporation, condensation, precipitation — occur in the troposphere.</div></div>
+      <div class="obj-card"><div class="obj-num">✓</div><div class="obj-text">Earth's shape, <strong>latitude, and axial tilt</strong> are primarily responsible for uneven heating of Earth's surface.</div></div>
+      <div class="obj-card"><div class="obj-num">✓</div><div class="obj-text"><strong>Uneven heating</strong> of Earth's surface is responsible for the generation of winds and ocean currents.</div></div>
+      <div class="obj-card"><div class="obj-num">✓</div><div class="obj-text">Matter and energy are <strong>continuously cycled</strong> between living (biotic) and non-living (abiotic) systems.</div></div>
+      <div class="obj-card"><div class="obj-num">✓</div><div class="obj-text">Atmospheric oxygen is used in combustion and respiration, and is restored mainly through <strong>photosynthesis</strong>.</div></div>
+      <div class="obj-card"><div class="obj-num">✓</div><div class="obj-text">On Earth, <strong>water, carbon, nitrogen, and oxygen</strong> continuously cycle between atmosphere, oceans, land, and living organisms.</div></div>
+      <div class="obj-card"><div class="obj-num">✓</div><div class="obj-text"><strong>Biogeochemical cycles</strong> make nutrients available, sustain life, regulate climate and balance ecosystems.</div></div>
+    </div>
+  </div>
+
+  <!-- Concept Cards Summary -->
+  <div style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:1rem">Chapter 13 — Quick Concept Review</div>
+  <div class="concept-grid">
+    <div class="concept-card earth">
+      <div class="concept-icon">🌐</div>
+      <div class="concept-title">Five Spheres = One System</div>
+      <div class="concept-body">Geosphere, Hydrosphere, Cryosphere, Atmosphere, and Biosphere are interconnected. A disturbance in one sphere — warming Arabian Sea, melting glaciers, deforestation — cascades through all others. Earth functions as a delicately balanced whole.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">☀️</div>
+      <div class="concept-title">Solar Radiation Drives Everything</div>
+      <div class="concept-body">Solar constant ~1.4 kW m⁻²; ~1 kW m⁻² reaches the surface. UV (ozone absorbs), Visible (photosynthesis), IR (greenhouse effect). Albedo determines how much is absorbed vs reflected. Latitude determines heating intensity.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">💨</div>
+      <div class="concept-title">Uneven Heating → Motion</div>
+      <div class="concept-body">Valley breeze (daytime: up slopes) and mountain breeze (nighttime: down slopes). Planetary pressure belts drive trade winds. Gyres circulate ocean water. North Atlantic Drift keeps European ports ice-free. All driven by solar heating differences.</div>
+    </div>
+    <div class="concept-card green">
+      <div class="concept-icon">🔄</div>
+      <div class="concept-title">Biogeochemical Cycles</div>
+      <div class="concept-body">Water: evaporation → condensation → precipitation → runoff. Carbon: fast (photosynthesis/respiration) and slow (fossil fuels). Nitrogen: fix → nitrify → assimilate → ammonify → denitrify. Oxygen: photosynthesis vs respiration + combustion.</div>
+    </div>
+    <div class="concept-card pink">
+      <div class="concept-icon">⚠️</div>
+      <div class="concept-title">Human Impact</div>
+      <div class="concept-body">Fossil fuels → ↑CO₂ → greenhouse effect → warming → glacier melt → sea level rise. Fertiliser overuse → eutrophication. Deforestation → ↓rainfall, ↑erosion, biodiversity loss. CFCs → ozone depletion (now recovering via Montreal Protocol).</div>
+    </div>
+    <div class="concept-card amber">
+      <div class="concept-icon">🛠️</div>
+      <div class="concept-title">Solutions &amp; Hope</div>
+      <div class="concept-body">Montreal Protocol = success story. India: billions of trees planted, rapid solar expansion, sustainable farming. Individual actions: save energy, water, food; reduce, reuse, recycle. Mission LiFE promotes eco-friendly lifestyle as global norm.</div>
+    </div>
+  </div>
+
+  <!-- Key Terms -->
+  <div class="highlight-box" style="margin-top:2rem">
+    <p><strong>Key Terms to Know:</strong><br>
+    <span class="key-term">Geosphere</span>
+    <span class="key-term">Hydrosphere</span>
+    <span class="key-term">Cryosphere</span>
+    <span class="key-term">Atmosphere</span>
+    <span class="key-term">Biosphere</span>
+    <span class="key-term">EM Waves</span>
+    <span class="key-term">Insolation</span>
+    <span class="key-term">Solar Constant</span>
+    <span class="key-term">Albedo</span>
+    <span class="key-term">UV Radiation</span>
+    <span class="key-term">Infrared Radiation</span>
+    <span class="key-term">Greenhouse Effect</span>
+    <span class="key-term">Greenhouse Gases</span>
+    <span class="key-term">Ozone Layer</span>
+    <span class="key-term">CFCs</span>
+    <span class="key-term">Montreal Protocol</span>
+    <span class="key-term">Troposphere</span>
+    <span class="key-term">Stratosphere</span>
+    <span class="key-term">Valley Breeze</span>
+    <span class="key-term">Mountain Breeze</span>
+    <span class="key-term">Planetary Winds</span>
+    <span class="key-term">Pressure Belts</span>
+    <span class="key-term">Gyres</span>
+    <span class="key-term">Ocean Currents</span>
+    <span class="key-term">Gulf Stream</span>
+    <span class="key-term">North Atlantic Drift</span>
+    <span class="key-term">Biogeochemical Cycle</span>
+    <span class="key-term">Water Cycle</span>
+    <span class="key-term">Evaporation</span>
+    <span class="key-term">Transpiration</span>
+    <span class="key-term">Condensation</span>
+    <span class="key-term">Precipitation</span>
+    <span class="key-term">Infiltration</span>
+    <span class="key-term">Groundwater</span>
+    <span class="key-term">Carbon Cycle</span>
+    <span class="key-term">Photosynthesis</span>
+    <span class="key-term">Respiration</span>
+    <span class="key-term">Decomposition</span>
+    <span class="key-term">Fossil Fuels</span>
+    <span class="key-term">Nitrogen Cycle</span>
+    <span class="key-term">Nitrogen Fixation</span>
+    <span class="key-term">Nitrification</span>
+    <span class="key-term">Ammonification</span>
+    <span class="key-term">Denitrification</span>
+    <span class="key-term">Assimilation</span>
+    <span class="key-term">Rhizobium</span>
+    <span class="key-term">Azotobacter</span>
+    <span class="key-term">Haber-Bosch Process</span>
+    <span class="key-term">Oxygen Cycle</span>
+    <span class="key-term">Eutrophication</span>
+    <span class="key-term">Urban Heat Island</span>
+    <span class="key-term">Global Warming</span>
+    <span class="key-term">Keeling Curve</span>
+    <span class="key-term">Carbon Sink</span>
+    <span class="key-term">Mission LiFE</span>
+    <span class="key-term">Coriolis Effect</span>
+    <span class="key-term">IITM Pune</span>
+    </p>
+  </div>
+</div>
+</div>
+
+<!-- ══ CLOSING BANNER ══ -->
+<div class="closing-banner">
+  <div class="closing-title">From a Snowflake in the Himalayas to a Carbon Atom in Your DNA,<br><span>From a Valley Breeze in Shimla to the Gulf Stream Crossing the Atlantic</span></div>
+  <p class="closing-sub">Earth is not a collection of isolated parts — it is one system, alive with the continuous flow of energy and matter across five interlocked spheres. Every action we take ripples through the whole. Understand the system, and you understand the planet's past, present, and future.</p>
+  <div style="margin-top:2rem;display:flex;flex-wrap:wrap;gap:1rem;justify-content:center">
+    <span class="hero-badge badge-green">🌍 Chapter 13 Complete</span>
+    <span class="hero-badge badge-teal">Grade 9 · Exploration</span>
+    <span class="hero-badge badge-blue">Earth Systems Mastered</span>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+const sections=document.querySelectorAll('section[id],div[id]');
+const navLinks=document.querySelectorAll('.nav-link');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id=e.target.id;
+      navLinks.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));
+    }
+  });
+},{rootMargin:'-40% 0px -55% 0px'});
+sections.forEach(s=>obs.observe(s));
+navLinks.forEach(link=>{
+  link.addEventListener('click',e=>{
+    const href=link.getAttribute('href');
+    if(href&&href.startsWith('#')){
+      e.preventDefault();
+      const target=document.querySelector(href);
+      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  });
+});
+</script>
+</body>
+</html>

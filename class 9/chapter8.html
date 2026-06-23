@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 8 — Journey Inside the Atom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-primary:#0a0b0f;--bg-secondary:#0f1117;--bg-card:#13151c;
+  --bg-glass:rgba(255,255,255,0.03);--bg-glass-hover:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.08);--border-bright:rgba(255,255,255,0.15);
+  --neon-blue:#4f9eff;--neon-purple:#9b6dff;--neon-teal:#00d4a8;
+  --neon-pink:#ff6bac;--neon-amber:#ffb547;--neon-green:#3dd68c;
+  --neon-ch8:#9b6dff;
+  --text-primary:#f0f2ff;--text-secondary:#8b90a8;--text-muted:#4a4f6a;
+  --font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);font-size:15px;line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg-secondary)}::-webkit-scrollbar-thumb{background:var(--neon-ch8);border-radius:3px}
+
+/* ── NAV ── */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,11,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;gap:2rem;height:56px}
+.nav-logo{font-family:var(--font-display);font-weight:700;font-size:15px;color:var(--neon-ch8);letter-spacing:0.5px;white-space:nowrap}
+.nav-links{display:flex;gap:0.25rem;overflow-x:auto;scrollbar-width:none;flex:1}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-link{font-size:12px;font-weight:500;color:var(--text-secondary);padding:6px 12px;border-radius:var(--radius-sm);white-space:nowrap;cursor:pointer;transition:all 0.2s;text-decoration:none;border:none;background:none}
+.nav-link:hover{color:var(--text-primary);background:var(--bg-glass-hover)}
+.nav-link.active{color:var(--neon-ch8);background:rgba(155,109,255,0.1)}
+.main{padding-top:56px}
+
+/* ── HERO ── */
+.hero{position:relative;overflow:hidden;min-height:520px;display:flex;align-items:center;padding:5rem 2rem 4rem;background:var(--bg-secondary)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(155,109,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(155,109,255,0.04) 1px,transparent 1px);background-size:40px 40px}
+.hero-glow-1{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(155,109,255,0.12) 0%,transparent 70%);top:-200px;right:-200px}
+.hero-glow-2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,172,0.08) 0%,transparent 70%);bottom:-150px;left:100px}
+.hero-content{position:relative;z-index:2;max-width:900px;margin:0 auto;width:100%}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--neon-ch8);background:rgba(155,109,255,0.1);border:1px solid rgba(155,109,255,0.2);padding:6px 14px;border-radius:100px;margin-bottom:1.5rem}
+.hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-ch8);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero-title{font-family:var(--font-display);font-size:clamp(2rem,5vw,3.5rem);font-weight:700;line-height:1.15;margin-bottom:1.5rem}
+.hero-title .line1{display:block;color:var(--text-primary)}
+.hero-title .line2{display:block;background:linear-gradient(135deg,var(--neon-ch8),var(--neon-pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:16px;color:var(--text-secondary);max-width:600px;margin-bottom:2rem;line-height:1.8}
+.hero-badges{display:flex;flex-wrap:wrap;gap:10px}
+.hero-badge{font-size:12px;font-weight:500;padding:6px 14px;border-radius:100px;border:1px solid}
+.badge-purple{color:var(--neon-purple);border-color:rgba(155,109,255,0.3);background:rgba(155,109,255,0.08)}
+.badge-blue{color:var(--neon-blue);border-color:rgba(79,158,255,0.3);background:rgba(79,158,255,0.08)}
+.badge-teal{color:var(--neon-teal);border-color:rgba(0,212,168,0.3);background:rgba(0,212,168,0.08)}
+.badge-pink{color:var(--neon-pink);border-color:rgba(255,107,172,0.3);background:rgba(255,107,172,0.08)}
+.badge-amber{color:var(--neon-amber);border-color:rgba(255,181,71,0.3);background:rgba(255,181,71,0.08)}
+.badge-green{color:var(--neon-green);border-color:rgba(61,214,140,0.3);background:rgba(61,214,140,0.08)}
+
+/* ── LAYOUT ── */
+.section{padding:4rem 2rem;max-width:1100px;margin:0 auto}
+.full-bg{background:var(--bg-secondary)}
+.full-bg .section{max-width:none;padding-left:max(2rem,calc(50vw - 550px));padding-right:max(2rem,calc(50vw - 550px))}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border-bright),transparent)}
+
+/* ── SECTION HEADERS ── */
+.sec-header{margin-bottom:2.5rem}
+.sec-tag{font-family:var(--font-mono);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon-ch8);margin-bottom:0.75rem}
+.sec-title{font-family:var(--font-display);font-size:1.75rem;font-weight:700;color:var(--text-primary);margin-bottom:0.5rem}
+.sec-subtitle{font-size:14px;color:var(--text-secondary)}
+
+/* ── OBJ CARDS ── */
+.obj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+.obj-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;display:flex;gap:1rem;align-items:flex-start;transition:border-color 0.2s,background 0.2s}
+.obj-card:hover{border-color:var(--border-bright);background:var(--bg-glass-hover)}
+.obj-num{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch8);background:rgba(155,109,255,0.1);border:1px solid rgba(155,109,255,0.2);min-width:28px;height:28px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;margin-top:2px}
+.obj-text{font-size:13px;color:var(--text-secondary);line-height:1.6}
+.obj-text strong{color:var(--text-primary);font-weight:500}
+
+/* ── CONCEPT CARDS ── */
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem}
+.concept-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;position:relative;overflow:hidden;transition:all 0.3s}
+.concept-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent-start,var(--neon-ch8)),var(--accent-end,var(--neon-pink)))}
+.concept-card:hover{border-color:var(--border-bright);transform:translateY(-2px);background:var(--bg-glass-hover)}
+.concept-icon{font-size:28px;margin-bottom:1rem}
+.concept-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary);margin-bottom:0.5rem}
+.concept-body{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.concept-card.purple{--accent-start:#9b6dff;--accent-end:#ff6bac}
+.concept-card.blue{--accent-start:#4f9eff;--accent-end:#9b6dff}
+.concept-card.teal{--accent-start:#00d4a8;--accent-end:#4f9eff}
+.concept-card.pink{--accent-start:#ff6bac;--accent-end:#ffb547}
+.concept-card.amber{--accent-start:#ffb547;--accent-end:#00d4a8}
+.concept-card.green{--accent-start:#3dd68c;--accent-end:#00d4a8}
+.concept-card.sky{--accent-start:#4f9eff;--accent-end:#00d4a8}
+
+/* ── HIGHLIGHT BOX ── */
+.highlight-box{background:rgba(155,109,255,0.05);border:1px solid rgba(155,109,255,0.18);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin:1.25rem 0}
+.highlight-box p{font-size:13px;color:var(--text-secondary);line-height:1.75;margin:0}
+.highlight-box strong{color:var(--text-primary);font-weight:500}
+
+/* ── FLOW ── */
+.flow-chain{display:flex;align-items:center;gap:0;flex-wrap:wrap}
+.flow-node{flex:1;min-width:120px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem 0.75rem;text-align:center}
+.flow-node-icon{font-size:1.75rem;margin-bottom:0.4rem}
+.flow-node-title{font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:0.2rem}
+.flow-node-sub{font-size:11px;color:var(--text-secondary)}
+.flow-arrow{color:var(--neon-ch8);font-size:1.25rem;padding:0 4px;flex-shrink:0}
+.flow-node.highlight{border-color:rgba(155,109,255,0.4);background:rgba(155,109,255,0.05)}
+
+/* ── ACTIVITY CARDS ── */
+.activity-card{background:linear-gradient(135deg,rgba(155,109,255,0.06),rgba(255,107,172,0.06));border:1px solid rgba(155,109,255,0.2);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.25rem}
+.activity-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;flex-wrap:wrap}
+.activity-badge{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch8);background:rgba(155,109,255,0.12);border:1px solid rgba(155,109,255,0.3);padding:4px 12px;border-radius:100px}
+.activity-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary)}
+.activity-body{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.think-prompts{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem}
+.think-prompt{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text-secondary);padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);border:1px solid var(--border)}
+.think-prompt-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-ch8);margin-top:5px;flex-shrink:0}
+
+/* ── PONDER ── */
+.ponder-card{background:rgba(155,109,255,0.05);border:1px solid rgba(155,109,255,0.2);border-radius:var(--radius-lg);padding:1.5rem;margin:1.5rem 0}
+.ponder-header{display:flex;align-items:center;gap:10px;margin-bottom:0.75rem}
+.ponder-icon{font-size:1.25rem}
+.ponder-label{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch8);text-transform:uppercase;letter-spacing:1.5px}
+.ponder-q{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.ponder-q strong{color:var(--neon-ch8);font-weight:500}
+
+/* ── CURIOSITY ── */
+.curiosity-card{background:var(--bg-card);border:1px solid rgba(155,109,255,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.curiosity-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba(155,109,255,0.05) 0%,transparent 50%);pointer-events:none}
+.curiosity-glyph{position:absolute;right:1.5rem;top:1.25rem;font-size:3rem;opacity:0.08}
+.curiosity-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch8);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.curiosity-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-ch8)}
+.curiosity-title{font-family:var(--font-display);font-size:1.15rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.curiosity-body{font-size:13px;color:var(--text-secondary);line-height:1.75;position:relative}
+.curiosity-highlight{color:var(--neon-ch8);font-weight:500}
+
+/* ── BEYOND ── */
+.beyond-card{background:rgba(79,158,255,0.04);border:1px solid rgba(79,158,255,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.beyond-card::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(79,158,255,0.06) 0%,transparent 70%);pointer-events:none}
+.beyond-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-blue);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.beyond-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-blue)}
+.beyond-title{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.beyond-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+.beyond-highlight{color:var(--neon-blue);font-weight:500}
+
+/* ── BRIDGING ── */
+.bridging-card{background:rgba(61,214,140,0.04);border:1px solid rgba(61,214,140,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.bridging-card::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(61,214,140,0.05) 0%,transparent 70%);pointer-events:none}
+.bridging-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-green);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.bridging-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-green)}
+.bridging-title{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.bridging-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+.bridging-highlight{color:var(--neon-green);font-weight:500}
+
+/* ── INDIA SCIENCE BOX ── */
+.india-card{background:rgba(255,181,71,0.04);border:1px solid rgba(255,181,71,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.india-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top right,rgba(255,181,71,0.05) 0%,transparent 50%);pointer-events:none}
+.india-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-amber);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.india-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-amber)}
+.india-title{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.india-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+.india-highlight{color:var(--neon-amber);font-weight:500}
+
+/* ── TRIPLE GRID ── */
+.triple-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.triple-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;transition:all 0.3s;position:relative;overflow:hidden}
+.triple-card:hover{transform:translateY(-4px);border-color:var(--card-accent)}
+.triple-card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,var(--card-glow,rgba(155,109,255,0.05)) 0%,transparent 70%);pointer-events:none}
+.triple-card.c1{--card-accent:var(--neon-ch8);--card-glow:rgba(155,109,255,0.06)}
+.triple-card.c2{--card-accent:var(--neon-pink);--card-glow:rgba(255,107,172,0.06)}
+.triple-card.c3{--card-accent:var(--neon-teal);--card-glow:rgba(0,212,168,0.06)}
+.triple-label{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:100px;border:1px solid;display:inline-block;margin-bottom:1rem;font-weight:600}
+.triple-card.c1 .triple-label{color:var(--neon-ch8);border-color:rgba(155,109,255,0.3);background:rgba(155,109,255,0.1)}
+.triple-card.c2 .triple-label{color:var(--neon-pink);border-color:rgba(255,107,172,0.3);background:rgba(255,107,172,0.1)}
+.triple-card.c3 .triple-label{color:var(--neon-teal);border-color:rgba(0,212,168,0.3);background:rgba(0,212,168,0.1)}
+.triple-icon{font-size:2.5rem;margin-bottom:0.75rem;display:block}
+.triple-title{font-family:var(--font-display);font-size:1.05rem;font-weight:700;margin-bottom:0.5rem}
+.triple-card.c1 .triple-title{color:var(--neon-ch8)}
+.triple-card.c2 .triple-title{color:var(--neon-pink)}
+.triple-card.c3 .triple-title{color:var(--neon-teal)}
+.triple-desc{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:1rem}
+.triple-example{font-size:11px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;color:var(--text-secondary);font-style:italic}
+
+/* ── EQUATION BOX ── */
+.eq-box{background:var(--bg-card);border:1px solid rgba(155,109,255,0.25);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;position:relative;overflow:hidden;margin-bottom:1rem}
+.eq-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon-ch8),var(--neon-pink))}
+.eq-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch8);font-weight:600;margin-bottom:0.75rem}
+.eq-formula{font-family:var(--font-mono);font-size:1.4rem;font-weight:700;color:var(--text-primary);margin-bottom:0.5rem;letter-spacing:1px}
+.eq-explain{font-size:12px;color:var(--text-secondary);line-height:1.6}
+.eq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+
+/* ── COMPARE TABLE ── */
+.compare-wrap{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;margin-bottom:1.5rem}
+.compare-table{width:100%;border-collapse:collapse;font-size:13px}
+.compare-table th{font-family:var(--font-display);font-size:12px;font-weight:600;padding:14px 20px;text-align:left;border-bottom:1px solid var(--border)}
+.compare-table th.th-a{color:var(--neon-ch8);background:rgba(155,109,255,0.05)}
+.compare-table th.th-b{color:var(--neon-pink);background:rgba(255,107,172,0.05)}
+.compare-table th.th-c{color:var(--neon-teal);background:rgba(0,212,168,0.05)}
+.compare-table th.th-feat{color:var(--text-muted)}
+.compare-table td{padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text-secondary);vertical-align:top}
+.compare-table tr:hover td{background:var(--bg-glass-hover)}
+.compare-table td.td-a{color:var(--neon-ch8)}
+.compare-table td.td-b{color:var(--neon-pink)}
+.compare-table td.td-c{color:var(--neon-teal)}
+
+/* ── STAT ROW ── */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin:2rem 0}
+.stat-block{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:1.25rem 1rem;text-align:center}
+.stat-value{font-family:var(--font-display);font-size:1.75rem;font-weight:700;background:linear-gradient(135deg,var(--neon-ch8),var(--neon-pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.25rem}
+.stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px}
+
+/* ── NOTE BOX ── */
+.note-box{background:rgba(155,109,255,0.05);border:1px solid rgba(155,109,255,0.2);border-left:3px solid var(--neon-ch8);border-radius:0 var(--radius-md) var(--radius-md) 0;padding:1rem 1.25rem;margin:1rem 0;font-size:13px;color:var(--text-secondary);line-height:1.7}
+.note-box strong{color:var(--neon-ch8);font-weight:600}
+
+/* ── SCIENTIST SPOTLIGHT ── */
+.scientist-card{background:var(--bg-card);border:1px solid rgba(155,109,255,0.25);border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.scientist-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch8),var(--neon-pink))}
+.scientist-card::after{content:'';position:absolute;top:0;right:0;width:250px;height:250px;background:radial-gradient(circle,rgba(155,109,255,0.07) 0%,transparent 65%);pointer-events:none}
+.scientist-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch8);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.scientist-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-ch8)}
+.scientist-name{font-family:var(--font-display);font-size:1.4rem;font-weight:700;color:var(--text-primary);margin-bottom:0.25rem}
+.scientist-role{font-size:13px;color:var(--neon-ch8);margin-bottom:1rem;font-weight:500}
+.scientist-body{font-size:13px;color:var(--text-secondary);line-height:1.8}
+.scientist-highlight{color:var(--neon-ch8);font-weight:500}
+
+/* ── SCIENTISTS GRID ── */
+.sci-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem;margin-bottom:2rem}
+.sci-mini{background:var(--bg-card);border:1px solid rgba(155,109,255,0.2);border-radius:var(--radius-xl);padding:1.5rem;position:relative;overflow:hidden;transition:all 0.3s}
+.sci-mini:hover{transform:translateY(-2px);border-color:rgba(155,109,255,0.4)}
+.sci-mini::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon-ch8),var(--neon-pink))}
+.sci-mini-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon-ch8);font-weight:600;margin-bottom:0.5rem}
+.sci-mini-name{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--text-primary);margin-bottom:0.25rem}
+.sci-mini-role{font-size:11px;color:var(--neon-pink);font-weight:500;margin-bottom:0.75rem}
+.sci-mini-body{font-size:12px;color:var(--text-secondary);line-height:1.7}
+.sci-mini-highlight{color:var(--neon-ch8);font-weight:500}
+
+/* ── KEY TERM PILL ── */
+.key-term{display:inline-block;font-family:var(--font-mono);font-size:11px;font-weight:600;padding:2px 10px;border-radius:100px;background:rgba(155,109,255,0.1);border:1px solid rgba(155,109,255,0.25);color:var(--neon-ch8);margin:2px}
+
+/* ── KNOWLEDGE PANEL ── */
+.know-panel{background:var(--bg-card);border:1px solid rgba(155,109,255,0.25);border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.know-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch8),var(--neon-pink),var(--neon-blue))}
+.know-panel::after{content:'';position:absolute;top:0;right:0;width:300px;height:300px;background:radial-gradient(circle,rgba(155,109,255,0.06) 0%,transparent 60%);pointer-events:none}
+
+/* ── MODEL PANEL (for atomic models) ── */
+.model-panel{border-radius:var(--radius-xl);padding:2rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.model-panel.m1{background:rgba(155,109,255,0.05);border:1px solid rgba(155,109,255,0.25)}
+.model-panel.m2{background:rgba(79,158,255,0.05);border:1px solid rgba(79,158,255,0.25)}
+.model-panel.m3{background:rgba(0,212,168,0.05);border:1px solid rgba(0,212,168,0.25)}
+.model-panel.m4{background:rgba(255,107,172,0.05);border:1px solid rgba(255,107,172,0.25)}
+.model-panel.m1::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch8),var(--neon-pink))}
+.model-panel.m2::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-blue),var(--neon-teal))}
+.model-panel.m3::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-teal),var(--neon-blue))}
+.model-panel.m4::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-pink),var(--neon-amber))}
+.model-num{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-bottom:0.4rem}
+.model-panel.m1 .model-num{color:var(--neon-ch8)}
+.model-panel.m2 .model-num{color:var(--neon-blue)}
+.model-panel.m3 .model-num{color:var(--neon-teal)}
+.model-panel.m4 .model-num{color:var(--neon-pink)}
+.model-name{font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.model-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+
+/* ── THINK SCIENTIST ── */
+.think-scientist-card{background:rgba(155,109,255,0.04);border:1px solid rgba(155,109,255,0.2);border-radius:var(--radius-xl);padding:1.75rem;margin-bottom:1.5rem}
+.think-scientist-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch8);font-weight:600;margin-bottom:0.75rem}
+.think-scientist-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+
+/* ── CLOSING ── */
+.closing-banner{text-align:center;padding:5rem 2rem;position:relative;overflow:hidden;background:var(--bg-secondary)}
+.closing-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(155,109,255,0.1) 0%,transparent 60%)}
+.closing-title{font-family:var(--font-display);font-size:clamp(1.5rem,4vw,2.5rem);font-weight:700;color:var(--text-primary);margin-bottom:1rem;position:relative}
+.closing-title span{background:linear-gradient(135deg,var(--neon-ch8),var(--neon-pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.closing-sub{font-size:15px;color:var(--text-secondary);max-width:500px;margin:0 auto;position:relative}
+
+@media(max-width:768px){.triple-grid{grid-template-columns:1fr}.top-nav{padding:0 1rem}.eq-grid{grid-template-columns:1fr}}
+@media(max-width:540px){.flow-chain{flex-direction:column}.flow-arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav class="top-nav">
+  <div class="nav-logo">⚛️ Exploration · Gr.9 · Ch.8</div>
+  <div class="nav-links">
+    <a class="nav-link" href="#objectives">Objectives</a>
+    <a class="nav-link" href="#roots">Ancient Roots</a>
+    <a class="nav-link" href="#electron">Discovery of Electron</a>
+    <a class="nav-link" href="#thomson">Thomson's Model</a>
+    <a class="nav-link" href="#goldfoil">Gold Foil Experiment</a>
+    <a class="nav-link" href="#rutherford">Rutherford's Model</a>
+    <a class="nav-link" href="#bohr">Bohr's Model</a>
+    <a class="nav-link" href="#subatomic">Subatomic Particles</a>
+    <a class="nav-link" href="#symbols">Symbols &amp; Notation</a>
+    <a class="nav-link" href="#atomic-mass">Atomic &amp; Mass Number</a>
+    <a class="nav-link" href="#config">Electronic Config</a>
+    <a class="nav-link" href="#valency">Valency</a>
+    <a class="nav-link" href="#isotopes">Isotopes &amp; Isobars</a>
+    <a class="nav-link" href="#scientists">Scientists</a>
+    <a class="nav-link" href="#summary">Summary</a>
+  </div>
+</nav>
+
+<div class="main">
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      Grade 9 · Chapter 8 · Chemistry
+    </div>
+    <h1 class="hero-title">
+      <span class="line1">Journey Inside</span>
+      <span class="line2">the Atom</span>
+    </h1>
+    <p class="hero-desc">From ancient Indian and Greek philosophers wondering what matter is made of, to Chadwick discovering the neutron in 1932 — the story of the atom is humanity's greatest detective saga. What's inside the particle once called indivisible?</p>
+    <div class="hero-badges">
+      <span class="hero-badge badge-purple">⚛️ Atomic Models</span>
+      <span class="hero-badge badge-blue">🔬 Gold Foil Experiment</span>
+      <span class="hero-badge badge-teal">🌀 Bohr's Energy Levels</span>
+      <span class="hero-badge badge-pink">⚡ Subatomic Particles</span>
+      <span class="hero-badge badge-amber">🔢 Atomic &amp; Mass Number</span>
+      <span class="hero-badge badge-green">🧬 Isotopes &amp; Isobars</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ OBJECTIVES ══ -->
+<section class="section" id="objectives">
+  <div class="sec-header">
+    <div class="sec-tag">Learning Objectives</div>
+    <h2 class="sec-title">What You Will Master</h2>
+    <p class="sec-subtitle">By the end of this chapter you should be able to confidently do all of the following</p>
+  </div>
+  <div class="obj-grid">
+    <div class="obj-card"><div class="obj-num">01</div><div class="obj-text"><strong>Trace the history</strong> of atomic theory from Acharya Kanada and Greek atomists through Dalton (1808), Thomson (1897), Rutherford (1911) and Bohr (1913)</div></div>
+    <div class="obj-card"><div class="obj-num">02</div><div class="obj-text"><strong>Describe Thomson's plum pudding model</strong>, explain why it was proposed, and identify what evidence it failed to explain</div></div>
+    <div class="obj-card"><div class="obj-num">03</div><div class="obj-text"><strong>Analyse Rutherford's gold foil experiment</strong> — describe the setup, three key observations, and the nuclear model conclusions drawn from them</div></div>
+    <div class="obj-card"><div class="obj-num">04</div><div class="obj-text"><strong>State Bohr's model</strong> — fixed energy shells K,L,M,N; electrons don't lose energy in stationary states; explain how it solved Rutherford's stability problem</div></div>
+    <div class="obj-card"><div class="obj-num">05</div><div class="obj-text"><strong>Identify the three subatomic particles</strong> (electron, proton, neutron) — their charge, mass, location, and symbols; explain why neutrons are needed in heavy nuclei</div></div>
+    <div class="obj-card"><div class="obj-num">06</div><div class="obj-text"><strong>Write element symbols</strong> following IUPAC rules; use standard notation showing atomic number Z and mass number A; understand Latin-derived symbols</div></div>
+    <div class="obj-card"><div class="obj-num">07</div><div class="obj-text"><strong>Calculate atomic number, mass number</strong> and the number of protons, neutrons and electrons from a given notation; apply formula A = Z + n</div></div>
+    <div class="obj-card"><div class="obj-num">08</div><div class="obj-text"><strong>Write electronic configurations</strong> for elements 1–18 using the 2n² rule; determine valency from valence electrons; distinguish isotopes from isobars</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ ANCIENT ROOTS & DALTON ══ -->
+<div class="full-bg" id="roots">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 8.1 · History of the Atom</div>
+    <h2 class="sec-title">Rediscovering the Roots of Atomic Theory</h2>
+    <p class="sec-subtitle">Two civilisations, 2000+ years ago, asked the same question — what is everything made of?</p>
+  </div>
+
+  <div class="triple-grid">
+    <div class="triple-card c1">
+      <div class="triple-label">Ancient India · ~600 BCE</div>
+      <span class="triple-icon">🇮🇳</span>
+      <div class="triple-title">Acharya Kanada</div>
+      <div class="triple-desc">In the Sanskrit text <em>Vaisesika Sutras</em>, Kanada proposed that repeatedly dividing matter (<em>dravya</em>) leads to the smallest indivisible particles he called <strong>parmanus</strong>. Infinitely small, imperceptible by senses. Combinations of parmanus (dyads, triads) form all material things — living and non-living.</div>
+      <div class="triple-example">⚠️ Did not specify proportions in which parmanus combine</div>
+    </div>
+    <div class="triple-card c2">
+      <div class="triple-label">Ancient Greece · ~460 BCE</div>
+      <span class="triple-icon">🏛️</span>
+      <div class="triple-title">Leucippus &amp; Democritus</div>
+      <div class="triple-desc">Called indivisible particles <em>atomos</em> (Greek: <em>a</em> = not, <em>tomos</em> = cuttable). Like Kanada, proposed all matter is made of these particles separated by void. A remarkably parallel idea — yet both emerged without experimental evidence.</div>
+      <div class="triple-example">The word "atom" comes directly from atomos</div>
+    </div>
+    <div class="triple-card c3">
+      <div class="triple-label">Modern Era · 1808</div>
+      <span class="triple-icon">⚗️</span>
+      <div class="triple-title">John Dalton</div>
+      <div class="triple-desc">First <strong>scientific</strong> (not philosophical) atomic theory — based on experiments. All matter made of indivisible atoms; atoms of same element are identical; atoms combine in fixed ratios to form compounds. Starting point for modern atomic science.</div>
+      <div class="triple-example">Key gap: What are atoms made of?</div>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top:1.5rem">
+    <p><strong>Key Insight:</strong> The concept of 'atom' originated as an <strong>imaginary idea</strong> — a philosophical construct — rather than from experimental observation. It took 2,400 years to transform that idea into testable, evidenced science through Dalton's work. After Dalton: three burning questions — What are atoms made of? What do they look like? What makes one element's atoms different from another's?</p>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ DISCOVERY OF ELECTRON & THOMSON MODEL ══ -->
+<section class="section" id="electron">
+  <div class="sec-header">
+    <div class="sec-tag">Section 8.2 · Discovery of Electrons</div>
+    <h2 class="sec-title">The Electron is Discovered</h2>
+    <p class="sec-subtitle">1897 — J. J. Thomson's cathode ray tube experiment splits the "indivisible" atom</p>
+  </div>
+
+  <div class="know-panel">
+    <div style="position:relative;z-index:1">
+      <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch8);font-weight:600;margin-bottom:1rem">The Cathode Ray Tube Experiment</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1.25rem">Thomson used a sealed glass tube with two metal electrodes. Air was pumped out. A high voltage was applied. <strong style="color:var(--text-primary)">Rays were seen travelling from the cathode (−) to the anode (+)</strong> — called cathode rays. Thomson studied these rays in electric and magnetic fields.</div>
+      <div class="flow-chain">
+        <div class="flow-node highlight"><div class="flow-node-icon">🔌</div><div class="flow-node-title">High Voltage Applied</div><div class="flow-node-sub">Between cathode &amp; anode</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><div class="flow-node-icon">✨</div><div class="flow-node-title">Cathode Rays Appear</div><div class="flow-node-sub">Travel − to + electrode</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><div class="flow-node-icon">🧲</div><div class="flow-node-title">Deflect in E &amp; B Fields</div><div class="flow-node-sub">Negatively charged!</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node highlight" style="border-color:rgba(155,109,255,0.5)"><div class="flow-node-icon">⚡</div><div class="flow-node-title">Electrons Discovered</div><div class="flow-node-sub">Sub-atomic &amp; universal</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="concept-grid" style="margin-top:1.5rem">
+    <div class="concept-card purple">
+      <div class="concept-icon">🔑</div>
+      <div class="concept-title">Key Conclusions from Cathode Rays</div>
+      <div class="concept-body">Rays are streams of <strong style="color:var(--neon-ch8)">negatively charged particles</strong> (electrons) with much smaller mass than atoms. Crucially: the nature of cathode rays was <strong style="color:var(--neon-ch8)">independent of the cathode material and the gas</strong> in the tube — proving electrons are fundamental to ALL atoms.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">⚖️</div>
+      <div class="concept-title">Electron Properties</div>
+      <div class="concept-body">Charge = <strong style="color:var(--neon-blue)">−1.602 × 10⁻¹⁹ C</strong> (represented as −1 by convention). Mass ≈ negligible compared to protons and neutrons. Since atoms are neutral, positive charge must exist somewhere to balance the negative electrons — Thomson's question.</div>
+    </div>
+  </div>
+
+  <!-- Thomson's Model -->
+  <section id="thomson" style="margin-top:2.5rem">
+    <div class="model-panel m1">
+      <div class="model-num">Model 1 · 1904</div>
+      <div class="model-name">🍉 Thomson's Plum Pudding Model</div>
+      <div class="model-body">
+        <div style="font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1rem">Thomson's puzzle: electrons are negative and atoms are neutral — so <em>where is the positive charge?</em> His answer: the atom is a <strong style="color:var(--text-primary)">solid sphere of uniformly distributed positive charge</strong> with electrons embedded throughout it — like plums in a pudding. Also analogous to a <strong style="color:var(--text-primary)">watermelon</strong>: red pulp = positive charge, seeds = electrons.</div>
+        <div class="concept-grid">
+          <div style="background:rgba(155,109,255,0.07);border:1px solid rgba(155,109,255,0.2);border-radius:var(--radius-md);padding:1rem">
+            <div style="font-size:12px;font-weight:600;color:var(--neon-ch8);margin-bottom:0.5rem">✅ What it explained</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.7">First genuine attempt to describe charge balance in a neutral atom. Electrons embedded in positive "pudding" — total charge sums to zero.</div>
+          </div>
+          <div style="background:rgba(255,107,172,0.07);border:1px solid rgba(255,107,172,0.2);border-radius:var(--radius-md);padding:1rem">
+            <div style="font-size:12px;font-weight:600;color:var(--neon-pink);margin-bottom:0.5rem">❌ What it couldn't explain</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.7">Results of Rutherford's gold foil experiment — particularly the large-angle deflections and backward bouncing of alpha particles, which should not happen if charge is spread uniformly.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ponder-card">
+      <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+      <div class="ponder-q">
+        <strong>1.</strong> If a Thomson-style atom had less positive charge than total negative electron charge, would it be neutral? What if clay itself carried negative charge?<br>
+        <strong>2.</strong> Could an orange or lemon work as an analogy? Where does it match and where does it fail?<br>
+        <strong>3.</strong> Why did Thomson conclude electrons are present in ALL atoms (not just certain elements)?
+      </div>
+    </div>
+  </section>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ GOLD FOIL EXPERIMENT & RUTHERFORD ══ -->
+<div class="full-bg" id="goldfoil">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 8.2.2 · The Pivotal Experiment</div>
+    <h2 class="sec-title">The Gold Foil Experiment</h2>
+    <p class="sec-subtitle">1911 — Geiger, Marsden and Rutherford fire alpha particles at gold atoms and make a stunning discovery</p>
+  </div>
+
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🔬 The Experiment</span>
+      <span class="activity-title">α-Ray Scattering Experiment (Rutherford, Geiger &amp; Marsden, 1911)</span>
+    </div>
+    <div class="activity-body">A narrow beam of positively charged alpha (α) particles was aimed at an extremely thin gold foil. α particles are tiny, positively charged particles emitted by certain radioactive elements — specifically a helium nucleus (2 protons + 2 neutrons). Detectors surrounded the gold foil to record where particles went after passing through.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Expected (Thomson's model prediction):</strong> Since positive charge is spread uniformly throughout the atom, α particles should pass straight through or be deflected only slightly. No large angles, no bouncing back.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Observed 1 — Most passed straight through:</strong> ✅ Confirmed — most of the atom is empty space.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Observed 2 — Some deflected at large angles:</strong> 😲 Unexpected! Something dense and positively charged must be deflecting them — this thing must be very concentrated.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Observed 3 — A few bounced straight back:</strong> 🤯 "As if you fired a cannonball at tissue paper and it bounced back!" — Rutherford. This is impossible if charge is spread out. A tiny, extremely dense, positively charged centre must exist.</div>
+    </div>
+  </div>
+
+  <div class="think-scientist-card">
+    <div class="think-scientist-tag">🧬 Think as a Scientist</div>
+    <div class="think-scientist-body">
+      <strong style="color:var(--text-primary)">Predict:</strong> What would happen if the gold foil were made thicker?<br><br>
+      <strong style="color:var(--neon-ch8)">Answer:</strong> A thicker foil means more layers of gold atoms — more nuclei along the path. The chance of an α particle encountering a nucleus increases. More α particles would be deflected (at various angles) and more would bounce back. The fraction passing straight through without deflection would decrease. The overall pattern of scattering would intensify.
+    </div>
+  </div>
+
+  <!-- RUTHERFORD'S MODEL -->
+  <section id="rutherford" style="margin-top:2rem">
+    <div class="model-panel m2">
+      <div class="model-num">Model 2 · 1911</div>
+      <div class="model-name">☀️ Rutherford's Planetary (Nuclear) Model</div>
+      <div class="model-body">
+        <div style="font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1.25rem">From the gold foil experiment, Rutherford concluded:</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem">
+          <div style="background:rgba(79,158,255,0.07);border:1px solid rgba(79,158,255,0.2);border-radius:var(--radius-md);padding:1rem">
+            <div style="font-size:12px;font-weight:600;color:var(--neon-blue);margin-bottom:0.5rem">What he proposed</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.7">• Most of the atom is <strong>empty space</strong> (most α passed through)<br>• A tiny, dense, positively charged <strong>nucleus</strong> at the centre holds all positive charge and most mass<br>• Electrons revolve around nucleus like planets around the Sun (<strong>Planetary Model</strong>)</div>
+          </div>
+          <div style="background:rgba(0,212,168,0.07);border:1px solid rgba(0,212,168,0.2);border-radius:var(--radius-md);padding:1rem">
+            <div style="font-size:12px;font-weight:600;color:var(--neon-teal);margin-bottom:0.5rem">Incredible size comparison</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.7">Atom diameter ≈ 10⁻¹⁰ m<br>Nucleus diameter ≈ 10⁻¹⁵ m<br><br>The nucleus is <strong>10⁵ (one lakh)</strong> times smaller than the atom. If the atom = a cricket ground (100 m), the nucleus = a black pepper grain at the centre!</div>
+          </div>
+        </div>
+        <div style="background:rgba(255,107,172,0.07);border:1px solid rgba(255,107,172,0.2);border-radius:var(--radius-md);padding:1rem">
+          <div style="font-size:12px;font-weight:600;color:var(--neon-pink);margin-bottom:0.5rem">⚠️ Limitation — The Stability Problem</div>
+          <div style="font-size:12px;color:var(--text-secondary);line-height:1.7">An electron moving in a circle is always <strong>accelerating</strong> (direction is constantly changing). Classical physics says an accelerating charged particle must <strong>radiate energy</strong>. Losing energy → electron spirals inward → crashes into nucleus. Atoms should collapse in nanoseconds. But they don't! Rutherford's model cannot explain why.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="beyond-card">
+      <div class="beyond-tag">Ready to Go Beyond — Scale of the Atom</div>
+      <div class="beyond-title">One Million Atoms in a Sheet of Paper</div>
+      <div class="beyond-body">A sheet of paper 0.1 mm (10⁻⁴ m) thick, with each atom diameter ≈ 10⁻¹⁰ m:<br>Number of atoms stacked = 10⁻⁴ ÷ 10⁻¹⁰ = <span class="beyond-highlight">10⁶ = one million atoms</span>. What feels like a simple flat sheet is actually a vast assembly of a million atomic layers, all neatly arranged. The unseen atomic world shapes everything we see and use every day.</div>
+    </div>
+
+    <div class="ponder-card">
+      <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+      <div class="ponder-q">
+        <strong>4.</strong> What would happen if α particles (positive) were replaced with negatively charged particles in Rutherford's experiment?<br>
+        <strong>5.</strong> How does the single fact that a few α particles bounce straight back completely demolish Thomson's plum pudding model?<br>
+        <strong>7.</strong> Assertion: Rutherford concluded most mass is concentrated in a small nucleus. Reason: Thomson's model has electrons in a positive sphere. Are both true, and does R explain A?
+      </div>
+    </div>
+  </section>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ BOHR'S MODEL ══ -->
+<section class="section" id="bohr">
+  <div class="sec-header">
+    <div class="sec-tag">Section 8.2.3 · The Stability Solution</div>
+    <h2 class="sec-title">Bohr's Model of the Atom</h2>
+    <p class="sec-subtitle">1913 — Niels Bohr solves the stability problem with the revolutionary concept of fixed energy shells</p>
+  </div>
+
+  <div class="model-panel m4">
+    <div class="model-num">Model 3 · 1913</div>
+    <div class="model-name">🪐 Bohr's Model — Fixed Energy Shells</div>
+    <div class="model-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:0.75rem">Bohr's Postulates</div>
+          <div class="think-prompts" style="margin-top:0">
+            <div class="think-prompt"><div class="think-prompt-dot"></div>Electrons move in <strong>fixed circular paths</strong> called stationary states, orbits, or <strong>shells</strong></div>
+            <div class="think-prompt"><div class="think-prompt-dot"></div>Shells are named <strong>K, L, M, N, …</strong> or numbered n = 1, 2, 3, 4, … from the nucleus outward</div>
+            <div class="think-prompt"><div class="think-prompt-dot"></div>Electrons only exist IN these shells, <strong>never between them</strong>. While in a shell, an electron does <strong>NOT lose energy</strong></div>
+            <div class="think-prompt"><div class="think-prompt-dot"></div>K-shell (n=1) is closest to nucleus and has the <strong>least energy</strong>. Energy increases as shells move outward</div>
+            <div class="think-prompt"><div class="think-prompt-dot"></div>Electrons jump between shells by <strong>absorbing or releasing a fixed quantum of energy</strong> equal to the difference between shell energies</div>
+            <div class="think-prompt"><div class="think-prompt-dot"></div>Each shell has a <strong>maximum capacity</strong> of electrons (2n²)</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:0.75rem">Shell Energy Levels</div>
+          <div style="background:rgba(255,107,172,0.07);border:1px solid rgba(255,107,172,0.2);border-radius:var(--radius-md);padding:1rem;margin-bottom:0.75rem">
+            <div style="font-family:var(--font-mono);font-size:11px;color:var(--neon-pink);font-weight:600;margin-bottom:0.5rem">ENERGY INCREASES OUTWARD →</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.8">K (n=1): lowest energy · nearest nucleus<br>L (n=2): more energy than K<br>M (n=3): more energy than L<br>N (n=4): highest energy shown</div>
+          </div>
+          <div style="background:rgba(155,109,255,0.07);border:1px solid rgba(155,109,255,0.2);border-radius:var(--radius-md);padding:1rem">
+            <div style="font-size:12px;font-weight:600;color:var(--neon-ch8);margin-bottom:0.5rem">✅ Stability Solved!</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.7">In a stationary state, the electron's energy is CONSTANT even though it moves. It doesn't lose energy → no spiral → no collapse. Atoms are stable!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🔤</div>
+    <div class="curiosity-tag">Threads of Curiosity</div>
+    <div class="curiosity-title">Why K, L, M, N — Not A, B, C, D?</div>
+    <div class="curiosity-body">The naming came from early X-ray experiments by physicist <span class="curiosity-highlight">Charles Barkla</span>, who labelled the first observed X-ray spectral line "K". He deliberately skipped A–J to leave room for a possible series discovered earlier than K — though none ever was. When Bohr developed his model, he adopted Barkla's shell notation. Later, even Bohr's model was refined into the <span class="curiosity-highlight">quantum mechanical model</span> — where electrons exist as probability clouds (orbitals), not fixed circular paths. You'll study this in higher grades.</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SUBATOMIC PARTICLES ══ -->
+<div class="full-bg" id="subatomic">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 8.3 · The Building Blocks</div>
+    <h2 class="sec-title">What Contributes to the Mass of an Atom?</h2>
+    <p class="sec-subtitle">The discovery of the neutron in 1932 explained why helium is 4× heavier than hydrogen, not 2×</p>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>The Puzzle:</strong> Hydrogen has 1 proton. Helium has 2 protons. But helium's mass is about <strong>4× that of hydrogen</strong> — not 2×. If electrons and protons are the only particles and electrons are nearly massless, something else must be adding mass. What is it?</p>
+  </div>
+
+  <div class="concept-grid" style="margin-bottom:2rem">
+    <div class="concept-card purple">
+      <div class="concept-icon">⚡</div>
+      <div class="concept-title">Electron (e⁻)</div>
+      <div class="concept-body">Discovered by <strong style="color:var(--neon-ch8)">J. J. Thomson (1897)</strong>. Charge = −1. Located in shells orbiting the nucleus. Mass so tiny it's negligible in calculations. Number of electrons = number of protons (in a neutral atom).</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">➕</div>
+      <div class="concept-title">Proton (p⁺)</div>
+      <div class="concept-body">Discovered and named by <strong style="color:var(--neon-blue)">Rutherford</strong>. Charge = +1 (equal and opposite to electron). Located in the nucleus. Much heavier than electron. Number of protons = atomic number Z = determines the element's identity.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">⭕</div>
+      <div class="concept-title">Neutron (n⁰)</div>
+      <div class="concept-body">Discovered by <strong style="color:var(--neon-teal)">James Chadwick (1932)</strong>. Charge = 0 (neutral). Located in the nucleus. Mass ≈ mass of proton. Found in all nuclei except ¹H. Explains the "missing mass" — helium: 2 protons + 2 neutrons = 4× mass of hydrogen ✓</div>
+    </div>
+  </div>
+
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr><th class="th-feat">Subatomic Particle</th><th class="th-a">Symbol</th><th class="th-b">Relative Charge</th><th class="th-c">Location</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Electron</td><td class="td-a">e⁻</td><td class="td-b">−1</td><td class="td-c">Shells orbiting nucleus</td></tr>
+        <tr><td>Proton</td><td class="td-a">p⁺</td><td class="td-b">+1</td><td class="td-c">Nucleus</td></tr>
+        <tr><td>Neutron</td><td class="td-a">n⁰</td><td class="td-b">0</td><td class="td-c">Nucleus (all atoms except ¹H)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">⚛️</div>
+    <div class="curiosity-tag">Threads of Curiosity — Why Neutrons Are Essential</div>
+    <div class="curiosity-title">Why Don't Protons Repel Each Other Out of the Nucleus?</div>
+    <div class="curiosity-body">Every proton in the nucleus repels every other proton (like charges repel). So why don't nuclei blow apart? Neutrons help in two ways: (1) they <span class="curiosity-highlight">increase spacing</span> between protons, reducing repulsion, and (2) they strengthen the <span class="curiosity-highlight">nuclear force</span> — an extremely strong short-range force that binds nucleons together. Heavier elements need increasingly more neutrons: Carbon has 6p + 6n, Iron has 26p + 30n, Uranium has 92p + 146n — the ratio of neutrons to protons increases as elements get heavier.</div>
+  </div>
+
+  <div class="india-card">
+    <div class="india-tag">India's Scientific Contributions</div>
+    <div class="india-title">🔬 BARC — Bhabha Atomic Research Centre, Mumbai</div>
+    <div class="india-body">The <span class="india-highlight">Bhabha Atomic Research Centre (BARC)</span>, Mumbai, leads advanced neutron-scattering experiments using reactors including <span class="india-highlight">Dhruva</span>. These experiments reveal atomic-level insights into materials like superconductors, battery electrodes, and drug molecules — helping develop better medicines, energy storage, and industrial alloys right here in India. Founded by <span class="india-highlight">Homi Jehangir Bhabha</span>, the father of India's nuclear programme, alongside TIFR. Research and explore more about Dhruva!</div>
+  </div>
+
+  <div class="beyond-card">
+    <div class="beyond-tag">Ready to Go Beyond — The Atomic Age</div>
+    <div class="beyond-title">Chadwick's Neutron Sparked a Revolution</div>
+    <div class="beyond-body">Neutrons, being uncharged, can easily penetrate nuclei without being repelled. This immediately enabled scientists to probe nuclear interiors more deeply, leading to: <span class="beyond-highlight">creation of artificial radioactive elements</span>, and the <span class="beyond-highlight">splitting of uranium atoms (fission)</span> — giving birth to the "atomic age" with both nuclear power plants and nuclear weapons. Today, 118 elements are known; some are artificially created by bombarding nuclei with neutrons or other particles.</div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ SYMBOLS & NOTATION ══ -->
+<section class="section" id="symbols">
+  <div class="sec-header">
+    <div class="sec-tag">Section 8.4 · Chemical Symbols</div>
+    <h2 class="sec-title">Symbols of Elements</h2>
+    <p class="sec-subtitle">From Dalton's pictorial symbols (1803) to today's IUPAC alphabetic standards</p>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card purple">
+      <div class="concept-icon">📜</div>
+      <div class="concept-title">Dalton's System (1803)</div>
+      <div class="concept-body">John Dalton introduced the first pictorial symbols for elements — small circles with various inner markings. While creative, they were not universally adopted and were difficult to write or typeset.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🔤</div>
+      <div class="concept-title">Berzelius &amp; IUPAC System (1813 onwards)</div>
+      <div class="concept-body">Jöns Jacob Berzelius proposed using letters derived from element names. Today IUPAC (International Union of Pure and Applied Chemistry) approves all names and symbols — universally recognised across all languages.</div>
+    </div>
+  </div>
+
+  <div class="activity-card" style="margin-top:1.5rem">
+    <div class="activity-header"><span class="activity-badge">📋 IUPAC Rules</span><span class="activity-title">How to Write Element Symbols Correctly</span></div>
+    <div class="activity-body">Follow these rules when writing or checking chemical symbols:</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Rule 1 — One or two letters:</strong> Many symbols are the first letter or first two letters of the element name (H = Hydrogen, Ca = Calcium).</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Rule 2 — Case matters:</strong> First letter ALWAYS uppercase, second letter (if any) ALWAYS lowercase. Al NOT AL; Co NOT CO; Ne NOT NE.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Rule 3 — Non-sequential letters:</strong> Some symbols use the first + a non-second letter. Cl (chlorine, not Ch), Zn (zinc, not Zi).</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Rule 4 — Latin / Greek / German origins:</strong> Fe = Iron (Latin: ferrum), Hg = Mercury (Greek: hydrargyros), W = Tungsten (German: Wolfram), Au = Gold (Latin: aurum), Na = Sodium (Latin: natrium), K = Potassium (Latin: kalium), Ag = Silver (Latin: argentum), Pb = Lead (Latin: plumbum), Cu = Copper (Latin: cuprum).</div>
+    </div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>8.</strong> Imagine you discovered a new element. Name it after yourself and justify that the symbol follows IUPAC rules.<br>
+      <strong>9.</strong> What problems would arise if every scientist used different symbols for the same element?
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ ATOMIC NUMBER & MASS NUMBER ══ -->
+<div class="full-bg" id="atomic-mass">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Sections 8.5 &amp; 8.6 · Quantifying the Atom</div>
+    <h2 class="sec-title">Atomic Number and Mass Number</h2>
+    <p class="sec-subtitle">Two numbers that uniquely identify every atom in the universe</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:2rem">
+    <div style="background:var(--bg-card);border:1px solid rgba(155,109,255,0.3);border-radius:var(--radius-xl);padding:1.5rem;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch8),var(--neon-pink))"></div>
+      <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch8);font-weight:600;margin-bottom:0.75rem">Atomic Number (Z)</div>
+      <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--neon-ch8);margin-bottom:0.75rem">Z = Number of Protons</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.75">Uniquely identifies the element. Since atoms are neutral: <strong>Z also = number of electrons</strong>. Different elements have different Z values. Examples: H → Z=1 · He → Z=2 · Li → Z=3 · Na → Z=11</div>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid rgba(255,107,172,0.3);border-radius:var(--radius-xl);padding:1.5rem;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-pink),var(--neon-amber))"></div>
+      <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-pink);font-weight:600;margin-bottom:0.75rem">Mass Number (A)</div>
+      <div style="font-family:var(--font-display);font-size:1.4rem;font-weight:700;color:var(--neon-pink);margin-bottom:0.75rem">A = Protons + Neutrons</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.75">Protons + neutrons = nucleons. Electron mass negligible — not counted. <strong>Neutrons = A − Z</strong>. Examples: H → A=1 (1p, 0n) · He → A=4 (2p, 2n) · Li → A=7 (3p, 4n) · C → A=12 (6p, 6n)</div>
+    </div>
+  </div>
+
+  <div class="eq-box">
+    <div class="eq-label">Standard Atomic Notation</div>
+    <div class="eq-formula" style="font-size:2rem">ᴬ<sub style="font-size:1.2rem">Z</sub>X</div>
+    <div class="eq-explain">X = element symbol · A = mass number (top left) · Z = atomic number (bottom left)<br>Example: ¹²₆C → Carbon, 6 protons, 6 neutrons, 6 electrons</div>
+  </div>
+
+  <div class="compare-wrap" style="margin-top:1.5rem">
+    <table class="compare-table">
+      <thead><tr><th class="th-feat">Element</th><th class="th-a">Symbol</th><th class="th-feat">Protons (Z)</th><th class="th-b">Neutrons (A−Z)</th><th class="th-c">Electrons</th><th class="th-feat">Mass Number (A)</th></tr></thead>
+      <tbody>
+        <tr><td>Hydrogen</td><td class="td-a">¹₁H</td><td>1</td><td class="td-b">0</td><td class="td-c">1</td><td>1</td></tr>
+        <tr><td>Helium</td><td class="td-a">⁴₂He</td><td>2</td><td class="td-b">2</td><td class="td-c">2</td><td>4</td></tr>
+        <tr><td>Lithium</td><td class="td-a">⁷₃Li</td><td>3</td><td class="td-b">4</td><td class="td-c">3</td><td>7</td></tr>
+        <tr><td>Carbon</td><td class="td-a">¹²₆C</td><td>6</td><td class="td-b">6</td><td class="td-c">6</td><td>12</td></tr>
+        <tr><td>Sodium</td><td class="td-a">²³₁₁Na</td><td>11</td><td class="td-b">12</td><td class="td-c">11</td><td>23</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>10.</strong> Atomic number 26, 56 nucleons — find electrons, protons, neutrons.<br>
+      <strong>11.</strong> 20 protons, mass number 41 — find neutrons.<br>
+      <strong>12.</strong> 18 neutrons, atomic number 17 — find mass number.<br>
+      <strong>13.</strong> Atom ²³A has 11 electrons — find neutrons.
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ ELECTRONIC CONFIGURATION ══ -->
+<section class="section" id="config">
+  <div class="sec-header">
+    <div class="sec-tag">Section 8.7 · Electron Arrangement</div>
+    <h2 class="sec-title">How Are Electrons Distributed in Energy Levels?</h2>
+    <p class="sec-subtitle">Bohr-Bury Rules for filling electrons into shells — the foundation of electronic configuration</p>
+  </div>
+
+  <div class="know-panel">
+    <div style="position:relative;z-index:1">
+      <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch8);font-weight:600;margin-bottom:1rem">Bohr-Bury Rules for Electronic Configuration</div>
+      <div class="think-prompts" style="margin-top:0">
+        <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Rule 1 — Maximum electrons per shell = 2n²:</strong> K(n=1): 2×1²=2 · L(n=2): 2×2²=8 · M(n=3): 2×3²=18 · N(n=4): 2×4²=32</div>
+        <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Rule 2 — Outermost shell maximum = 8:</strong> Even if a higher shell can hold more (e.g. M holds 18), the outermost shell can never hold more than 8 electrons at any time. (Exception: K shell maximum = 2.)</div>
+        <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Rule 3 — Fill from inside out:</strong> Electrons fill shells starting with K, then L, then M, then N. The L shell will not start filling until K is full. The M shell will not start filling until L is full.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="eq-grid" style="margin:1.5rem 0">
+    <div class="eq-box"><div class="eq-label">K-shell capacity</div><div class="eq-formula">2n² = 2(1)² = 2</div><div class="eq-explain">K shell holds max 2 electrons</div></div>
+    <div class="eq-box" style="border-color:rgba(79,158,255,0.25)"><div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon-blue),var(--neon-teal))"></div><div class="eq-label" style="color:var(--neon-blue)">L-shell capacity</div><div class="eq-formula" style="color:var(--neon-blue)">2n² = 2(2)² = 8</div><div class="eq-explain">L shell holds max 8 electrons</div></div>
+    <div class="eq-box" style="border-color:rgba(0,212,168,0.25)"><div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon-teal),var(--neon-green))"></div><div class="eq-label" style="color:var(--neon-teal)">M-shell capacity</div><div class="eq-formula" style="color:var(--neon-teal)">2n² = 2(3)² = 18</div><div class="eq-explain">M shell holds max 18 electrons (but outermost max = 8)</div></div>
+  </div>
+
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <thead><tr><th class="th-feat">Element</th><th class="th-a">Z</th><th class="th-feat">K</th><th class="th-b">L</th><th class="th-c">M</th><th class="th-feat">Config</th></tr></thead>
+      <tbody>
+        <tr><td>Hydrogen (H)</td><td class="td-a">1</td><td>1</td><td class="td-b">−</td><td class="td-c">−</td><td>1</td></tr>
+        <tr><td>Helium (He)</td><td class="td-a">2</td><td>2</td><td class="td-b">−</td><td class="td-c">−</td><td>2</td></tr>
+        <tr><td>Lithium (Li)</td><td class="td-a">3</td><td>2</td><td class="td-b">1</td><td class="td-c">−</td><td>2,1</td></tr>
+        <tr><td>Carbon (C)</td><td class="td-a">6</td><td>2</td><td class="td-b">4</td><td class="td-c">−</td><td>2,4</td></tr>
+        <tr><td>Neon (Ne)</td><td class="td-a">10</td><td>2</td><td class="td-b">8</td><td class="td-c">−</td><td>2,8 (full L)</td></tr>
+        <tr><td>Sodium (Na)</td><td class="td-a">11</td><td>2</td><td class="td-b">8</td><td class="td-c">1</td><td>2,8,1</td></tr>
+        <tr><td>Magnesium (Mg)</td><td class="td-a">12</td><td>2</td><td class="td-b">8</td><td class="td-c">2</td><td>2,8,2</td></tr>
+        <tr><td>Phosphorus (P)</td><td class="td-a">15</td><td>2</td><td class="td-b">8</td><td class="td-c">5</td><td>2,8,5</td></tr>
+        <tr><td>Chlorine (Cl)</td><td class="td-a">17</td><td>2</td><td class="td-b">8</td><td class="td-c">7</td><td>2,8,7</td></tr>
+        <tr><td>Argon (Ar)</td><td class="td-a">18</td><td>2</td><td class="td-b">8</td><td class="td-c">8</td><td>2,8,8 (stable)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>14.</strong> Identify the number of electrons in the outermost shell of: (i) ¹²₆C (ii) ¹⁹₉F (iii) ²⁸₁₄Si<br>
+      <strong>15.</strong> Write the electronic configuration of elements with atomic numbers 12, 16 and 18.<br>
+      <strong>16.</strong> I am an atom with mass number 23 and 11 protons. I am a soft metal that reacts vigorously with water. Who am I and how many neutrons do I have?
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ VALENCY ══ -->
+<div class="full-bg" id="valency">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 8.8 · Combining Power</div>
+    <h2 class="sec-title">Combining Capacity of an Atom: Valency</h2>
+    <p class="sec-subtitle">How many hydrogen atoms can one atom combine with? That number is the valency.</p>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card purple">
+      <div class="concept-icon">🔗</div>
+      <div class="concept-title">Valence Shell &amp; Valence Electrons</div>
+      <div class="concept-body">The <strong style="color:var(--neon-ch8)">outermost shell</strong> of an atom = valence shell. Electrons in it = <strong style="color:var(--neon-ch8)">valence electrons</strong>. These are the electrons involved in chemical bonding and reactions.</div>
+    </div>
+    <div class="concept-card pink">
+      <div class="concept-icon">⬡</div>
+      <div class="concept-title">The Octet Rule</div>
+      <div class="concept-body">Atoms are most stable with <strong style="color:var(--neon-pink)">8 electrons in their outermost shell</strong> (octet), or 2 electrons for helium (one shell only). Atoms with complete octets (Noble gases) are largely unreactive. Incomplete → reactive → gain/lose/share to achieve stability.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">⚡</div>
+      <div class="concept-title">Valency = Electrons to Complete Octet</div>
+      <div class="concept-body">Valency = electrons <strong style="color:var(--neon-teal)">gained, lost, or shared</strong> to complete the octet. &lt;4 valence electrons → tends to <strong>lose</strong>. &gt;4 valence electrons → tends to <strong>gain</strong>. =4 → tends to <strong>share</strong> (covalent bonding).</div>
+    </div>
+  </div>
+
+  <div class="activity-card" style="margin-top:1.5rem">
+    <div class="activity-header"><span class="activity-badge">⚗️ Valency Examples</span><span class="activity-title">Worked Valency Calculations</span></div>
+    <div class="activity-body">Determine the valency of sodium, oxygen, and carbon from their electronic configurations:</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Sodium (Na) — Z=11 — Config: 2,8,1:</strong> 1 valence electron. Loses 1 electron → 2,8 (stable neon config). Valency = <strong style="color:var(--neon-ch8)">1</strong></div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Oxygen (O) — Z=8 — Config: 2,6:</strong> 6 valence electrons. Gains 2 electrons → 2,8 (stable). Valency = <strong style="color:var(--neon-ch8)">2</strong>. Confirmed: O combines with 2H → H₂O ✓</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Carbon (C) — Z=6 — Config: 2,4:</strong> 4 valence electrons. Cannot easily gain (needs 4) or lose (needs to remove 4). Instead shares 4 electrons covalently. Valency = <strong style="color:var(--neon-ch8)">4</strong></div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Neon (Ne) — Z=10 — Config: 2,8:</strong> Already has complete octet. Neither gains nor loses electrons. Valency = <strong style="color:var(--neon-ch8)">0</strong> (unreactive noble gas)</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Nitrogen (N) — Z=7 — Config: 2,5:</strong> 5 valence electrons. Gains 3 → 2,8. Valency = 3. Confirmed: N combines with 3H → NH₃ ✓</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Magnesium (Mg) — Z=12 — Config: 2,8,2:</strong> Loses 2 valence electrons. Valency = 2. Confirmed: Mg combines with 2Cl → MgCl₂ ✓</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ ISOTOPES & ISOBARS ══ -->
+<section class="section" id="isotopes">
+  <div class="sec-header">
+    <div class="sec-tag">Section 8.9 · Advanced Atomic Concepts</div>
+    <h2 class="sec-title">Isotopes and Isobars</h2>
+    <p class="sec-subtitle">Same atomic number but different neutrons — or same mass number but different elements?</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:2rem">
+    <div style="background:var(--bg-card);border:1px solid rgba(155,109,255,0.3);border-radius:var(--radius-xl);padding:1.5rem;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch8),var(--neon-pink))"></div>
+      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:2px;color:var(--neon-ch8);font-weight:600;text-transform:uppercase;margin-bottom:0.75rem">Isotopes</div>
+      <div style="font-family:var(--font-display);font-size:1.15rem;font-weight:700;color:var(--neon-ch8);margin-bottom:0.75rem">Same Z, Different A</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1rem">Atoms of the same element (same Z, same electrons) with <strong style="color:var(--text-primary)">different numbers of neutrons</strong> (different A). "Twin atoms" — same chemical behaviour, different physical properties (mass, melting point, boiling point).</div>
+      <div style="font-size:12px;padding:10px 14px;background:rgba(155,109,255,0.07);border:1px solid rgba(155,109,255,0.2);border-radius:var(--radius-sm);color:var(--text-secondary);line-height:1.7">
+        <strong style="color:var(--neon-ch8)">Hydrogen isotopes:</strong><br>
+        ¹₁H (protium) — 1p, 0n, 1e — 99.98%<br>
+        ²₁H (deuterium) — 1p, 1n, 1e — 0.015%<br>
+        ³₁H (tritium) — 1p, 2n, 1e — trace<br><br>
+        <strong style="color:var(--neon-ch8)">Carbon isotopes:</strong><br>
+        ¹²₆C — 6p, 6n (most abundant)<br>
+        ¹³₆C — 6p, 7n<br>
+        ¹⁴₆C — 6p, 8n (used in radiocarbon dating)
+      </div>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid rgba(0,212,168,0.3);border-radius:var(--radius-xl);padding:1.5rem;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-teal),var(--neon-blue))"></div>
+      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:2px;color:var(--neon-teal);font-weight:600;text-transform:uppercase;margin-bottom:0.75rem">Isobars</div>
+      <div style="font-family:var(--font-display);font-size:1.15rem;font-weight:700;color:var(--neon-teal);margin-bottom:0.75rem">Same A, Different Z</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1rem">Atoms of <strong style="color:var(--text-primary)">different elements</strong> with the same mass number (same total nucleons) but different atomic numbers. They are NOT the same element — just happen to have the same total nucleon count.</div>
+      <div style="font-size:12px;padding:10px 14px;background:rgba(0,212,168,0.07);border:1px solid rgba(0,212,168,0.2);border-radius:var(--radius-sm);color:var(--text-secondary);line-height:1.7">
+        <strong style="color:var(--neon-teal)">Example — Mass number 40:</strong><br>
+        ⁴⁰₁₈Ar (Argon) — Z=18, 22n<br>
+        ⁴⁰₁₉K (Potassium) — Z=19, 21n<br>
+        ⁴⁰₂₀Ca (Calcium) — Z=20, 20n<br><br>
+        All have A=40 but are completely different elements with different chemical properties.
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>Why isotopes have same chemical but different physical properties:</strong> Chemical properties depend on electronic configuration (valence electrons). Isotopes have the same Z → same electrons → same electronic config → same chemical behaviour. But different neutron counts → different mass → different melting/boiling points, diffusion rates, etc.</p>
+  </div>
+
+  <!-- Average Atomic Mass -->
+  <div style="background:var(--bg-card);border:1px solid rgba(155,109,255,0.3);border-radius:var(--radius-xl);padding:2rem;margin:1.5rem 0;position:relative;overflow:hidden">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch8),var(--neon-pink))"></div>
+    <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:1rem">Average (Weighted) Atomic Mass — Chlorine Example</div>
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1.25rem">Chlorine has two isotopes: ³⁵Cl (75%) and ³⁷Cl (25%). Since they don't occur in equal amounts, the simple average (36 u) doesn't represent nature accurately. We use the <strong style="color:var(--text-primary)">weighted average</strong> — each isotope weighted by its abundance.</div>
+    <div class="eq-grid">
+      <div class="eq-box">
+        <div class="eq-label">Simple Average (inaccurate)</div>
+        <div class="eq-formula" style="font-size:1rem">(35 + 37) ÷ 2 = 36 u</div>
+        <div class="eq-explain">Assumes equal abundance — doesn't match nature</div>
+      </div>
+      <div class="eq-box" style="border-color:rgba(0,212,168,0.25)">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon-teal),var(--neon-blue))"></div>
+        <div class="eq-label" style="color:var(--neon-teal)">Weighted Average (accurate)</div>
+        <div class="eq-formula" style="color:var(--neon-teal);font-size:1rem">(35×75/100) + (37×25/100) = 35.5 u</div>
+        <div class="eq-explain">Accounts for 75%:25% abundance ratio — reflects natural chlorine</div>
+      </div>
+    </div>
+    <div class="note-box" style="margin-top:1rem"><strong>Note:</strong> 35.5 u does not mean any single chlorine atom has that mass. It means in a large sample of chlorine atoms, the average mass per atom works out to 35.5 u (because 75% weigh 35 u and 25% weigh 37 u).</div>
+  </div>
+
+  <!-- Applications of Isotopes -->
+  <div class="bridging-card">
+    <div class="bridging-tag">Bridging Science and Society</div>
+    <div class="bridging-title">🔬 Real-World Applications of Isotopes</div>
+    <div class="bridging-body">
+      Isotopes are not just curiosities — they have vital applications in medicine, energy, and archaeology:<br><br>
+      <span class="bridging-highlight">²³⁵₉₂U (Uranium-235)</span> — nuclear fuel in reactors for electricity generation<br>
+      <span class="bridging-highlight">⁶⁰₂₇Co (Cobalt-60)</span> — radiation treatment for cancer (gamma rays destroy tumour cells)<br>
+      <span class="bridging-highlight">¹³¹₅₃I (Iodine-131)</span> — treats goitre and thyroid cancer (thyroid absorbs iodine selectively)<br>
+      <span class="bridging-highlight">¹⁴₆C (Carbon-14)</span> — radiocarbon dating in archaeology and geology to determine age of ancient fossils and artefacts
+    </div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>17.</strong> Two atoms both have 11 protons — one has 12 neutrons, the other has 13 neutrons. Same element or different? Compare their atomic numbers and mass numbers.<br>
+      <strong>18.</strong> Bromine has two isotopes: ⁷⁹Br (49.7%) and ⁸¹Br (50.3%). Calculate the weighted average atomic mass of bromine.
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SCIENTISTS SPOTLIGHT ══ -->
+<section class="section" id="scientists">
+  <div class="sec-header">
+    <div class="sec-tag">Meet the Scientists</div>
+    <h2 class="sec-title">The Minds Behind the Atom</h2>
+    <p class="sec-subtitle">Five extraordinary scientists who transformed our understanding of matter</p>
+  </div>
+
+  <div class="sci-grid">
+    <div class="sci-mini">
+      <div class="sci-mini-tag">1897 · Nobel Prize Physics 1906</div>
+      <div class="sci-mini-name">J. J. Thomson</div>
+      <div class="sci-mini-role">Discoverer of the Electron</div>
+      <div class="sci-mini-body">Discovered the electron through cathode ray tube experiments — the first subatomic particle ever identified. As head of the Cavendish Laboratory, Cambridge, he guided many scientists including Rutherford. Received the Nobel Prize in Physics in 1906 for studies of electrical conductivity of gases. Proposed the <span class="sci-mini-highlight">plum pudding model</span> — first attempt to describe atomic structure.</div>
+    </div>
+    <div class="sci-mini">
+      <div class="sci-mini-tag">1908 Nobel Prize Chemistry · Born NZ</div>
+      <div class="sci-mini-name">Ernest Rutherford</div>
+      <div class="sci-mini-role">Father of Nuclear Physics</div>
+      <div class="sci-mini-body">Born in New Zealand, moved to Cambridge to work with Thomson. Discovered the <span class="sci-mini-highlight">atomic nucleus</span> through the gold foil experiment (1911). Explained radioactive decay. Won the 1908 Nobel Prize in Chemistry. Named and characterised the proton. His portrait now appears on New Zealand's $100 banknote.</div>
+    </div>
+    <div class="sci-mini">
+      <div class="sci-mini-tag">1922 Nobel Prize Physics · Copenhagen</div>
+      <div class="sci-mini-name">Niels Bohr</div>
+      <div class="sci-mini-role">Atomic Energy Levels</div>
+      <div class="sci-mini-body">Professor at Copenhagen University, Denmark. Proposed his <span class="sci-mini-highlight">model of fixed energy shells</span> (1913) — solving Rutherford's stability problem. His postulate of stationary states explained why electrons don't spiral into the nucleus. Received the Nobel Prize in 1922 for his work on the structure of the atom.</div>
+    </div>
+    <div class="sci-mini">
+      <div class="sci-mini-tag">1935 Nobel Prize Physics</div>
+      <div class="sci-mini-name">James Chadwick</div>
+      <div class="sci-mini-role">Discoverer of the Neutron</div>
+      <div class="sci-mini-body">Worked under Rutherford at the Cavendish Laboratory. In 1932, he discovered the <span class="sci-mini-highlight">neutron</span> — solving the mystery of "missing mass" in nuclei. This immediately enabled scientists to penetrate nuclei more easily (uncharged particles face no repulsion) and sparked discoveries in nuclear fission, artificial radioactive elements, and the atomic age.</div>
+    </div>
+    <div class="sci-mini">
+      <div class="sci-mini-tag">Father of Indian Nuclear Programme</div>
+      <div class="sci-mini-name">Homi Jehangir Bhabha</div>
+      <div class="sci-mini-role">Indian Physicist &amp; Visionary</div>
+      <div class="sci-mini-body">Indian physicist who pioneered the development of atomic energy in India for peaceful purposes — electricity, agriculture, and medicine. Established key institutions: <span class="sci-mini-highlight">TIFR (Tata Institute of Fundamental Research)</span> and the <span class="sci-mini-highlight">Bhabha Atomic Research Centre (BARC)</span>, both world-class research institutions that continue to advance science in India today.</div>
+    </div>
+  </div>
+
+  <!-- Atomic model evolution flow -->
+  <div style="background:var(--bg-card);border:1px solid rgba(155,109,255,0.2);border-radius:var(--radius-xl);padding:1.5rem">
+    <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch8);font-weight:600;margin-bottom:1rem">Evolution of Atomic Models — Timeline</div>
+    <div class="flow-chain">
+      <div class="flow-node" style="border-color:rgba(155,109,255,0.3);background:rgba(155,109,255,0.05)"><div class="flow-node-icon">⚫</div><div class="flow-node-title">Dalton 1808</div><div class="flow-node-sub">Indivisible sphere</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node" style="border-color:rgba(255,107,172,0.3);background:rgba(255,107,172,0.05)"><div class="flow-node-icon">🍉</div><div class="flow-node-title">Thomson 1904</div><div class="flow-node-sub">Plum pudding</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node" style="border-color:rgba(79,158,255,0.3);background:rgba(79,158,255,0.05)"><div class="flow-node-icon">☀️</div><div class="flow-node-title">Rutherford 1911</div><div class="flow-node-sub">Planetary model</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node" style="border-color:rgba(0,212,168,0.3);background:rgba(0,212,168,0.05)"><div class="flow-node-icon">🪐</div><div class="flow-node-title">Bohr 1913</div><div class="flow-node-sub">Energy shells</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node" style="border-color:rgba(255,181,71,0.3);background:rgba(255,181,71,0.05)"><div class="flow-node-icon">☁️</div><div class="flow-node-title">Quantum 20th C</div><div class="flow-node-sub">Electron clouds</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node highlight"><div class="flow-node-icon">❓</div><div class="flow-node-title">Still Evolving</div><div class="flow-node-sub">Quest continues…</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SUMMARY ══ -->
+<section class="section" id="summary">
+  <div class="sec-header">
+    <div class="sec-tag">Chapter Summary</div>
+    <h2 class="sec-title">At a Glance — Key Concepts</h2>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-block"><div class="stat-value">3</div><div class="stat-label">Subatomic Particles</div></div>
+    <div class="stat-block"><div class="stat-value">4</div><div class="stat-label">Atomic Models (major)</div></div>
+    <div class="stat-block"><div class="stat-value">Z</div><div class="stat-label">Atomic Number = Protons</div></div>
+    <div class="stat-block"><div class="stat-value">2n²</div><div class="stat-label">Shell Electron Capacity</div></div>
+    <div class="stat-block"><div class="stat-value">118</div><div class="stat-label">Known Elements</div></div>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card purple">
+      <div class="concept-icon">⚛️</div>
+      <div class="concept-title">Thomson's Plum Pudding</div>
+      <div class="concept-body">Atom = solid sphere of uniform positive charge with electrons embedded throughout. First charge balance model. Failed: couldn't explain large-angle α-scattering.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">☀️</div>
+      <div class="concept-title">Rutherford's Nuclear Model</div>
+      <div class="concept-body">Atom = mostly empty space. Tiny, dense, positive nucleus at centre. Electrons orbit like planets. Failed: couldn't explain atomic stability (spiralling electrons).</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🪐</div>
+      <div class="concept-title">Bohr's Shell Model</div>
+      <div class="concept-body">Electrons in fixed shells K,L,M,N (n=1,2,3,4). No energy loss in stationary states. Solved stability problem. Shells hold max 2n² electrons. Outermost shell max = 8.</div>
+    </div>
+    <div class="concept-card pink">
+      <div class="concept-icon">🔢</div>
+      <div class="concept-title">Atomic Notation</div>
+      <div class="concept-body">Z = atomic number = protons = electrons (neutral atom). A = mass number = protons + neutrons. Neutrons = A − Z. Written as ᴬzX.</div>
+    </div>
+    <div class="concept-card amber">
+      <div class="concept-icon">⚡</div>
+      <div class="concept-title">Valency</div>
+      <div class="concept-body">Electrons gained/lost/shared to complete octet (8) or duplet (2 for H,He). &lt;4 valence e⁻ → lose. &gt;4 → gain. =4 → share. Noble gases: valency = 0.</div>
+    </div>
+    <div class="concept-card green">
+      <div class="concept-icon">🧬</div>
+      <div class="concept-title">Isotopes vs Isobars</div>
+      <div class="concept-body">Isotopes: same Z, different A (same element, different neutrons). Same chemistry, different physics. Isobars: different Z, same A (different elements, same nucleon count).</div>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top:2rem">
+    <p><strong>Key Terms to Know:</strong><br>
+    <span class="key-term">Parmanu</span><span class="key-term">Atomos</span><span class="key-term">Dalton's Atomic Theory</span><span class="key-term">Radioactivity</span><span class="key-term">Cathode Rays</span><span class="key-term">Electron (e⁻)</span><span class="key-term">Plum Pudding Model</span><span class="key-term">α-Ray Scattering</span><span class="key-term">Gold Foil Experiment</span><span class="key-term">Nucleus</span><span class="key-term">Proton (p⁺)</span><span class="key-term">Planetary Model</span><span class="key-term">Bohr's Model</span><span class="key-term">Stationary States / Shells</span><span class="key-term">Energy Levels (K,L,M,N)</span><span class="key-term">Neutron (n⁰)</span><span class="key-term">Nuclear Force</span><span class="key-term">Nucleons</span><span class="key-term">IUPAC</span><span class="key-term">Atomic Number (Z)</span><span class="key-term">Mass Number (A)</span><span class="key-term">Electronic Configuration</span><span class="key-term">Valence Shell</span><span class="key-term">Valence Electrons</span><span class="key-term">Octet Rule</span><span class="key-term">Valency</span><span class="key-term">Isotopes</span><span class="key-term">Isobars</span><span class="key-term">Weighted Average Atomic Mass</span><span class="key-term">Unified Atomic Mass Unit (u)</span>
+    </p>
+  </div>
+
+  <div class="beyond-card" style="margin-top:1.5rem">
+    <div class="beyond-tag">The Quest Continues — Electron Microscopy</div>
+    <div class="beyond-title">We Can Now See Individual Atoms</div>
+    <div class="beyond-body">Modern <span class="beyond-highlight">Scanning Tunnelling Microscopes (STMs)</span> and <span class="beyond-highlight">Transmission Electron Microscopes (TEMs)</span> can produce images with atomic-level resolution. STMs mainly study surfaces (individual atoms visible). TEMs reveal internal atomic arrangement in very thin samples. We can now see and even move individual atoms — a far cry from ancient philosophers imagining them!</div>
+  </div>
+</section>
+
+<!-- ══ CLOSING BANNER ══ -->
+<div class="closing-banner">
+  <div class="closing-title">From Parmanu to Quantum Clouds —<br><span>The Atom's Story is Never Finished</span></div>
+  <p class="closing-sub">The journey inside the atom began with imagination, advanced through ingenious experiments, and continues to evolve. Every model was a stepping stone — each revealing more of nature's astonishing inner workings.</p>
+  <div style="margin-top:2rem;display:flex;flex-wrap:wrap;gap:1rem;justify-content:center">
+    <span class="hero-badge badge-purple">⚛️ Chapter 8 Complete</span>
+    <span class="hero-badge badge-blue">Grade 9 · Exploration</span>
+    <span class="hero-badge badge-teal">Atomic Structure Mastered</span>
+  </div>
+</div>
+
+</div><!-- /main -->
+<script>
+const sections=document.querySelectorAll('section[id],div[id]');
+const navLinks=document.querySelectorAll('.nav-link');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id=e.target.id;
+      navLinks.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));
+    }
+  });
+},{rootMargin:'-40% 0px -55% 0px'});
+sections.forEach(s=>obs.observe(s));
+navLinks.forEach(link=>{
+  link.addEventListener('click',e=>{
+    const href=link.getAttribute('href');
+    if(href&&href.startsWith('#')){
+      e.preventDefault();
+      const target=document.querySelector(href);
+      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  });
+});
+</script>
+</body>
+</html>
