@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 3 — Tissues in Action</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-primary:#0a0b0f;--bg-secondary:#0f1117;--bg-card:#13151c;
+  --bg-glass:rgba(255,255,255,0.03);--bg-glass-hover:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.08);--border-bright:rgba(255,255,255,0.15);
+  --neon-blue:#4f9eff;--neon-purple:#9b6dff;--neon-teal:#00d4a8;
+  --neon-pink:#ff6bac;--neon-amber:#ffb547;--neon-green:#3dd68c;
+  --neon-ch3:#f97316;
+  --text-primary:#f0f2ff;--text-secondary:#8b90a8;--text-muted:#4a4f6a;
+  --font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);font-size:15px;line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg-secondary)}::-webkit-scrollbar-thumb{background:var(--neon-ch3);border-radius:3px}
+/* NAV */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,11,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;gap:2rem;height:56px}
+.nav-logo{font-family:var(--font-display);font-weight:700;font-size:15px;color:var(--neon-ch3);letter-spacing:0.5px;white-space:nowrap}
+.nav-links{display:flex;gap:0.25rem;overflow-x:auto;scrollbar-width:none;flex:1}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-link{font-size:12px;font-weight:500;color:var(--text-secondary);padding:6px 12px;border-radius:var(--radius-sm);white-space:nowrap;cursor:pointer;transition:all 0.2s;text-decoration:none;border:none;background:none}
+.nav-link:hover{color:var(--text-primary);background:var(--bg-glass-hover)}
+.nav-link.active{color:var(--neon-ch3);background:rgba(249,115,22,0.1)}
+.main{padding-top:56px}
+/* HERO */
+.hero{position:relative;overflow:hidden;min-height:520px;display:flex;align-items:center;padding:5rem 2rem 4rem;background:var(--bg-secondary)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(249,115,22,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(249,115,22,0.04) 1px,transparent 1px);background-size:40px 40px}
+.hero-glow-1{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(249,115,22,0.1) 0%,transparent 70%);top:-200px;right:-200px}
+.hero-glow-2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(61,214,140,0.07) 0%,transparent 70%);bottom:-150px;left:100px}
+.hero-content{position:relative;z-index:2;max-width:900px;margin:0 auto;width:100%}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--neon-ch3);background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.2);padding:6px 14px;border-radius:100px;margin-bottom:1.5rem}
+.hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-ch3);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero-title{font-family:var(--font-display);font-size:clamp(2rem,5vw,3.5rem);font-weight:700;line-height:1.15;margin-bottom:1.5rem}
+.hero-title .line1{display:block;color:var(--text-primary)}
+.hero-title .line2{display:block;background:linear-gradient(135deg,var(--neon-ch3),var(--neon-amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:16px;color:var(--text-secondary);max-width:600px;margin-bottom:2rem;line-height:1.8}
+.hero-badges{display:flex;flex-wrap:wrap;gap:10px}
+.hero-badge{font-size:12px;font-weight:500;padding:6px 14px;border-radius:100px;border:1px solid}
+.badge-orange{color:var(--neon-ch3);border-color:rgba(249,115,22,0.3);background:rgba(249,115,22,0.08)}
+.badge-blue{color:var(--neon-blue);border-color:rgba(79,158,255,0.3);background:rgba(79,158,255,0.08)}
+.badge-purple{color:var(--neon-purple);border-color:rgba(155,109,255,0.3);background:rgba(155,109,255,0.08)}
+.badge-teal{color:var(--neon-teal);border-color:rgba(0,212,168,0.3);background:rgba(0,212,168,0.08)}
+.badge-pink{color:var(--neon-pink);border-color:rgba(255,107,172,0.3);background:rgba(255,107,172,0.08)}
+.badge-amber{color:var(--neon-amber);border-color:rgba(255,181,71,0.3);background:rgba(255,181,71,0.08)}
+.badge-green{color:var(--neon-green);border-color:rgba(61,214,140,0.3);background:rgba(61,214,140,0.08)}
+/* LAYOUT */
+.section{padding:4rem 2rem;max-width:1100px;margin:0 auto}
+.full-bg{background:var(--bg-secondary)}
+.full-bg .section{max-width:none;padding-left:max(2rem,calc(50vw - 550px));padding-right:max(2rem,calc(50vw - 550px))}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border-bright),transparent)}
+/* SECTION HEADERS */
+.sec-header{margin-bottom:2.5rem}
+.sec-tag{font-family:var(--font-mono);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon-ch3);margin-bottom:0.75rem}
+.sec-title{font-family:var(--font-display);font-size:1.75rem;font-weight:700;color:var(--text-primary);margin-bottom:0.5rem}
+.sec-subtitle{font-size:14px;color:var(--text-secondary)}
+/* OBJ CARDS */
+.obj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+.obj-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;display:flex;gap:1rem;align-items:flex-start;transition:border-color 0.2s,background 0.2s}
+.obj-card:hover{border-color:var(--border-bright);background:var(--bg-glass-hover)}
+.obj-num{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch3);background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.2);min-width:28px;height:28px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;margin-top:2px}
+.obj-text{font-size:13px;color:var(--text-secondary);line-height:1.6}
+.obj-text strong{color:var(--text-primary);font-weight:500}
+/* CONCEPT CARDS */
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem}
+.concept-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;position:relative;overflow:hidden;transition:all 0.3s}
+.concept-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent-start,var(--neon-ch3)),var(--accent-end,var(--neon-amber)))}
+.concept-card:hover{border-color:var(--border-bright);transform:translateY(-2px);background:var(--bg-glass-hover)}
+.concept-icon{font-size:28px;margin-bottom:1rem}
+.concept-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary);margin-bottom:0.5rem}
+.concept-body{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.concept-card.orange{--accent-start:#f97316;--accent-end:#ffb547}
+.concept-card.blue{--accent-start:#4f9eff;--accent-end:#9b6dff}
+.concept-card.teal{--accent-start:#00d4a8;--accent-end:#4f9eff}
+.concept-card.purple{--accent-start:#9b6dff;--accent-end:#ff6bac}
+.concept-card.pink{--accent-start:#ff6bac;--accent-end:#ffb547}
+.concept-card.amber{--accent-start:#ffb547;--accent-end:#00d4a8}
+.concept-card.green{--accent-start:#3dd68c;--accent-end:#00d4a8}
+/* TRIPLE GRID */
+.triple-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.triple-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;transition:all 0.3s;position:relative;overflow:hidden}
+.triple-card:hover{transform:translateY(-4px);border-color:var(--card-accent)}
+.triple-card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,var(--card-glow,rgba(249,115,22,0.05)) 0%,transparent 70%);pointer-events:none}
+.triple-card.c1{--card-accent:var(--neon-ch3);--card-glow:rgba(249,115,22,0.07)}
+.triple-card.c2{--card-accent:var(--neon-blue);--card-glow:rgba(79,158,255,0.06)}
+.triple-card.c3{--card-accent:var(--neon-green);--card-glow:rgba(61,214,140,0.06)}
+.triple-label{font-family:var(--font-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:100px;border:1px solid;display:inline-block;margin-bottom:1rem;font-weight:600}
+.triple-card.c1 .triple-label{color:var(--neon-ch3);border-color:rgba(249,115,22,0.3);background:rgba(249,115,22,0.1)}
+.triple-card.c2 .triple-label{color:var(--neon-blue);border-color:rgba(79,158,255,0.3);background:rgba(79,158,255,0.1)}
+.triple-card.c3 .triple-label{color:var(--neon-green);border-color:rgba(61,214,140,0.3);background:rgba(61,214,140,0.1)}
+.triple-icon{font-size:2.5rem;margin-bottom:0.75rem;display:block}
+.triple-title{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:0.5rem}
+.triple-card.c1 .triple-title{color:var(--neon-ch3)}
+.triple-card.c2 .triple-title{color:var(--neon-blue)}
+.triple-card.c3 .triple-title{color:var(--neon-green)}
+.triple-desc{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:1rem}
+.triple-example{font-size:11px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;color:var(--text-secondary);font-style:italic}
+/* FLOW */
+.flow-chain{display:flex;align-items:center;gap:0;flex-wrap:wrap}
+.flow-node{flex:1;min-width:120px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem 0.75rem;text-align:center}
+.flow-node-icon{font-size:1.75rem;margin-bottom:0.4rem}
+.flow-node-title{font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:0.2rem}
+.flow-node-sub{font-size:11px;color:var(--text-secondary)}
+.flow-arrow{color:var(--neon-ch3);font-size:1.25rem;padding:0 4px;flex-shrink:0}
+.flow-node.highlight{border-color:rgba(249,115,22,0.4);background:rgba(249,115,22,0.05)}
+/* EXAMPLE CARDS */
+.example-card{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--neon-ch3);border-radius:0 var(--radius-lg) var(--radius-lg) 0;padding:1.5rem;margin-bottom:1.25rem}
+.example-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.example-num{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch3);background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.25);padding:3px 10px;border-radius:100px}
+.example-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary)}
+.example-emoji{font-size:1.5rem}
+.example-question{font-size:13px;color:var(--text-secondary);margin-bottom:1rem;font-style:italic;padding:10px 14px;background:rgba(255,255,255,0.02);border-radius:var(--radius-sm);border:1px solid var(--border)}
+.example-answer-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon-ch3);margin-bottom:0.5rem;font-weight:600}
+.example-answer{font-size:13px;color:var(--text-secondary);line-height:1.7}
+/* ACTIVITY CARDS */
+.activity-card{background:linear-gradient(135deg,rgba(249,115,22,0.06),rgba(255,181,71,0.06));border:1px solid rgba(249,115,22,0.2);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.25rem}
+.activity-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.activity-badge{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-ch3);background:rgba(249,115,22,0.12);border:1px solid rgba(249,115,22,0.3);padding:4px 12px;border-radius:100px}
+.activity-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text-primary)}
+.activity-body{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.think-prompts{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem}
+.think-prompt{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text-secondary);padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);border:1px solid var(--border)}
+.think-prompt-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-ch3);margin-top:5px;flex-shrink:0}
+/* PONDER */
+.ponder-card{background:rgba(255,181,71,0.05);border:1px solid rgba(255,181,71,0.2);border-radius:var(--radius-lg);padding:1.5rem;margin:1.5rem 0}
+.ponder-header{display:flex;align-items:center;gap:10px;margin-bottom:0.75rem}
+.ponder-icon{font-size:1.25rem}
+.ponder-label{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--neon-amber);text-transform:uppercase;letter-spacing:1.5px}
+.ponder-q{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.ponder-q strong{color:var(--neon-amber);font-weight:500}
+/* CURIOSITY */
+.curiosity-card{background:var(--bg-card);border:1px solid rgba(249,115,22,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.curiosity-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba(249,115,22,0.05) 0%,transparent 50%);pointer-events:none}
+.curiosity-glyph{position:absolute;right:1.5rem;top:1.25rem;font-size:3rem;opacity:0.08}
+.curiosity-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch3);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.curiosity-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-ch3)}
+.curiosity-title{font-family:var(--font-display);font-size:1.15rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.curiosity-body{font-size:13px;color:var(--text-secondary);line-height:1.75;position:relative}
+.curiosity-highlight{color:var(--neon-ch3);font-weight:500}
+/* BEYOND / BRIDGING */
+.beyond-card{background:rgba(79,158,255,0.04);border:1px solid rgba(79,158,255,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.beyond-card::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(79,158,255,0.06) 0%,transparent 70%);pointer-events:none}
+.beyond-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-blue);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.beyond-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-blue)}
+.beyond-title{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.beyond-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+.beyond-highlight{color:var(--neon-blue);font-weight:500}
+.bridging-card{background:rgba(61,214,140,0.04);border:1px solid rgba(61,214,140,0.2);border-radius:var(--radius-xl);padding:1.75rem;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.bridging-card::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(61,214,140,0.05) 0%,transparent 70%);pointer-events:none}
+.bridging-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-green);font-weight:600;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
+.bridging-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--neon-green)}
+.bridging-title{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem}
+.bridging-body{font-size:13px;color:var(--text-secondary);line-height:1.75}
+.bridging-highlight{color:var(--neon-green);font-weight:500}
+/* SCIENTIST */
+.scientist-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:2rem;display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:start;position:relative;overflow:hidden}
+.scientist-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(249,115,22,0.05) 0%,transparent 60%);pointer-events:none}
+.scientist-avatar{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,rgba(249,115,22,0.3),rgba(255,181,71,0.3));border:2px solid rgba(249,115,22,0.3);display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0}
+.scientist-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch3);font-weight:600;margin-bottom:0.5rem}
+.scientist-name{font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--text-primary);margin-bottom:0.25rem}
+.scientist-dates{font-size:12px;color:var(--text-muted);margin-bottom:1rem;font-family:var(--font-mono)}
+.scientist-contribution{font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1rem}
+.scientist-key{background:rgba(249,115,22,0.06);border:1px solid rgba(249,115,22,0.2);border-radius:var(--radius-md);padding:1rem;margin-top:0.5rem}
+.scientist-key-label{font-size:11px;font-weight:600;color:var(--neon-ch3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:0.4rem}
+.scientist-key-text{font-size:12px;color:var(--text-secondary);line-height:1.6}
+/* PILLS */
+.pills-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:1rem}
+.pill{font-size:11px;font-weight:500;padding:5px 12px;border-radius:100px;border:1px solid}
+/* HIGHLIGHT BOX */
+.highlight-box{background:rgba(249,115,22,0.05);border:1px solid rgba(249,115,22,0.18);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin:1.25rem 0}
+.highlight-box p{font-size:13px;color:var(--text-secondary);line-height:1.75;margin:0}
+.highlight-box strong{color:var(--text-primary);font-weight:500}
+/* COMPARE TABLE */
+.compare-wrap{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden}
+.compare-table{width:100%;border-collapse:collapse;font-size:13px}
+.compare-table th{font-family:var(--font-display);font-size:12px;font-weight:600;padding:14px 20px;text-align:left;border-bottom:1px solid var(--border)}
+.compare-table th.th-plant{color:var(--neon-green);background:rgba(61,214,140,0.05)}
+.compare-table th.th-animal{color:var(--neon-blue);background:rgba(79,158,255,0.05)}
+.compare-table th.th-feat{color:var(--text-muted)}
+.compare-table td{padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text-secondary);vertical-align:top}
+.compare-table tr:hover td{background:var(--bg-glass-hover)}
+.compare-table td.td-plant{color:var(--neon-green)}
+.compare-table td.td-animal{color:var(--neon-blue)}
+/* STAT ROW */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin:2rem 0}
+.stat-block{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:1.25rem 1rem;text-align:center}
+.stat-value{font-family:var(--font-display);font-size:1.75rem;font-weight:700;background:linear-gradient(135deg,var(--neon-ch3),var(--neon-amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.25rem}
+.stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px}
+/* TISSUE FACTORY GRID — reuse factory-card pattern */
+.factory-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem}
+.factory-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;position:relative;overflow:hidden;transition:all 0.3s}
+.factory-card:hover{border-color:var(--border-bright);transform:translateY(-2px)}
+.factory-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--fc-stripe,linear-gradient(90deg,var(--neon-ch3),var(--neon-amber)))}
+.fc-icon{font-size:2rem;margin-bottom:0.75rem}
+.fc-name{font-family:var(--font-display);font-size:0.95rem;font-weight:700;color:var(--text-primary);margin-bottom:0.2rem}
+.fc-role{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:0.6rem}
+.fc-desc{font-size:12px;color:var(--text-secondary);line-height:1.65}
+.fc-fact{font-size:11px;margin-top:0.6rem;padding:6px 10px;border-radius:var(--radius-sm);background:rgba(255,255,255,0.03);border:1px solid var(--border);color:var(--text-muted)}
+/* SYMBOL TABLE */
+.symbol-table{width:100%;border-collapse:collapse;font-size:13px}
+.symbol-table th{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);font-weight:600;padding:10px 16px;text-align:left;border-bottom:1px solid var(--border)}
+.symbol-table td{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text-secondary)}
+.symbol-table tr:hover td{background:var(--bg-glass-hover)}
+.symbol-cell{font-family:var(--font-mono);font-size:1rem;font-weight:700;color:var(--neon-ch3)}
+.unit-cell{font-family:var(--font-mono);font-size:12px;color:var(--neon-blue)}
+/* CLOSING */
+.closing-banner{text-align:center;padding:5rem 2rem;position:relative;overflow:hidden;background:var(--bg-secondary)}
+.closing-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(249,115,22,0.1) 0%,transparent 60%)}
+.closing-title{font-family:var(--font-display);font-size:clamp(1.5rem,4vw,2.5rem);font-weight:700;color:var(--text-primary);margin-bottom:1rem;position:relative}
+.closing-title span{background:linear-gradient(135deg,var(--neon-ch3),var(--neon-amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.closing-sub{font-size:15px;color:var(--text-secondary);max-width:500px;margin:0 auto;position:relative}
+/* DIVISION COMPARE (4-column muscle table) */
+.muscle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.muscle-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;position:relative;overflow:hidden;transition:all 0.3s}
+.muscle-card:hover{border-color:var(--border-bright);transform:translateY(-2px)}
+.muscle-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.muscle-card.skeletal::before{background:linear-gradient(90deg,var(--neon-blue),var(--neon-teal))}
+.muscle-card.smooth::before{background:linear-gradient(90deg,var(--neon-purple),var(--neon-pink))}
+.muscle-card.cardiac::before{background:linear-gradient(90deg,var(--neon-pink),var(--neon-ch3))}
+.muscle-badge{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;padding:4px 12px;border-radius:100px;border:1px solid;display:inline-block;margin-bottom:1rem;font-weight:600}
+.skeletal .muscle-badge{color:var(--neon-blue);border-color:rgba(79,158,255,0.3);background:rgba(79,158,255,0.08)}
+.smooth .muscle-badge{color:var(--neon-purple);border-color:rgba(155,109,255,0.3);background:rgba(155,109,255,0.08)}
+.cardiac .muscle-badge{color:var(--neon-pink);border-color:rgba(255,107,172,0.3);background:rgba(255,107,172,0.08)}
+.muscle-title{font-family:var(--font-display);font-size:1rem;font-weight:700;margin-bottom:0.75rem}
+.skeletal .muscle-title{color:var(--neon-blue)}
+.smooth .muscle-title{color:var(--neon-purple)}
+.cardiac .muscle-title{color:var(--neon-pink)}
+.muscle-rows{display:flex;flex-direction:column;gap:0.4rem}
+.muscle-row{display:flex;gap:0.6rem;font-size:12px}
+.muscle-lbl{color:var(--text-muted);min-width:80px;flex-shrink:0}
+.muscle-val{color:var(--text-secondary)}
+/* JOINT CARDS */
+.joint-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem}
+.joint-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;transition:all 0.3s;position:relative;overflow:hidden}
+.joint-card:hover{border-color:var(--border-bright);transform:translateY(-2px)}
+.joint-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--jc-stripe,linear-gradient(90deg,var(--neon-ch3),var(--neon-amber)))}
+.joint-icon{font-size:2rem;margin-bottom:0.75rem}
+.joint-name{font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.25rem}
+.joint-loc{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:1.5px}
+.joint-desc{font-size:12.5px;color:var(--text-secondary);line-height:1.65}
+.joint-move{font-size:11.5px;margin-top:0.5rem;color:var(--neon-ch3);font-weight:500}
+/* RESPONSIVE */
+@media(max-width:768px){
+  .triple-grid{grid-template-columns:1fr}
+  .muscle-grid{grid-template-columns:1fr}
+  .joint-grid{grid-template-columns:1fr}
+  .scientist-card{grid-template-columns:1fr}
+  .scientist-avatar{margin:0 auto}
+  .top-nav{padding:0 1rem}
+}
+@media(max-width:540px){.flow-chain{flex-direction:column}.flow-arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+  <div class="nav-logo">🌿 Exploration · Gr.9 · Ch.3</div>
+  <div class="nav-links">
+    <a class="nav-link" href="#objectives">Objectives</a>
+    <a class="nav-link" href="#intro">Why Different?</a>
+    <a class="nav-link" href="#meristem">Meristems</a>
+    <a class="nav-link" href="#permanent">Permanent Tissues</a>
+    <a class="nav-link" href="#xylem-phloem">Xylem &amp; Phloem</a>
+    <a class="nav-link" href="#animal">Animal Tissues</a>
+    <a class="nav-link" href="#epithelial">Epithelial</a>
+    <a class="nav-link" href="#connective">Connective</a>
+    <a class="nav-link" href="#muscle">Muscle</a>
+    <a class="nav-link" href="#nervous">Nervous</a>
+    <a class="nav-link" href="#joints">Joints &amp; Skeleton</a>
+    <a class="nav-link" href="#scientists">Scientists</a>
+    <a class="nav-link" href="#curiosities">Beyond</a>
+  </div>
+</nav>
+
+<div class="main">
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      Grade 9 · Chapter 3 · Biology
+    </div>
+    <h1 class="hero-title">
+      <span class="line1">Tissues in Action</span>
+      <span class="line2">Nature's Greatest Engineering Marvel</span>
+    </h1>
+    <p class="hero-desc">Life begins with one cell that divides to form skin, muscle, bone, and nerves. These cells group into tissues, tissues into organs, organs into systems — each layer more complex than the last. Explore how plants and animals are built from the inside out.</p>
+    <div class="hero-badges">
+      <span class="hero-badge badge-orange">🌱 Plant Tissues</span>
+      <span class="hero-badge badge-green">🔬 Meristems</span>
+      <span class="hero-badge badge-blue">🩸 Animal Tissues</span>
+      <span class="hero-badge badge-purple">💪 Muscle Types</span>
+      <span class="hero-badge badge-pink">🧠 Nervous Tissue</span>
+      <span class="hero-badge badge-amber">🦴 Joints &amp; Skeleton</span>
+    </div>
+    <div style="margin-top:2rem">
+      <div style="display:flex;gap:1rem;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;display:flex;gap:1rem;align-items:flex-start">
+          <div style="font-size:2rem;padding:8px;background:rgba(249,115,22,0.08);border-radius:var(--radius-md);flex-shrink:0">🌿</div>
+          <div>
+            <div style="font-family:var(--font-display);font-size:0.9rem;font-weight:600;color:var(--text-primary);margin-bottom:0.3rem">Plant Tissues</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.6">Fixed in soil, needing rigid support, specialised transport, and continuous growth at specific zones.</div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:200px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;display:flex;gap:1rem;align-items:flex-start">
+          <div style="font-size:2rem;padding:8px;background:rgba(79,158,255,0.08);border-radius:var(--radius-md);flex-shrink:0">🐾</div>
+          <div>
+            <div style="font-family:var(--font-display);font-size:0.9rem;font-weight:600;color:var(--text-primary);margin-bottom:0.3rem">Animal Tissues</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.6">Mobile organisms needing flexible cells, a complex nervous system, and tissues that repair and respond.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ OBJECTIVES ══ -->
+<section class="section" id="objectives">
+  <div class="sec-header">
+    <div class="sec-tag">Learning Objectives</div>
+    <h2 class="sec-title">What You Will Learn</h2>
+    <p class="sec-subtitle">After completing this chapter, you will be able to:</p>
+  </div>
+  <div class="obj-grid">
+    <div class="obj-card"><div class="obj-num">01</div><div class="obj-text"><strong>Explain why plant and animal tissues differ</strong> — linking their structural differences to their modes of nutrition and movement.</div></div>
+    <div class="obj-card"><div class="obj-num">02</div><div class="obj-text"><strong>Describe the three meristematic tissues</strong> — apical, lateral, intercalary — and the type of growth each is responsible for.</div></div>
+    <div class="obj-card"><div class="obj-num">03</div><div class="obj-text"><strong>Classify and describe permanent plant tissues</strong> — protective (epidermis), supporting (parenchyma, collenchyma, sclerenchyma), and conducting (xylem, phloem).</div></div>
+    <div class="obj-card"><div class="obj-num">04</div><div class="obj-text"><strong>Explain differentiation</strong> — how meristematic cells become specialised permanent tissues.</div></div>
+    <div class="obj-card"><div class="obj-num">05</div><div class="obj-text"><strong>Identify the four types of animal tissues</strong> — epithelial, connective, muscular, and nervous — and explain the structure-function relationship in each.</div></div>
+    <div class="obj-card"><div class="obj-num">06</div><div class="obj-text"><strong>Compare the three types of muscle tissue</strong> — skeletal, smooth, and cardiac — including their control, structure, and location.</div></div>
+    <div class="obj-card"><div class="obj-num">07</div><div class="obj-text"><strong>Describe the structure of a neuron</strong> and explain how nervous tissue receives, processes, and transmits messages.</div></div>
+    <div class="obj-card"><div class="obj-num">08</div><div class="obj-text"><strong>Classify the four types of joints</strong> and explain how the musculoskeletal system produces movement under nervous control.</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ S1: WHY DIFFERENT ══ -->
+<div class="full-bg" id="intro">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 3.1 · Foundation</div>
+    <h2 class="sec-title">Why are Plant and Animal Tissues Different?</h2>
+    <p class="sec-subtitle">Structure follows function — and plants and animals live very differently</p>
+  </div>
+  <div class="highlight-box">
+    <p>A <strong>tissue</strong> is a group of cells that are similar in structure and work together to perform a specific function. The formation of different tissue types creates a <strong>division of labour</strong> — increasing the body's efficiency and enabling complex life processes. In unicellular organisms like Amoeba, one cell does everything. In multicellular organisms, different cell groups specialise and share the work.</p>
+  </div>
+  <div class="concept-grid" style="margin-top:1.5rem">
+    <div class="concept-card green">
+      <div class="concept-icon">🌳</div>
+      <div class="concept-title">Plants — Fixed and Photosynthetic</div>
+      <div class="concept-body">Plants are <strong style="color:var(--neon-green)">fixed in one place</strong>. They need rigid support to stay upright. They rely on <strong>photosynthesis</strong> for food. Their tissues reflect these needs: rigid cell walls, stomata for gas exchange, vascular tissue for long-distance transport of water and food.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🐾</div>
+      <div class="concept-title">Animals — Mobile and Heterotrophic</div>
+      <div class="concept-body">Animals <strong style="color:var(--neon-blue)">move from place to place</strong>. They obtain food from external sources. They need <strong>flexible cells</strong>, a nervous system to coordinate movement, muscles to move bones, and digestive tissues to process food.</div>
+    </div>
+    <div class="concept-card orange">
+      <div class="concept-icon">🏗️</div>
+      <div class="concept-title">Hierarchy of Organisation</div>
+      <div class="concept-body">Cells → <strong style="color:var(--neon-ch3)">Tissue</strong> → Multiple tissues → <strong style="color:var(--neon-ch3)">Organ</strong> → Multiple organs → <strong style="color:var(--neon-ch3)">Organ System</strong> → <strong style="color:var(--neon-ch3)">Organism</strong>. Each level has emergent properties not present at the lower level.</div>
+    </div>
+  </div>
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">💭</div><div class="ponder-label">Think It Over</div></div>
+    <div class="ponder-q">How is the study of cells and tissues significant for understanding life processes and human welfare? How are tissues in plants and animals different, and why? How is division of labour at various levels of organisation correlated with structure and function?</div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ S2: MERISTEMATIC TISSUES ══ -->
+<section class="section" id="meristem">
+  <div class="sec-header">
+    <div class="sec-tag">Section 3.2 · Plant Tissues</div>
+    <h2 class="sec-title">Meristematic Tissues — Zones of Growth</h2>
+    <p class="sec-subtitle">The actively dividing cells responsible for all plant growth</p>
+  </div>
+  <div class="highlight-box">
+    <p>Growth in plants requires <strong>actively dividing cells</strong>. These groups of dividing cells are called <strong>meristematic tissues</strong>. Meristematic cells are small, have <strong>thin cell walls, a large nucleus, dense cytoplasm</strong>, and <strong>no vacuoles</strong> — features that allow continuous, rapid division. Plants have three types of meristematic tissue, each responsible for a different kind of growth.</p>
+  </div>
+
+  <div class="triple-grid" style="margin:2rem 0">
+    <div class="triple-card c1">
+      <div class="triple-label">Apical</div>
+      <span class="triple-icon">⬆️</span>
+      <div class="triple-title">Apical Meristem</div>
+      <div class="triple-desc">Located at the <strong>tips of roots and shoots</strong>. Divides continuously to increase the length of the plant. Responsible for growth in height (shoot tip) and depth (root tip).</div>
+      <div class="triple-example">Onion root tip experiment shows roots grow only from their tips</div>
+    </div>
+    <div class="triple-card c2">
+      <div class="triple-label">Lateral</div>
+      <span class="triple-icon">↔️</span>
+      <div class="triple-title">Lateral Meristem</div>
+      <div class="triple-desc">Arranged in a <strong>ring along the circumference</strong> of stems. Divides outward and inward to increase the girth (diameter) of the stem. Creates the annual growth rings visible in cross-sections of trees.</div>
+      <div class="triple-example">Annual rings in a cut tree trunk — each ring = one year's growth</div>
+    </div>
+    <div class="triple-card c3">
+      <div class="triple-label">Intercalary</div>
+      <span class="triple-icon">🔄</span>
+      <div class="triple-title">Intercalary Meristem</div>
+      <div class="triple-desc">Located at the <strong>base of internodes or above nodes</strong>. Allows plants to regenerate after being cut, grazed, or mowed. Grasses regrow after cutting because of this tissue.</div>
+      <div class="triple-example">Grass regrows after mowing; hedges become bushy after trimming</div>
+    </div>
+  </div>
+
+  <!-- Onion root experiment -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🧅 Activity 3.1</span>
+      <span class="activity-title">Onion Bulb Root Growth Experiment — Proving Apical Meristem</span>
+    </div>
+    <div class="activity-body">Two onion bulbs in water jars — Jar A untouched, Jar B with root tips cut on Day 3. Measure root length daily for 7 days.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--text-primary)">Jar A (control):</strong> Roots continue growing in length throughout all 7 days.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--text-primary)">Jar B (tips cut on Day 3):</strong> Roots stop growing after Day 3 — no more increase in length.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--text-primary)">Conclusion:</strong> Roots grow ONLY from their tips. The tip contains the apical meristem — the zone of continuous cell division.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--text-primary)">Link to Ch.2:</strong> Mitosis observed in onion root tip cells (Ch.2) confirms these tip cells are actively dividing.</div>
+    </div>
+  </div>
+
+  <!-- Annual rings -->
+  <div class="example-card">
+    <div class="example-header">
+      <span class="example-num">Annual Rings</span>
+      <span class="example-emoji">🌲</span>
+      <span class="example-title">Reading a Tree's History in Its Growth Rings</span>
+    </div>
+    <div class="example-answer">The lateral meristem in a tree trunk creates new layers of wood each year. When you cut a tree, the cross-section shows <strong style="color:var(--neon-ch3)">concentric ring-like patterns</strong> — each ring represents one year of growth. <strong>Wide rings</strong> = favourable conditions (good rainfall, warm climate). <strong>Narrow rings</strong> = unfavourable conditions (drought, cold). Scientists use annual ring counts to <strong>estimate a tree's age</strong> and reconstruct past climate conditions — a science called <em>dendrochronology</em>.</div>
+  </div>
+
+  <!-- Differentiation -->
+  <div class="highlight-box">
+    <p>Due to continuous division, meristematic tissue adds new cells to the plant body. Some cells remain meristematic; others <strong>lose the ability to divide</strong> and undergo changes in structure and function to become <strong>permanent tissues</strong> — specialised for support, transport, or storage. This process is called <strong>differentiation</strong>. Meristematic tissue becomes permanent tissue through differentiation.</p>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-block"><div class="stat-value">3</div><div class="stat-label">Types of Meristem</div></div>
+    <div class="stat-block"><div class="stat-value">Tips</div><div class="stat-label">Apical Location</div></div>
+    <div class="stat-block"><div class="stat-value">Ring</div><div class="stat-label">Lateral Location</div></div>
+    <div class="stat-block"><div class="stat-value">Node</div><div class="stat-label">Intercalary Location</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ S3: PERMANENT TISSUES ══ -->
+<div class="full-bg" id="permanent">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 3.2.4 · Plant Tissues</div>
+    <h2 class="sec-title">Permanent Plant Tissues</h2>
+    <p class="sec-subtitle">Specialised tissues that no longer divide — each built for a specific job</p>
+  </div>
+  <div class="highlight-box" style="margin-bottom:2rem">
+    <p>Permanent tissues are of two types: <strong>Simple</strong> (made of only one type of cell) and <strong>Complex</strong> (made of more than one type of cell). They are organised into three major systems: <strong>Dermal</strong> (outer protection), <strong>Ground</strong> (main body), and <strong>Vascular</strong> (conducting/transport).</p>
+  </div>
+
+  <!-- EPIDERMIS / PROTECTIVE -->
+  <div class="sec-tag" style="margin-bottom:1rem">Protective Tissue — Epidermis</div>
+  <div class="concept-grid" style="margin-bottom:2rem">
+    <div class="concept-card orange">
+      <div class="concept-icon">🛡️</div>
+      <div class="concept-title">Epidermis — Outermost Shield</div>
+      <div class="concept-body">A <strong style="color:var(--neon-ch3)">single layer of tightly packed, flat, rectangular cells</strong> forming the outermost layer of all plant parts. Covered by a waxy <strong>cuticle</strong> made of cutin — reduces water loss and protects against mechanical injury and parasites.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">💧</div>
+      <div class="concept-title">Root Hair &amp; Stomata</div>
+      <div class="concept-body">In roots, epidermal cells form <strong style="color:var(--neon-teal)">root hairs</strong> — increasing surface area for absorbing water and minerals. In leaves, the epidermis contains <strong>stomata</strong> (pores) for gas exchange and transpiration. Transpiration creates a pull that draws water up through xylem.</div>
+    </div>
+    <div class="concept-card amber">
+      <div class="concept-icon">🏜️</div>
+      <div class="concept-title">Thick Cuticle in Xerophytes</div>
+      <div class="concept-body">Plants in very dry (xeric) habitats develop a <strong style="color:var(--neon-amber)">much thicker cuticle</strong> to reduce water loss. Desert plants like cacti have thick, waxy epidermis. Aquatic plants have thin/no cuticle — they need water to pass through freely.</div>
+    </div>
+  </div>
+
+  <!-- SIMPLE PERMANENT — THREE TYPES -->
+  <div class="sec-tag" style="margin-bottom:1rem">Supporting Tissue — Simple Permanent Tissues</div>
+  <div class="factory-grid" style="margin-bottom:2rem">
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#3dd68c,#00d4a8)">
+      <div class="fc-icon">🟢</div>
+      <div class="fc-name">Parenchyma</div>
+      <div class="fc-role" style="color:var(--neon-green)">Food Storage &amp; Photosynthesis</div>
+      <div class="fc-desc"><strong>Living cells</strong> with <strong>thin walls</strong>. Loosely packed with large intercellular spaces. Stores food in non-green parts. Performs photosynthesis in green parts (chlorenchyma). In aquatic plants, specialised parenchyma forms large air spaces (aerenchyma) to help the plant float.</div>
+      <div class="fc-fact">The "flesh" of most fruits and vegetables is mostly parenchyma tissue</div>
+    </div>
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#4f9eff,#9b6dff)">
+      <div class="fc-icon">🔵</div>
+      <div class="fc-name">Collenchyma</div>
+      <div class="fc-role" style="color:var(--neon-blue)">Flexible Support</div>
+      <div class="fc-desc"><strong>Living cells</strong> with <strong>unevenly thickened corners</strong> due to <strong>pectin</strong> deposition. Provides support and flexibility — allows stems and tendrils to bend without breaking. Pectin gives it rubber-like elasticity. Found in young stems, leaf stalks.</div>
+      <div class="fc-fact">Coriander leaf stalks are soft and flexible because they contain collenchyma</div>
+    </div>
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#ffb547,#f97316)">
+      <div class="fc-icon">🟤</div>
+      <div class="fc-name">Sclerenchyma</div>
+      <div class="fc-role" style="color:var(--neon-amber)">Rigid Strength</div>
+      <div class="fc-desc"><strong>Mostly dead cells</strong> with very <strong>thick walls due to lignin</strong> deposition. Lignin makes them hard and strong — forms the woody structure. Found in stems, leaf veins, and hard coverings of seeds and nuts like coconut husk and walnut shell.</div>
+      <div class="fc-fact">Coconut husk fibres are hard and brittle because they are sclerenchyma — rigid lignified walls</div>
+    </div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>1.</strong> Fibres of coconut husk are hard and brittle, whereas leaf stalks of coriander are soft and flexible. Find out the reason.<br>
+      <strong>2.</strong> Why is a thick cuticle advantageous in desert plants but disadvantageous for underwater plants?<br>
+      <strong>4.</strong> What would happen if there were no stomata in the epidermis of stems or leaves?
+    </div>
+  </div>
+
+  <!-- COMPARE TABLE: Simple Permanent -->
+  <div class="sec-tag" style="margin-bottom:1rem">Quick Comparison — Three Simple Permanent Tissues</div>
+  <div class="compare-wrap" style="margin-bottom:2rem">
+    <table class="compare-table">
+      <thead><tr><th class="th-feat">Feature</th><th class="th-plant">Parenchyma</th><th class="th-animal">Collenchyma</th><th style="color:var(--neon-amber)">Sclerenchyma</th></tr></thead>
+      <tbody>
+        <tr><td>Cell status</td><td class="td-plant">Living</td><td class="td-animal">Living</td><td style="color:var(--neon-amber)">Mostly Dead</td></tr>
+        <tr><td>Cell wall</td><td class="td-plant">Thin</td><td class="td-animal">Unevenly thickened (pectin)</td><td style="color:var(--neon-amber)">Thick, lignified</td></tr>
+        <tr><td>Intercellular spaces</td><td class="td-plant">Large — loose packing</td><td class="td-animal">Small</td><td style="color:var(--neon-amber)">Very little/none</td></tr>
+        <tr><td>Primary function</td><td class="td-plant">Storage &amp; photosynthesis</td><td class="td-animal">Flexible support, bending</td><td style="color:var(--neon-amber)">Rigid strength, hardness</td></tr>
+        <tr><td>Example location</td><td class="td-plant">Fruit flesh, leaf mesophyll</td><td class="td-animal">Young stems, tendrils</td><td style="color:var(--neon-amber)">Coconut husk, walnut shell, stem</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ S4: XYLEM AND PHLOEM ══ -->
+<section class="section" id="xylem-phloem">
+  <div class="sec-header">
+    <div class="sec-tag">Section 3.2.4 (iii) · Complex Permanent Tissues</div>
+    <h2 class="sec-title">Xylem and Phloem — The Vascular Highway</h2>
+    <p class="sec-subtitle">Complex tissues that transport water and food across the entire plant</p>
+  </div>
+  <div class="highlight-box">
+    <p>Xylem and phloem are called <strong>complex permanent tissues</strong> because they are made of <strong>more than one type of cell working together</strong>. Together they form the vascular tissue system — the plant's transport network. The key question: <em>How does water reach the leaves of a tall tree? How does food made in leaves reach the roots?</em></p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:2rem 0">
+    <!-- XYLEM -->
+    <div style="background:var(--bg-card);border:1px solid rgba(79,158,255,0.25);border-radius:var(--radius-xl);padding:1.5rem;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-blue),var(--neon-teal))"></div>
+      <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-blue);font-weight:600;margin-bottom:0.75rem">Xylem · Water Highway ↑</div>
+      <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--neon-blue);margin-bottom:1rem">Water &amp; Mineral Transport</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1rem">Transports <strong style="color:var(--text-primary)">water and dissolved minerals from roots upward</strong> to all parts of the plant. Also provides structural strength.</div>
+      <div style="display:flex;flex-direction:column;gap:0.5rem">
+        <div style="font-size:12px;padding:8px 12px;background:rgba(79,158,255,0.07);border:1px solid rgba(79,158,255,0.2);border-radius:var(--radius-sm);color:var(--text-secondary)"><strong style="color:var(--neon-blue)">Tracheids &amp; Vessels</strong> — tubular, thick-walled, dead at maturity; conduct water</div>
+        <div style="font-size:12px;padding:8px 12px;background:rgba(79,158,255,0.07);border:1px solid rgba(79,158,255,0.2);border-radius:var(--radius-sm);color:var(--text-secondary)"><strong style="color:var(--neon-blue)">Xylem Parenchyma</strong> — the ONLY living component; stores food</div>
+        <div style="font-size:12px;padding:8px 12px;background:rgba(79,158,255,0.07);border:1px solid rgba(79,158,255,0.2);border-radius:var(--radius-sm);color:var(--text-secondary)"><strong style="color:var(--neon-blue)">Xylem Fibres</strong> — sclerenchymatous; provide mechanical strength</div>
+      </div>
+    </div>
+    <!-- PHLOEM -->
+    <div style="background:var(--bg-card);border:1px solid rgba(249,115,22,0.25);border-radius:var(--radius-xl);padding:1.5rem;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--neon-ch3),var(--neon-amber))"></div>
+      <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-ch3);font-weight:600;margin-bottom:0.75rem">Phloem · Food Highway ↕</div>
+      <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--neon-ch3);margin-bottom:1rem">Food (Sugar) Transport</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.75;margin-bottom:1rem">Transports <strong style="color:var(--text-primary)">food (sugars) from leaves to all parts</strong> of the plant — both up and down. Mostly made of <em>living cells</em>.</div>
+      <div style="display:flex;flex-direction:column;gap:0.5rem">
+        <div style="font-size:12px;padding:8px 12px;background:rgba(249,115,22,0.07);border:1px solid rgba(249,115,22,0.2);border-radius:var(--radius-sm);color:var(--text-secondary)"><strong style="color:var(--neon-ch3)">Sieve Tubes</strong> — long tubular cells with perforated walls; transport sugars</div>
+        <div style="font-size:12px;padding:8px 12px;background:rgba(249,115,22,0.07);border:1px solid rgba(249,115,22,0.2);border-radius:var(--radius-sm);color:var(--text-secondary)"><strong style="color:var(--neon-ch3)">Companion Cells</strong> — specialised parenchyma; regulate loading/unloading of sugars in sieve tubes</div>
+        <div style="font-size:12px;padding:8px 12px;background:rgba(249,115,22,0.07);border:1px solid rgba(249,115,22,0.2);border-radius:var(--radius-sm);color:var(--text-secondary)"><strong style="color:var(--neon-ch3)">Phloem Parenchyma</strong> — stores food, resin, tannins, latex</div>
+        <div style="font-size:12px;padding:8px 12px;background:rgba(249,115,22,0.07);border:1px solid rgba(249,115,22,0.2);border-radius:var(--radius-sm);color:var(--text-secondary)"><strong style="color:var(--neon-ch3)">Phloem Fibres</strong> — sclerenchymatous; provide mechanical support</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tissue Systems summary -->
+  <div class="sec-tag" style="margin-bottom:1rem">Three Plant Tissue Systems</div>
+  <div class="triple-grid" style="margin-bottom:1.5rem">
+    <div class="triple-card c1">
+      <div class="triple-label">Dermal</div>
+      <span class="triple-icon">🛡️</span>
+      <div class="triple-title">Dermal Tissue System</div>
+      <div class="triple-desc">Forms the <strong>outer covering</strong> of the plant. Protects inner parts, reduces water loss, enables gas exchange.</div>
+      <div class="triple-example">Includes: Epidermis, root hairs, stomata, cuticle</div>
+    </div>
+    <div class="triple-card c2">
+      <div class="triple-label">Ground</div>
+      <span class="triple-icon">🌿</span>
+      <div class="triple-title">Ground Tissue System</div>
+      <div class="triple-desc">Forms the <strong>main body</strong> of the plant between dermal and vascular tissues. Stores food, provides support.</div>
+      <div class="triple-example">Includes: Parenchyma, collenchyma, sclerenchyma</div>
+    </div>
+    <div class="triple-card c3">
+      <div class="triple-label">Vascular</div>
+      <span class="triple-icon">🔄</span>
+      <div class="triple-title">Vascular Tissue System</div>
+      <div class="triple-desc">The plant's <strong>transport network</strong>. Conducts water, minerals, and food to all parts of the plant.</div>
+      <div class="triple-example">Includes: Xylem and Phloem</div>
+    </div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>3.</strong> Once water is absorbed by plant roots, it travels against gravity through xylem. How do the <strong>'dead' cells of xylem</strong> work together with the <strong>living cells of leaves</strong> to keep water moving upward?
+    </div>
+  </div>
+
+  <div class="beyond-card">
+    <div class="beyond-tag">Ready to Go Beyond</div>
+    <div class="beyond-title">🌲 Cork — The Bark of a Tree</div>
+    <div class="beyond-body">In young plants, the outer protective layer is a single-layered epidermis. As plants age, cells below the epidermis develop the ability to divide and act as lateral meristematic cells — forming the <span class="beyond-highlight">cork cambium</span>. Division of cork cambium produces <span class="beyond-highlight">cork cells</span>. Cork cells are dead, compactly arranged, and contain a substance making them impermeable to water and gases. This forms the <span class="beyond-highlight">bark of the tree</span> — a secondary protective layer replacing the epidermis as the plant grows thicker.</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ S5: ANIMAL TISSUES ══ -->
+<div class="full-bg" id="animal">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 3.3 · Animal Tissues</div>
+    <h2 class="sec-title">Animal Tissues — Four Fundamental Types</h2>
+    <p class="sec-subtitle">Every animal function — from movement to memory — is rooted in these four tissue types</p>
+  </div>
+  <div class="concept-grid">
+    <div class="concept-card blue">
+      <div class="concept-icon">🧱</div>
+      <div class="concept-title">Epithelial Tissue</div>
+      <div class="concept-body"><strong style="color:var(--neon-blue)">Covering and lining tissue.</strong> Forms the outer body surface and lines all internal cavities. Tightly packed cells provide protection, enable exchange, secretion, absorption, and sensory functions.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🔗</div>
+      <div class="concept-title">Connective Tissue</div>
+      <div class="concept-body"><strong style="color:var(--neon-teal)">Connects, supports, and binds.</strong> Most diverse tissue type. Includes blood, bone, cartilage, tendons, and ligaments. Each has a different matrix composition giving different physical properties.</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">💪</div>
+      <div class="concept-title">Muscular Tissue</div>
+      <div class="concept-body"><strong style="color:var(--neon-purple)">Movement tissue.</strong> Specialised for contraction. Three types: skeletal (voluntary), smooth (involuntary), cardiac (heart). Each differs in structure, control, and location.</div>
+    </div>
+    <div class="concept-card orange">
+      <div class="concept-icon">⚡</div>
+      <div class="concept-title">Nervous Tissue</div>
+      <div class="concept-body"><strong style="color:var(--neon-ch3)">Communication and control.</strong> Made of neurons — specialised to receive, process, and transmit electrical messages. Controls and coordinates all body activities.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ S6: EPITHELIAL TISSUE ══ -->
+<section class="section" id="epithelial">
+  <div class="sec-header">
+    <div class="sec-tag">Section 3.3.1 · Animal Tissues</div>
+    <h2 class="sec-title">Epithelial Tissues — Structure Meets Function</h2>
+    <p class="sec-subtitle">One tissue type, five different structural adaptations — each for a unique job</p>
+  </div>
+  <div class="highlight-box" style="margin-bottom:2rem">
+    <p>Epithelial tissue forms the <strong>outer covering of the body (skin)</strong> and lines all internal organs — mouth, lungs, blood vessels, intestine. It consists of closely packed cells with very little intercellular space. This dense arrangement prevents entry of germs, reduces water loss, and helps in absorption, secretion, and movement of substances.</p>
+  </div>
+
+  <div class="factory-grid">
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#4f9eff,#9b6dff)">
+      <div class="fc-icon">🫁</div>
+      <div class="fc-name">Exchange Epithelium</div>
+      <div class="fc-role" style="color:var(--neon-blue)">Gas &amp; Liquid Exchange</div>
+      <div class="fc-desc"><strong>Single layer of thin, flat cells.</strong> Thin walls allow rapid diffusion of gases and liquids. Must be thin — thicker walls would slow exchange and reduce efficiency.</div>
+      <div class="fc-fact">Location: Lining of blood vessels and alveoli in lungs</div>
+    </div>
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#ff6bac,#9b6dff)">
+      <div class="fc-icon">🧱</div>
+      <div class="fc-name">Protective Epithelium</div>
+      <div class="fc-role" style="color:var(--neon-pink)">Mechanical Protection</div>
+      <div class="fc-desc"><strong>Multiple layers of flat, tightly packed cells.</strong> Outer cells are dead/keratinised for extra toughness. Resists friction, mechanical injury, and pathogen entry.</div>
+      <div class="fc-fact">Location: Skin (epidermis), lining of mouth and oesophagus</div>
+    </div>
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#f97316,#ffb547)">
+      <div class="fc-icon">🏭</div>
+      <div class="fc-name">Secretory Epithelium</div>
+      <div class="fc-role" style="color:var(--neon-ch3)">Production &amp; Release</div>
+      <div class="fc-desc"><strong>Specialised cuboidal or columnar cells</strong> adapted for producing and releasing mucus, enzymes, hormones, sweat, and saliva.</div>
+      <div class="fc-fact">Location: Salivary glands, sweat glands, stomach lining</div>
+    </div>
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#9b6dff,#ff6bac)">
+      <div class="fc-icon">👂</div>
+      <div class="fc-name">Sensory Epithelium</div>
+      <div class="fc-role" style="color:var(--neon-purple)">Smell, Taste, Sound, Balance</div>
+      <div class="fc-desc"><strong>Specialised receptor cells with hair-like cilia.</strong> Detect stimuli and transmit signals to the nervous system. Cilia amplify the receptor surface area.</div>
+      <div class="fc-fact">Location: Nostrils, taste buds, inner ear</div>
+    </div>
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#00d4a8,#4f9eff)">
+      <div class="fc-icon">🫃</div>
+      <div class="fc-name">Absorptive Epithelium</div>
+      <div class="fc-role" style="color:var(--neon-teal)">Nutrient &amp; Water Uptake</div>
+      <div class="fc-desc"><strong>Single layer of tall, pillar-like cells</strong> often with microvilli (finger-like projections). Maximises surface area for efficient nutrient and water uptake.</div>
+      <div class="fc-fact">Location: Lining of small intestine (villi and microvilli)</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ S7: CONNECTIVE TISSUE ══ -->
+<div class="full-bg" id="connective">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 3.3.2 · Connective Tissue</div>
+    <h2 class="sec-title">Connective Tissues — The Body's Binding Framework</h2>
+    <p class="sec-subtitle">From blood to bone — the most diverse tissue type in the body</p>
+  </div>
+  <div class="highlight-box" style="margin-bottom:2rem">
+    <p>A tissue that <strong>connects and supports other tissues</strong> is called a connective tissue. All connective tissues have cells embedded in a <strong>matrix</strong> — and it's the matrix that determines the physical properties. Blood has a watery matrix; bone has a hard, mineral matrix. This is why both are connective tissues despite being so different.</p>
+  </div>
+
+  <div class="factory-grid" style="margin-bottom:2rem">
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#ff5f72,#ff6bac)">
+      <div class="fc-icon">🩸</div>
+      <div class="fc-name">Blood</div>
+      <div class="fc-role" style="color:#ff9ea8">Fluid Connective Tissue</div>
+      <div class="fc-desc"><strong>Watery, fluid matrix (plasma — 55%)</strong>. Contains formed elements: RBCs (carry O₂ via haemoglobin; live ~4 months), WBCs (immunity; collect at infections causing redness/swelling), Platelets (clotting). RBCs are red due to iron-rich haemoglobin.</div>
+      <div class="fc-fact">During exercise, muscles need more O₂ — blood flow increases; face turns red</div>
+    </div>
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#f97316,#ffb547)">
+      <div class="fc-icon">🦴</div>
+      <div class="fc-name">Bone</div>
+      <div class="fc-role" style="color:var(--neon-ch3)">Rigid Connective Tissue</div>
+      <div class="fc-desc"><strong>Hard, solid, rigid matrix</strong> containing calcium and phosphorus compounds. Provides strength, rigidity, and structural support. Protects vital organs (skull protects brain; rib cage protects heart and lungs). Forms the skeleton — 12–15% of adult body weight.</div>
+      <div class="fc-fact">Skull, collar bone, long bone, kneecap — all different bone types</div>
+    </div>
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#00d4a8,#4f9eff)">
+      <div class="fc-icon">👂</div>
+      <div class="fc-name">Cartilage</div>
+      <div class="fc-role" style="color:var(--neon-teal)">Flexible Connective Tissue</div>
+      <div class="fc-desc"><strong>Soft, jelly-like matrix</strong>. Provides flexibility and cushioning. Found in ear, nose tip, ends of bones at joints. Acts as shock absorber. Between vertebrae — cartilage discs allow spinal flexibility.</div>
+      <div class="fc-fact">Press your ear or nose — soft structure that retains its shape = cartilage</div>
+    </div>
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#9b6dff,#4f9eff)">
+      <div class="fc-icon">🔗</div>
+      <div class="fc-name">Tendons</div>
+      <div class="fc-role" style="color:var(--neon-purple)">Muscle-to-Bone Connector</div>
+      <div class="fc-desc"><strong>Tough, fibrous connective tissue</strong>. Connects muscle to bone. When a muscle contracts, the tendon transmits force to the bone — producing movement. Feel the Achilles tendon above your heel when you point your toes.</div>
+      <div class="fc-fact">Tendons are designed to withstand enormous pulling forces</div>
+    </div>
+    <div class="factory-card" style="--fc-stripe:linear-gradient(90deg,#3dd68c,#00d4a8)">
+      <div class="fc-icon">⛓️</div>
+      <div class="fc-name">Ligaments</div>
+      <div class="fc-role" style="color:var(--neon-green)">Bone-to-Bone Connector</div>
+      <div class="fc-desc"><strong>Strong, elastic connective tissue</strong>. Connects bone to bone at joints. Provides stability, limits movement, and prevents dislocation. Stretched to the limit when you raise your leg at the knee — the joint cannot go beyond what the ligament allows.</div>
+      <div class="fc-fact">Ligament rupture is a common sports injury — causes joint instability</div>
+    </div>
+  </div>
+
+  <!-- Activity 3.2 linkage -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">🔬 Activity 3.2 &amp; 3.3</span>
+      <span class="activity-title">Everyday Experiences Explained by Connective Tissues</span>
+    </div>
+    <div class="activity-body">Connect your everyday body experiences to the connective tissue responsible:</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Cut on skin → blood oozes, clot forms:</strong> RBCs carry oxygen (haemoglobin). Platelets rush to site and initiate clotting cascade.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Skin infection → red, swollen area:</strong> WBCs migrate to infected area, causing inflammation (redness/swelling). Pus = dead WBCs.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Touch your elbow:</strong> Hard rigid structure = bone (calcium-phosphorus matrix).</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Press your ear/nose:</strong> Soft, flexible structure that springs back = cartilage (jelly-like matrix).</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Wiggle fingers while holding forearm:</strong> Feel movement in forearm = tendons transmitting muscle force to distant fingers.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Raise leg at knee — stops at limit:</strong> Ligaments prevent the joint from dislocating or moving beyond its safe range.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ S8: MUSCLE TISSUE ══ -->
+<section class="section" id="muscle">
+  <div class="sec-header">
+    <div class="sec-tag">Section 3.3.3 · Muscular Tissue</div>
+    <h2 class="sec-title">Muscular Tissues — Three Types of Movement</h2>
+    <p class="sec-subtitle">Voluntary, involuntary, and the tireless heart — structure determines control</p>
+  </div>
+  <div class="muscle-grid" style="margin-bottom:2rem">
+    <div class="muscle-card skeletal">
+      <div class="muscle-badge">Skeletal Muscle</div>
+      <div class="muscle-title">Voluntary Movement</div>
+      <div class="muscle-rows">
+        <div class="muscle-row"><div class="muscle-lbl">Control</div><div class="muscle-val"><strong style="color:var(--neon-blue)">Voluntary</strong> — under conscious control</div></div>
+        <div class="muscle-row"><div class="muscle-lbl">Cell shape</div><div class="muscle-val">Long, cylindrical, unbranched</div></div>
+        <div class="muscle-row"><div class="muscle-lbl">Nuclei</div><div class="muscle-val">Multinucleate (many nuclei)</div></div>
+        <div class="muscle-row"><div class="muscle-lbl">Striations</div><div class="muscle-val">Yes — light and dark bands</div></div>
+        <div class="muscle-row"><div class="muscle-lbl">Location</div><div class="muscle-val">Attached to skeleton</div></div>
+        <div class="muscle-row"><div class="muscle-lbl">Examples</div><div class="muscle-val">Running, writing, lifting objects</div></div>
+      </div>
+    </div>
+    <div class="muscle-card smooth">
+      <div class="muscle-badge">Smooth Muscle</div>
+      <div class="muscle-title">Involuntary Movement</div>
+      <div class="muscle-rows">
+        <div class="muscle-row"><div class="muscle-lbl">Control</div><div class="muscle-val"><strong style="color:var(--neon-purple)">Involuntary</strong> — no conscious control</div></div>
+        <div class="muscle-row"><div class="muscle-lbl">Cell shape</div><div class="muscle-val">Spindle-shaped, tapered ends</div></div>
+        <div class="muscle-row"><div class="muscle-lbl">Nuclei</div><div class="muscle-val">Single nucleus per cell</div></div>
+        <div class="muscle-row"><div class="muscle-lbl">Striations</div><div class="muscle-val">No — smooth appearance</div></div>
+        <div class="muscle-row"><div class="muscle-lbl">Location</div><div class="muscle-val">Stomach, intestines, blood vessels</div></div>
+        <div class="muscle-row"><div class="muscle-lbl">Examples</div><div class="muscle-val">Food movement in intestine, peristalsis</div></div>
+      </div>
+    </div>
+    <div class="muscle-card cardiac">
+      <div class="muscle-badge">Cardiac Muscle</div>
+      <div class="muscle-title">Heart Muscle — Tireless</div>
+      <div class="muscle-rows">
+        <div class="muscle-row"><div class="muscle-lbl">Control</div><div class="muscle-val"><strong style="color:var(--neon-pink)">Involuntary</strong> — self-rhythmic</div></div>
+        <div class="muscle-row"><div class="muscle-lbl">Cell shape</div><div class="muscle-val">Cylindrical and <strong>branched</strong></div></div>
+        <div class="muscle-row"><div class="muscle-lbl">Nuclei</div><div class="muscle-val">Single nucleus per cell</div></div>
+        <div class="muscle-row"><div class="muscle-lbl">Striations</div><div class="muscle-val">Yes — faint striations</div></div>
+        <div class="muscle-row"><div class="muscle-lbl">Location</div><div class="muscle-val">Heart only</div></div>
+        <div class="muscle-row"><div class="muscle-lbl">Special</div><div class="muscle-val">Works tirelessly, rhythmically, without fatigue throughout life</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>Key distinction:</strong> Skeletal muscle fibres are the only type with <strong>multiple nuclei</strong> (multinucleate). Cardiac muscle is unique because it is <strong>branched</strong> — branches allow electrical signals to spread rapidly from cell to cell, making the heart beat synchronously. Cardiac muscle never fatigues — because exercise signals it to beat <em>faster</em>, not harder, and it has an exceptionally rich blood supply.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ S9: NERVOUS TISSUE ══ -->
+<div class="full-bg" id="nervous">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Section 3.3.4 · Nervous Tissue</div>
+    <h2 class="sec-title">Nervous Tissue — The Body's Control Network</h2>
+    <p class="sec-subtitle">How you think, sense, and respond — all in microseconds</p>
+  </div>
+  <div class="highlight-box" style="margin-bottom:2rem">
+    <p>When you pull your hand from something hot, or remember a song lyric, that's your <strong>nervous tissue</strong> at work. The brain is the control centre — coordinating activity, memory, and response. <strong>Muscles cannot function independently</strong>; they receive instructions from nervous tissue. During exercise, the brain signals the heart to beat faster to meet increased oxygen demand.</p>
+  </div>
+
+  <!-- Neuron anatomy -->
+  <div class="example-card" style="border-left-color:var(--neon-ch3)">
+    <div class="example-header">
+      <span class="example-num">The Neuron</span>
+      <span class="example-emoji">⚡</span>
+      <span class="example-title">Structure of a Nerve Cell (Neuron)</span>
+    </div>
+    <div class="example-answer">The cells of nervous tissue are called <strong style="color:var(--neon-ch3)">neurons</strong> (nerve cells), specialised to receive, process, and transmit messages. Every neuron has three main parts:</div>
+    <div class="think-prompts" style="margin-top:0.75rem">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--neon-ch3)">Cell Body (Soma):</strong> Contains the nucleus and controls cell activities. The processing centre.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--neon-ch3)">Dendrites:</strong> Short, branched projections from the cell body. <strong>Receive signals from other neurons</strong> and carry them toward the cell body.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--neon-ch3)">Axon:</strong> A single long fibre carrying messages <strong>away from the cell body</strong> toward the axon terminals. Can be up to 1 metre long in the human body.</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--neon-ch3)">Axon Terminals:</strong> The end tips of the axon. <strong>Transmit messages to the next neuron</strong> or to a muscle/gland cell across a synapse.</div>
+    </div>
+  </div>
+
+  <!-- Signal flow -->
+  <div class="sec-tag" style="margin-bottom:1rem">How a Nerve Signal Travels</div>
+  <div class="flow-chain" style="margin-bottom:1.5rem">
+    <div class="flow-node highlight">
+      <div class="flow-node-icon">👁️</div>
+      <div class="flow-node-title">Stimulus</div>
+      <div class="flow-node-sub">Heat, pain, touch, sound</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="flow-node-icon">🌿</div>
+      <div class="flow-node-title">Dendrites Receive</div>
+      <div class="flow-node-sub">Signal arrives at neuron</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node highlight">
+      <div class="flow-node-icon">🧠</div>
+      <div class="flow-node-title">Cell Body Processes</div>
+      <div class="flow-node-sub">Signal evaluated</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="flow-node-icon">⚡</div>
+      <div class="flow-node-title">Axon Transmits</div>
+      <div class="flow-node-sub">Electrical impulse travels</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node highlight">
+      <div class="flow-node-icon">💪</div>
+      <div class="flow-node-title">Response</div>
+      <div class="flow-node-sub">Muscle contracts or gland secretes</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ S10: JOINTS AND SKELETON ══ -->
+<section class="section" id="joints">
+  <div class="sec-header">
+    <div class="sec-tag">Sections 3.4 – 3.6 · Musculoskeletal System</div>
+    <h2 class="sec-title">Joints, Muscles &amp; the Skeletal System</h2>
+    <p class="sec-subtitle">How bones, muscles, and joints work together to produce coordinated movement</p>
+  </div>
+
+  <div class="highlight-box" style="margin-bottom:2rem">
+    <p>The <strong>musculoskeletal system</strong> = bones + muscles + joints + cartilage + tendons + ligaments. It helps us stand upright, move, maintain posture, and protect delicate organs. Movement is produced when <strong>muscles contract → tendons transmit force → bones move at joints</strong>. The entire system functions under the control of the <strong>nervous system</strong>. Adult human skeleton = ~12–15% of body weight.</p>
+  </div>
+
+  <!-- Four Joint Types -->
+  <div class="sec-tag" style="margin-bottom:1rem">Types of Joints</div>
+  <div class="joint-grid" style="margin-bottom:2rem">
+    <div class="joint-card" style="--jc-stripe:linear-gradient(90deg,var(--neon-ch3),var(--neon-amber))">
+      <div class="joint-icon">🔵</div>
+      <div class="joint-name">Ball and Socket Joint</div>
+      <div class="joint-loc">Shoulder · Hip</div>
+      <div class="joint-desc">Rounded head of one bone fits into a cup-shaped hollow of another. The shoulder joint: rounded top of humerus fits into the shallow hollow of the scapula.</div>
+      <div class="joint-move">✦ Movements: Forward, backward, sideways, circular (full range of motion)</div>
+    </div>
+    <div class="joint-card" style="--jc-stripe:linear-gradient(90deg,var(--neon-blue),var(--neon-teal))">
+      <div class="joint-icon">🚪</div>
+      <div class="joint-name">Hinge Joint</div>
+      <div class="joint-loc">Elbow · Knee</div>
+      <div class="joint-desc">Like a door hinge — moves in only one plane. Elbow bends and straightens in one direction only. The kneecap (patella) protects the knee hinge joint.</div>
+      <div class="joint-move">✦ Movements: Bending and straightening only (one plane)</div>
+    </div>
+    <div class="joint-card" style="--jc-stripe:linear-gradient(90deg,var(--neon-purple),var(--neon-pink))">
+      <div class="joint-icon">🔄</div>
+      <div class="joint-name">Pivot Joint</div>
+      <div class="joint-loc">Neck (skull-backbone)</div>
+      <div class="joint-desc">Skull connected to backbone through a pivot joint. Allows the head to turn side to side — like a doorknob rotating in its socket. Feel gentle movement at the back of your neck when you shake your head 'no.'</div>
+      <div class="joint-move">✦ Movements: Side-to-side rotation</div>
+    </div>
+    <div class="joint-card" style="--jc-stripe:linear-gradient(90deg,var(--neon-pink),var(--neon-ch3))">
+      <div class="joint-icon">🔒</div>
+      <div class="joint-name">Fixed Joint</div>
+      <div class="joint-loc">Skull</div>
+      <div class="joint-desc">Bones of the skull are joined by fixed joints — they cannot move. Forms a hard, protective case for the brain, eyes, and ears. No movement = maximum protection.</div>
+      <div class="joint-move">✦ Movements: None — permanently fused for protection</div>
+    </div>
+  </div>
+
+  <!-- Activity 3.4 / Skeletal system -->
+  <div class="activity-card">
+    <div class="activity-header">
+      <span class="activity-badge">⚖️ Activity 3.4</span>
+      <span class="activity-title">What Percentage of Body Weight is Bone and Muscle?</span>
+    </div>
+    <div class="activity-body">Measure your total body weight. Use reference data for your age/gender to estimate bone and muscle percentages, then calculate your personal estimates.</div>
+    <div class="think-prompts">
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--text-primary)">Bone mass:</strong> ~12–15% of body weight for adults (all genders)</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong style="color:var(--text-primary)">Muscle mass:</strong> Adult males ~40–50%; Adult females ~30–40%</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div>Bone and muscle mass vary between individuals due to age, gender, activity level, nutrition, and ethnicity</div>
+      <div class="think-prompt"><div class="think-prompt-dot"></div><strong>Formula:</strong> Bone weight = Total weight × 0.13 (approx). Muscle weight = Total weight × 0.40 (approx for an active person)</div>
+    </div>
+  </div>
+
+  <!-- Skeletal system -->
+  <div class="concept-grid" style="margin-top:1.5rem">
+    <div class="concept-card orange">
+      <div class="concept-icon">💀</div>
+      <div class="concept-title">Vertebral Column (Backbone)</div>
+      <div class="concept-body">Made of a series of small bones called <strong style="color:var(--neon-ch3)">vertebrae</strong>. Extends from the base of the skull. Supports the body and helps us stand upright. Between each vertebra is a <strong>cartilage disc</strong> — acts as a cushion, allows bending and twisting without injuring the spinal cord.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🫁</div>
+      <div class="concept-title">Rib Cage</div>
+      <div class="concept-body"><strong style="color:var(--neon-blue)">12 pairs of ribs</strong> form a protective cage around the heart and lungs. Ribs are attached to the spine (back) and sternum/breastbone (front) by <strong>flexible cartilage</strong>. This flexibility allows the rib cage to expand and contract during breathing — enabling air to move in and out of lungs.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🦴</div>
+      <div class="concept-title">Skull</div>
+      <div class="concept-body">A hard case of <strong style="color:var(--neon-teal)">flat bones joined by fixed joints</strong>. Protects the brain, eyes, and ears. The brain is the most important and most vulnerable organ — the skull's rigid protection ensures it stays safe even during vigorous movement.</div>
+    </div>
+  </div>
+
+  <div class="bridging-card" style="margin-top:1.5rem">
+    <div class="bridging-tag">Bridging Science and Society</div>
+    <div class="bridging-title">🧘 Yoga and Musculoskeletal Health</div>
+    <div class="bridging-body">Yoga, described in ancient Indian texts, includes physical postures, breathing techniques, and meditation. Research shows it improves <span class="bridging-highlight">flexibility, posture, and breathing</span>, reduces stress, and helps prevent lifestyle diseases. Every year, <span class="bridging-highlight">21st June is observed as International Yoga Day</span> to promote yoga's role in health and well-being. Maintaining correct posture, proper nutrition, regular exercise, and yoga keeps bones strong, muscles fit, joints flexible, and protects the body from stiffness. Surya Namaskar (12-step sun salutation) exercises almost every major joint and muscle group.</div>
+  </div>
+
+  <div class="ponder-card">
+    <div class="ponder-header"><div class="ponder-icon">⏸️</div><div class="ponder-label">Pause and Ponder</div></div>
+    <div class="ponder-q">
+      <strong>5.</strong> Look at the poses of classical and folk dances of India. Can you identify which joints are involved in each pose? What type of movement does each joint allow?<br>
+      <strong>Activity 3.5:</strong> Move each body part (elbow, shoulder, knee, neck, fingers, toes, wrist) and record: Can it complete rotation? Partial rotation? Bend? Other movements? Why does this differ between joints?
+    </div>
+  </div>
+
+  <div class="beyond-card">
+    <div class="beyond-tag">Ready to Go Beyond</div>
+    <div class="beyond-title">🩸 Bone Marrow Transplant — Stem Cells Saving Lives</div>
+    <div class="beyond-body">Stem cells in the bone marrow are special cells that can divide and produce new blood cells continuously throughout life. In a <span class="beyond-highlight">bone marrow transplant</span>, stem cells from a healthy, compatible donor are given to patients with blood cancers like <span class="beyond-highlight">Leukaemia</span> or disorders like <span class="beyond-highlight">Thalassemia</span>. The donor's stem cells migrate to the patient's bone marrow and begin producing healthy blood cells. This can be life-saving and represents one of the most powerful clinical applications of tissue science.</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SCIENTISTS ══ -->
+<section class="section" id="scientists">
+  <div class="sec-header">
+    <div class="sec-tag">Meet Scientists</div>
+    <h2 class="sec-title">Scientists Who Shaped Tissue Science</h2>
+  </div>
+
+  <!-- B.G.L. Swamy -->
+  <div class="scientist-card" style="margin-bottom:1.5rem">
+    <div>
+      <div class="scientist-avatar">🌿</div>
+      <div class="pills-row" style="margin-top:1rem;justify-content:center;flex-direction:column;gap:6px">
+        <span class="pill badge-orange" style="text-align:center">Indian Botanist</span>
+        <span class="pill badge-teal" style="text-align:center">20th Century</span>
+      </div>
+    </div>
+    <div>
+      <div class="scientist-tag">Meet a Scientist</div>
+      <div class="scientist-name">B. G. L. Swamy</div>
+      <div class="scientist-dates">Indian Botanist · Plant Morphology &amp; Anatomy</div>
+      <div class="scientist-contribution">A renowned Indian botanist known for his contributions to <strong style="color:var(--neon-ch3)">plant morphology and anatomy</strong>. His scientific work explored the structural organisation of plant tissues and their relationship to function.</div>
+      <div class="scientist-contribution">He is also celebrated for his book <strong style="color:var(--text-primary)">Hasuru Honnu</strong> — written in Kannada — a unique blend of science, satire, and culture. The book describes a botanical excursion in the <strong>forests of the Western Ghats</strong>, richly documenting plant descriptions, utilisation practices, conservation, botanical folklore, and myths. It won the <strong>Kendra Sahitya Akademi Award in 1978</strong>.</div>
+      <div class="scientist-key">
+        <div class="scientist-key-label">Key Takeaway</div>
+        <div class="scientist-key-text">Science and culture are not separate — Swamy's work shows that deep scientific knowledge and literary expression can coexist beautifully. <strong style="color:var(--text-primary)">Hasuru Honnu remains a rare and valuable record of Indian botanical heritage.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sipra Guha Mukherjee & S.C. Maheshwari -->
+  <div class="scientist-card" style="margin-bottom:1.5rem">
+    <div>
+      <div class="scientist-avatar">🔬</div>
+      <div class="pills-row" style="margin-top:1rem;justify-content:center;flex-direction:column;gap:6px">
+        <span class="pill badge-purple" style="text-align:center">Indian Scientists</span>
+        <span class="pill badge-blue" style="text-align:center">Plant Tissue Culture</span>
+      </div>
+    </div>
+    <div>
+      <div class="scientist-tag">Meet Scientists</div>
+      <div class="scientist-name">Sipra Guha Mukherjee &amp; S. C. Maheshwari</div>
+      <div class="scientist-dates">Indian Scientists · Plant Tissue Culture Pioneers</div>
+      <div class="scientist-contribution">In collaboration, they made a <strong style="color:var(--neon-purple)">breakthrough discovery in plant tissue culture</strong>. Their research led to the development of a complete plant through <strong>anther culture</strong> — growing a whole plant from pollen cells (anthers) in an artificial nutrient medium under controlled laboratory conditions.</div>
+      <div class="scientist-contribution">This pioneering work greatly contributed to <strong style="color:var(--text-primary)">crop improvement and modern agriculture</strong>. Anther culture allows scientists to create plants with specific genetic traits quickly, supporting plant breeding programs worldwide.</div>
+      <div class="scientist-key">
+        <div class="scientist-key-label">Key Takeaway</div>
+        <div class="scientist-key-text">From understanding plant tissue structure and function, these scientists developed practical applications that feed billions. <strong style="color:var(--text-primary)">Basic tissue biology directly enables agricultural biotechnology.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- F.C. Steward -->
+  <div class="scientist-card">
+    <div>
+      <div class="scientist-avatar">🥕</div>
+      <div class="pills-row" style="margin-top:1rem;justify-content:center;flex-direction:column;gap:6px">
+        <span class="pill badge-green" style="text-align:center">Plant Biologist</span>
+        <span class="pill badge-amber" style="text-align:center">1958 · Totipotency</span>
+      </div>
+    </div>
+    <div>
+      <div class="scientist-tag">Think as a Scientist</div>
+      <div class="scientist-name">F. C. Steward</div>
+      <div class="scientist-dates">1904–1993 · American-British Plant Biologist</div>
+      <div class="scientist-contribution">In <strong style="color:var(--neon-green)">1958</strong>, Steward demonstrated that single cells taken from the vascular phloem of a carrot could be grown in a nutrient medium to produce a complete carrot plant — the first experimental proof of <strong>plant cell totipotency</strong>.</div>
+      <div class="scientist-contribution">The phloem cells first <strong>dedifferentiated</strong> (regained the ability to divide), formed an undifferentiated mass (callus), then <strong>redifferentiated</strong> into roots, shoots, and eventually a full adult plant when grown in appropriate conditions with nutrients and growth chemicals (see Table 3.6 — light and air are both essential for maximum growth).</div>
+      <div class="scientist-key">
+        <div class="scientist-key-label">Key Takeaway</div>
+        <div class="scientist-key-text">Every plant cell carries the complete genetic blueprint to become an entire organism. This is <strong style="color:var(--text-primary)">totipotency</strong> — and it underpins the entire modern plant tissue culture industry: propagating orchids, bananas, and genetically improved crops from single cells.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ CURIOSITIES AND BEYOND ══ -->
+<div class="full-bg" id="curiosities">
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-tag">All Curiosities &amp; Beyond</div>
+    <h2 class="sec-title">Premium Knowledge Panels</h2>
+    <p class="sec-subtitle">Ready to Go Beyond · Bridging Science &amp; Society · The Quest Continues</p>
+  </div>
+
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🌲</div>
+    <div class="curiosity-tag">Threads of Curiosity</div>
+    <div class="curiosity-title">Annual Growth Rings — Trees as Climate Records</div>
+    <div class="curiosity-body">Every year a tree grows, its lateral meristem adds a new ring of wood. Wide rings indicate <span class="curiosity-highlight">favourable conditions</span> (good rainfall, warm temperatures); narrow rings indicate <span class="curiosity-highlight">stress</span> (drought, cold, pest attack). This science — called <span class="curiosity-highlight">dendrochronology</span> — allows scientists to read centuries of climate history from a single tree trunk. Ancient trees like bristlecone pines have provided climate data going back 5,000 years. The number of rings = the exact age of the tree. Each ring is a precise scientific record written by the lateral meristem.</div>
+  </div>
+
+  <div class="curiosity-card">
+    <div class="curiosity-glyph">🥕</div>
+    <div class="curiosity-tag">Think as a Scientist · F.C. Steward's Experiment</div>
+    <div class="curiosity-title">From One Cell to an Entire Carrot Plant — Totipotency Proven</div>
+    <div class="curiosity-body">Steward's experiment used carrot phloem cells in a liquid nutrient medium with stirring (to shear off single cells), light, and air. The combination of <span class="curiosity-highlight">light + air + liquid medium</span> gave the maximum 20% increase in fresh weight. Without air (no O₂ for respiration) or without light (no photosynthesis for energy) — growth was reduced. This showed that totipotent cells need BOTH energy sources. Commercial applications include: (1) rapid mass propagation of disease-free banana and orchid plants; (2) production of genetically identical (clonal) elite crop varieties.</div>
+  </div>
+
+  <div class="bridging-card">
+    <div class="bridging-tag">Bridging Science and Society</div>
+    <div class="bridging-title">🌿 Crown Gall Disease → Genetic Engineering Tool</div>
+    <div class="bridging-body">Crown gall disease causes tumour-like swellings on plant stems due to uncontrolled cell division caused by the bacterium <span class="bridging-highlight"><em>Agrobacterium tumefaciens</em></span>. Instead of only trying to cure the disease, scientists studied HOW the bacterium transfers its DNA into plant cells. This knowledge became the foundation of <span class="bridging-highlight">plant genetic engineering</span>. Today, <em>Agrobacterium</em> is used as a biological delivery tool to introduce <span class="bridging-highlight">useful genes into crop plants</span> — producing improved varieties, disease-resistant crops, and plants that produce valuable pharmaceutical compounds. A disease became a technology.</div>
+  </div>
+
+  <div class="beyond-card">
+    <div class="beyond-tag">Ready to Go Beyond</div>
+    <div class="beyond-title">🩸 Blood Components in Detail — Activity 3.2 Extended</div>
+    <div class="beyond-body">Blood is a connective tissue with a fluid plasma matrix (55% of volume). RBCs (red, biconcave, no nucleus in mature form — maximises haemoglobin space) carry O₂. WBCs (white, various shapes) fight pathogens — when infected, they migrate to the site causing redness, swelling, and pus formation. Platelets (cell fragments, no nucleus) initiate blood clotting by releasing chemicals that start a cascade reaction forming a fibrin net that traps blood cells into a clot. <span class="beyond-highlight">All blood cells originate from stem cells in bone marrow</span> — the same stem cells used in bone marrow transplants.</div>
+  </div>
+
+  <div class="beyond-card">
+    <div class="beyond-tag">The Quest Continues…</div>
+    <div class="beyond-title">🤔 Will It Be Possible to Obtain a Complete Animal from an Animal Cell?</div>
+    <div class="beyond-body">Plants demonstrate totipotency — any cell can become a whole plant. For animals, the question is being actively researched. Most animal cells are <span class="beyond-highlight">NOT totipotent</span> in the same way — they lose the ability to become any cell type as they differentiate. However, <span class="beyond-highlight">stem cells</span> retain some of this ability. Embryonic stem cells can become any tissue. Adult stem cells (e.g., in bone marrow) can produce specific tissue types. The cloning of Dolly the sheep (1996) showed that a nucleus from an adult cell, when placed in an enucleated egg, could produce a full organism. <span class="beyond-highlight">Advantages of animal cell totipotency: regenerative medicine, organ printing, replacing damaged tissues. Challenges: ethical questions about cloning, genetic identity, safety, and ecological risk.</span></div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ SUMMARY ══ -->
+<section class="section">
+  <div class="sec-header">
+    <div class="sec-tag">Chapter Summary</div>
+    <h2 class="sec-title">At a Glance — Key Points</h2>
+  </div>
+  <div class="concept-grid">
+    <div class="concept-card orange">
+      <div class="concept-icon">🔬</div>
+      <div class="concept-title">Tissue Definition</div>
+      <div class="concept-body">A tissue = a group of similar cells performing a specific function together. Tissues → Organs → Organ Systems → Organism. Division of labour increases efficiency.</div>
+    </div>
+    <div class="concept-card green">
+      <div class="concept-icon">🌱</div>
+      <div class="concept-title">Plant Meristematic</div>
+      <div class="concept-body">3 types: Apical (length, at tips), Lateral (girth, in ring), Intercalary (regeneration, at nodes). Cells: small, thin walls, large nucleus, dense cytoplasm, no vacuoles.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🌿</div>
+      <div class="concept-title">Permanent Plant Tissues</div>
+      <div class="concept-body">Simple: Parenchyma (storage), Collenchyma (flexibility), Sclerenchyma (strength). Complex: Xylem (water up), Phloem (food both ways). Protective: Epidermis + cuticle.</div>
+    </div>
+    <div class="concept-card blue">
+      <div class="concept-icon">🫁</div>
+      <div class="concept-title">Animal — Epithelial</div>
+      <div class="concept-body">Covers body and lines organs. 5 structural types: exchange (thin, flat), protective (multilayer), secretory (cuboidal/columnar), sensory (cilia), absorptive (columnar + microvilli).</div>
+    </div>
+    <div class="concept-card purple">
+      <div class="concept-icon">🔗</div>
+      <div class="concept-title">Animal — Connective</div>
+      <div class="concept-body">Connects and supports. Blood (fluid matrix), Bone (rigid matrix), Cartilage (jelly matrix), Tendons (muscle→bone), Ligaments (bone→bone). Matrix type determines physical properties.</div>
+    </div>
+    <div class="concept-card pink">
+      <div class="concept-icon">💪</div>
+      <div class="concept-title">Animal — Muscle</div>
+      <div class="concept-body">Skeletal: voluntary, striations, multinucleate. Smooth: involuntary, no striations, spindle-shaped. Cardiac: involuntary, branched, faint striations — never fatigues.</div>
+    </div>
+    <div class="concept-card orange">
+      <div class="concept-icon">⚡</div>
+      <div class="concept-title">Animal — Nervous</div>
+      <div class="concept-body">Neurons: cell body (processing) + dendrites (receive) + axon (transmit). Signal travels: stimulus → dendrites → cell body → axon → axon terminals → response.</div>
+    </div>
+    <div class="concept-card teal">
+      <div class="concept-icon">🦴</div>
+      <div class="concept-title">Joints &amp; Skeleton</div>
+      <div class="concept-body">Ball &amp; socket (shoulder – all directions), Hinge (elbow/knee – one plane), Pivot (neck – rotation), Fixed (skull – no movement). Skeleton = 12–15% body weight.</div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-block"><div class="stat-value">3</div><div class="stat-label">Meristem Types</div></div>
+    <div class="stat-block"><div class="stat-value">4</div><div class="stat-label">Animal Tissue Types</div></div>
+    <div class="stat-block"><div class="stat-value">3</div><div class="stat-label">Muscle Types</div></div>
+    <div class="stat-block"><div class="stat-value">4</div><div class="stat-label">Joint Types</div></div>
+    <div class="stat-block"><div class="stat-value">12–15%</div><div class="stat-label">Skeleton / Body Weight</div></div>
+  </div>
+</section>
+
+<!-- CLOSING BANNER -->
+<div class="closing-banner">
+  <div class="closing-title">From One Cell to a Symphony of Tissues<br><span>Every Movement, Every Thought, Every Heartbeat</span></div>
+  <p class="closing-sub">Cells organised into tissues, tissues into organs, organs into systems — nature's greatest engineering marvel, happening inside you right now.</p>
+  <div style="margin-top:2rem;display:flex;flex-wrap:wrap;gap:1rem;justify-content:center">
+    <span class="hero-badge badge-orange">🌿 Chapter 3 Complete</span>
+    <span class="hero-badge badge-blue">Grade 9 · Exploration</span>
+    <span class="hero-badge badge-green">Tissues in Action — Mastered</span>
+  </div>
+</div>
+
+</div><!-- /main -->
+<script>
+const sections=document.querySelectorAll('section[id],div[id]');
+const navLinks=document.querySelectorAll('.nav-link');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id=e.target.id;
+      navLinks.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));
+    }
+  });
+},{rootMargin:'-40% 0px -55% 0px'});
+sections.forEach(s=>obs.observe(s));
+navLinks.forEach(link=>{
+  link.addEventListener('click',e=>{
+    const href=link.getAttribute('href');
+    if(href&&href.startsWith('#')){
+      e.preventDefault();
+      const target=document.querySelector(href);
+      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  });
+});
+</script>
+</body>
+</html>
