@@ -473,7 +473,40 @@
       border-color: var(--cyan);
       box-shadow: 0 0 16px rgba(0,234,255,0.2);
     }
-
+    /* ─── CARD ACTIONS / CHAPTER MENU ──────────────────────── */
+    .card-actions {
+      display: flex; gap: 8px; position: relative;
+    }
+    .more-btn {
+      width: 38px; height: 38px; border-radius: var(--radius-sm);
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text-sec); font-size: 16px; cursor: pointer;
+      flex-shrink: 0;
+      transition: all var(--transition);
+    }
+    .more-btn:hover { color: var(--cyan); border-color: var(--border-glow); }
+    .chapter-menu {
+      position: absolute;
+      bottom: 100%; right: 0;
+      margin-bottom: 8px;
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 6px;
+      min-width: 150px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      z-index: 20;
+    }
+    .chapter-menu.open { display: flex; }
+    .menu-link {
+      padding: 8px 10px; border-radius: 6px;
+      font-size: 13px; color: var(--text-pri);
+      text-decoration: none;
+    }
+    .menu-link:hover { background: var(--cyan-dim); color: var(--cyan); }
     /* ─── GLOW ORBS ────────────────────────────────────────── */
     .glow-orb {
       position: fixed; border-radius: 50%;
@@ -748,23 +781,34 @@
 
 <!-- ── SCRIPT ─────────────────────────────────────────────── -->
 <script>
-  /* ─ Chapter data ──────────────────────────────────────────── */
-  const chapters = [
-    { id: 1,  icon: "🌍", title: "Exploration: Entering the World of Secondary Science",  pct: 0o0,  color: "#00eaff" ,file: "chapter1.html"},
-    { id: 2,  icon: "🧬", title: "Cell: The Building Block of Life",                      pct: 0o0,  color: "#a855f7" ,file: "chapter2.html"},
-    { id: 3,  icon: "🌿", title: "Tissues in Action",                                     pct: 0o0,  color: "#22c55e" ,file: "chapter3.html"},
-    { id: 4,  icon: "🏃", title: "Describing Motion Around Us",                                     pct: 0o0,  color: "#f59e0b" ,file: "chapter4.html"},
-    { id: 5,  icon: "🧪", title: "Exploring Mixtures and their Separation",                        pct: 0o0,  color: "#00eaff" ,file: "chapter5.html"},
-    { id: 6,  icon: "⚡", title: "How Forces Affect Motion",                         pct: 0o0,  color: "#a855f7" ,file: "chapter6.html"},
-    { id: 7,  icon: "⚙️", title: "Work, Energy, and Simple Machines",                pct: 0o0,  color: "#22c55e" ,file: "chapter7.html"},
-    { id: 8,  icon: "⚛️", title: "Journey Inside the Atom",                     pct: 0o0,  color: "#22d3ee" ,file: "chapter8.html"},
-    { id: 9,  icon: "💥", title: "Atomic Foundations of Matter",                                    pct: 0o0,  color: "#f59e0b" ,file: "chapter9.html"},
-    { id: 10, icon: "🔊", title: "Sound Waves: Characteristics and Applications",                             pct: 0o0,  color: "#00eaff" ,file: "chapter10.html"},
-    { id: 11, icon: "🌱", title: "Life Processes in Plants",                              pct: 0o0,  color: "#22c55e" ,file: "chapter11.html"},
-    { id: 12, icon: "🚀", title: "Beyond Earth",                                          pct: 0o0,  color: "#a855f7" ,file: "chapter12.html"},
-    { id: 13, icon: "🌎", title: "Earth & Our Environment",                                       pct: 0o0,  color: "#22d3ee" ,file: "chapter13.html"},
+const chapters = [
+    { id: 1,  icon: "🌍", title: "Exploration: Entering the World of Secondary Science", color: "#00eaff",
+      pages: { notes:"chapter1.html", quiz:"chapter1_quiz.html" } },
+    { id: 2,  icon: "🦋", title: "Diversity in the Living World", color: "#a855f7",
+      pages: { notes:"chapter2.html", quiz:"chapter2_quiz.html" } },
+    { id: 3,  icon: "🥦", title: "Mindful Eating: A Path to a Healthy Body", color: "#22c55e",
+      pages: { notes:"chapter3.html", quiz:"chapter3_quiz.html" } },
+    { id: 4,  icon: "🧲", title: "Exploring Magnets", color: "#f59e0b",
+      pages: { notes:"chapter4.html", quiz:"chapter4_quiz.html" } },
+    { id: 5,  icon: "⏱️", title: "Measurement of Time and Motion", color: "#00eaff",
+      pages: { notes:"chapter5.html" } },
+    { id: 6,  icon: "⚗️", title: "The Wonderful World of Matter", color: "#a855f7",
+      pages: { notes:"chapter6.html" } },
+    { id: 7,  icon: "🔬", title: "Methods of Separation in Everyday Life", color: "#22c55e",
+      pages: { notes:"chapter7.html" } },
+    { id: 8,  icon: "💧", title: "A Journey Through States of Water", color: "#22d3ee",
+      pages: { notes:"chapter8.html" } },
+    { id: 9,  icon: "⚡", title: "Force and Pressure", color: "#f59e0b",
+      pages: { notes:"chapter9.html" } },
+    { id: 10, icon: "🐾", title: "Life Processes in Animals", color: "#00eaff",
+      pages: { notes:"chapter10.html" } },
+    { id: 11, icon: "🌿", title: "Life Processes in Plants", color: "#22c55e",
+      pages: { notes:"chapter11.html" } },
+    { id: 12, icon: "🚀", title: "Beyond Earth", color: "#a855f7",
+      pages: { notes:"chapter12.html" } },
+    { id: 13, icon: "🌱", title: "Our Environment", color: "#22d3ee",
+      pages: { notes:"chapter13.html" } },
   ];
-
   /* ─ Render cards ──────────────────────────────────────────── */
   const grid = document.getElementById("chapterGrid");
 
@@ -772,12 +816,16 @@
     const iconBg = ch.color + "22";
     const delay  = (idx * 0.05).toFixed(2);
 
-    const card = document.createElement("a");
-    card.href  = ch.file;
-    card.className = "chapter-card";
+    const card = document.createElement("div");
+    card.className = "chapter-card fade-up";
     card.setAttribute("aria-label", `Chapter ${ch.id}: ${ch.title}`);
     card.style.animationDelay = `${delay}s`;
-    card.classList.add("fade-up");
+
+    const labelMap = { quiz: "📝 Quiz", practice: "🎯 Practice", lab: "🧪 Lab" };
+    const extraLinks = Object.entries(ch.pages)
+      .filter(([key]) => key !== "notes")
+      .map(([key, file]) => `<a href="${file}" class="menu-link">${labelMap[key]}</a>`)
+      .join("");
 
     card.innerHTML = `
       <div class="card-header">
@@ -787,20 +835,16 @@
           <div class="card-title">${ch.title}</div>
         </div>
       </div>
-      <div>
-        <div class="progress-row">
-          <span class="progress-pct" style="color:${ch.color}"></span>
-        </div>
-        <div class="progress-bar-wrap">
-          <div class="progress-bar" data-pct="${ch.pct}"
-               style="width:0%; background:linear-gradient(90deg,${ch.color},${shiftColor(ch.color)})" ></div>
-        </div>
+      <div class="card-actions">
+        <a class="open-btn" href="${ch.pages.notes}"
+           style="flex:1;color:${ch.color};border-color:${ch.color}44;
+                  background:linear-gradient(90deg,${ch.color}18,${shiftColor(ch.color)}18)">
+          Open Chapter →
+        </a>
+        ${extraLinks ? `
+        <button class="more-btn" type="button" aria-label="More options">⋮</button>
+        <div class="chapter-menu">${extraLinks}</div>` : ``}
       </div>
-      <a class="open-btn" href="chapter${ch.id}.html"
-         style="color:${ch.color};border-color:${ch.color}44;
-                background:linear-gradient(90deg,${ch.color}18,${shiftColor(ch.color)}18)">
-        Open Chapter →
-      </a>
     `;
 
     grid.appendChild(card);
@@ -817,6 +861,14 @@
     };
     return map[hex] || "#a855f7";
   }
+/* ─ Toggle chapter menus ──────────────────────────────────── */
+  document.addEventListener("click", (e) => {
+    const isMoreBtn = e.target.classList.contains("more-btn");
+    document.querySelectorAll(".chapter-menu.open").forEach(m => {
+      if (!isMoreBtn || m.previousElementSibling !== e.target) m.classList.remove("open");
+    });
+    if (isMoreBtn) e.target.nextElementSibling.classList.toggle("open");
+  });
 
   /* ─ Animate progress bars on scroll ──────────────────────── */
   const io = new IntersectionObserver((entries) => {
