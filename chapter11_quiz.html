@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 11 Quiz — Life Processes in Plants</title>
+<link rel="preconnect" href="https://fonts.google=apis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #0a0b0f;
+  --bg-secondary: #0f1117;
+  --bg-card: #13151c;
+  --bg-glass: rgba(255,255,255,0.03);
+  --bg-glass-hover: rgba(255,255,255,0.06);
+  --border: rgba(255,255,255,0.08);
+  --border-bright: rgba(255,255,255,0.15);
+  --neon-blue: #4f9eff;
+  --neon-purple: #9b6dff;
+  --neon-teal: #00d4a8;
+  --neon-pink: #ff6bac;
+  --neon-amber: #ffb547;
+  --text-primary: #f0f2ff;
+  --text-secondary: #8b90a8;
+  --text-muted: #4a4f6a;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.7;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--neon-purple); border-radius: 3px; }
+
+/* ── NAV ── */
+.top-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,11,15,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex; align-items: center; gap: 1rem;
+  height: 56px;
+}
+.nav-logo { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--neon-blue); letter-spacing: 0.5px; white-space: nowrap; }
+.nav-sub { font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); white-space: nowrap; }
+.nav-notes-btn {
+  font-family: var(--font-body); font-size: 12px; font-weight: 600;
+  color: var(--text-secondary); padding: 6px 14px;
+  border-radius: 100px; border: 1px solid var(--border);
+  text-decoration: none; white-space: nowrap; flex-shrink: 0;
+  transition: all 0.2s; margin-left: auto;
+}
+.nav-notes-btn:hover {
+  color: var(--neon-blue); border-color: rgba(79,158,255,0.4);
+  background: rgba(79,158,255,0.07);
+}
+
+/* ── MAIN WRAPPER ── */
+.main { padding-top: 56px; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* ── HERO ── */
+.hero {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; flex-direction: column;
+  padding: 3.5rem 2rem 2.5rem;
+  background: var(--bg-secondary);
+  text-align: center;
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(79,158,255,0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(79,158,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.hero-glow-1 {
+  position: absolute; width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(155,109,255,0.12) 0%, transparent 70%);
+  top: -200px; right: -150px;
+}
+.hero-glow-2 {
+  position: absolute; width: 350px; height: 350px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(79,158,255,0.1) 0%, transparent 70%);
+  bottom: -150px; left: 50px;
+}
+.hero-content { position: relative; z-index: 2; max-width: 700px; margin: 0 auto; width: 100%; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 12px; color: var(--neon-blue); background: rgba(79,158,255,0.1); border: 1px solid rgba(79,158,255,0.2); padding: 6px 14px; border-radius: 100px; margin-bottom: 1.25rem; }
+.hero-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--neon-blue); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+.hero-title { font-family: var(--font-display); font-size: clamp(1.6rem, 5vw, 2.6rem); font-weight: 700; line-height: 1.15; margin-bottom: 1rem; }
+.hero-title .line2 { display: block; background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero-desc { font-size: 14px; color: var(--text-secondary); max-width: 540px; margin: 0 auto 1.5rem; line-height: 1.8; }
+.hero-badges { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.hero-badge { font-size: 12px; font-weight: 500; padding: 6px 14px; border-radius: 100px; border: 1px solid; }
+.badge-blue { color: var(--neon-blue); border-color: rgba(79,158,255,0.3); background: rgba(79,158,255,0.08); }
+.badge-purple { color: var(--neon-purple); border-color: rgba(155,109,255,0.3); background: rgba(155,109,255,0.08); }
+.badge-teal { color: var(--neon-teal); border-color: rgba(0,212,168,0.3); background: rgba(0,212,168,0.08); }
+
+/* ── QUIZ WRAPPER ── */
+.quiz-wrap { flex: 1; padding: 2.5rem 1.25rem 4rem; max-width: 760px; margin: 0 auto; width: 100%; }
+
+/* ── PROGRESS ── */
+.progress-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; gap: 1rem; flex-wrap: wrap; }
+.q-counter { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); letter-spacing: 0.5px; }
+.q-counter strong { color: var(--neon-blue); font-weight: 600; }
+.score-live { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+.progress-track { width: 100%; height: 6px; border-radius: 100px; background: var(--bg-card); border: 1px solid var(--border); overflow: hidden; margin-bottom: 2rem; }
+.progress-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple)); width: 5%; transition: width 0.35s ease; }
+
+/* ── QUESTION CARD ── */
+.q-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease;
+}
+.q-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.q-tag { font-family: var(--font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; color: var(--neon-blue); margin-bottom: 0.75rem; }
+.q-text { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1.5rem; line-height: 1.5; white-space: pre-line; }
+
+/* ── OPTIONS ── */
+.opt-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.opt {
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.1rem;
+  display: flex; align-items: center; gap: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+}
+.opt:hover { border-color: var(--border-bright); background: var(--bg-glass-hover); }
+.opt-letter {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(79,158,255,0.1); border: 1px solid rgba(79,158,255,0.2);
+  color: var(--neon-blue); flex-shrink: 0;
+}
+.opt.selected { border-color: var(--neon-purple); background: rgba(155,109,255,0.1); color: var(--text-primary); }
+.opt.selected .opt-letter { background: rgba(155,109,255,0.2); border-color: var(--neon-purple); color: var(--neon-purple); }
+
+/* review states */
+.opt.correct-answer { border-color: var(--neon-teal); background: rgba(0,212,168,0.08); color: var(--text-primary); }
+.opt.correct-answer .opt-letter { background: rgba(0,212,168,0.2); border-color: var(--neon-teal); color: var(--neon-teal); }
+.opt.wrong-answer { border-color: var(--neon-pink); background: rgba(255,107,172,0.08); color: var(--text-primary); }
+.opt.wrong-answer .opt-letter { background: rgba(255,107,172,0.2); border-color: var(--neon-pink); color: var(--neon-pink); }
+.opt.disabled { cursor: default; }
+.opt-mark { margin-left: auto; font-size: 14px; flex-shrink: 0; }
+
+/* ── EXPLANATION (review mode) ── */
+.explain-box { margin-top: 1.25rem; border-radius: var(--radius-md); padding: 1rem 1.1rem; font-size: 13px; line-height: 1.7; display: none; }
+.explain-box.show { display: block; animation: fadeIn 0.3s ease; }
+.explain-box.correct { background: rgba(0,212,168,0.06); border: 1px solid rgba(0,212,168,0.25); }
+.explain-box.incorrect { background: rgba(255,107,172,0.06); border: 1px solid rgba(255,107,172,0.25); }
+.explain-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; margin-bottom: 0.4rem; }
+.explain-box.correct .explain-label { color: var(--neon-teal); }
+.explain-box.incorrect .explain-label { color: var(--neon-pink); }
+.explain-box .your-ans { color: var(--text-secondary); margin-bottom: 0.35rem; }
+.explain-box .your-ans strong { color: var(--text-primary); }
+
+/* ── NAV BUTTONS ── */
+.nav-btns { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-top: 1.75rem; }
+.btn {
+  font-family: var(--font-body); font-size: 13px; font-weight: 600;
+  padding: 0.7rem 1.4rem; border-radius: 100px; border: 1px solid var(--border-bright);
+  background: var(--bg-glass); color: var(--text-primary);
+  cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.btn:hover:not(:disabled) { background: var(--bg-glass-hover); border-color: var(--neon-blue); }
+.btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-primary { background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple)); border: none; color: #06070a; }
+.btn-primary:hover:not(:disabled) { filter: brightness(1.1); }
+.btn-ghost { background: transparent; border-color: var(--border); color: var(--text-secondary); }
+.btn-ghost:hover { color: var(--text-primary); border-color: var(--border-bright); }
+.nav-btns-center { flex: 1; text-align: center; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+
+/* ── JUMP DOTS (review mode only, optional) ── */
+.q-dots { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.5rem; }
+.q-dot { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--border); background: var(--bg-card); display:flex;align-items:center;justify-content:center; font-family: var(--font-mono); font-size: 9px; color: var(--text-muted); cursor: pointer; flex-shrink: 0; }
+.q-dot.current { border-color: var(--neon-purple); box-shadow: 0 0 0 2px rgba(155,109,255,0.25); color: var(--text-primary); }
+.q-dot.correct { background: rgba(0,212,168,0.15); border-color: var(--neon-teal); color: var(--neon-teal); }
+.q-dot.incorrect { background: rgba(255,107,172,0.15); border-color: var(--neon-pink); color: var(--neon-pink); }
+
+/* ── RESULTS SCREEN ── */
+.results-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl);
+  padding: 2.5rem 1.75rem; text-align: center; position: relative; overflow: hidden; animation: fadeIn 0.4s ease;
+}
+.results-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(155,109,255,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.results-ring-wrap { position: relative; width: 168px; height: 168px; margin: 0 auto 1.5rem; }
+.results-ring-wrap svg { transform: rotate(-90deg); width: 168px; height: 168px; }
+.ring-bg { fill: none; stroke: var(--border); stroke-width: 10; }
+.ring-fill { fill: none; stroke: url(#ringGrad); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
+.results-pct { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.results-pct .num { font-family: var(--font-display); font-size: 2.1rem; font-weight: 700; color: var(--text-primary); }
+.results-pct .pct-sign { font-size: 1rem; color: var(--text-secondary); }
+.results-msg { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; position: relative; }
+.results-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 1.75rem; position: relative; }
+.results-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 2rem; position: relative; }
+.rstat { background: var(--bg-glass); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.9rem 0.5rem; }
+.rstat .v { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; }
+.rstat.correct .v { color: var(--neon-teal); }
+.rstat.incorrect .v { color: var(--neon-pink); }
+.rstat.total .v { color: var(--neon-blue); }
+.rstat .l { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 0.2rem; }
+.results-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; position: relative; }
+
+/* ── UTIL ── */
+.hidden { display: none !important; }
+.screen { animation: fadeIn 0.3s ease; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 540px) {
+  .hero { padding: 2.5rem 1.25rem 2rem; }
+  .quiz-wrap { padding: 1.75rem 0.85rem 3rem; }
+  .q-card { padding: 1.25rem; }
+  .q-text { font-size: 1.02rem; }
+  .nav-btns { flex-wrap: wrap; }
+  .nav-btns-center { order: 3; width: 100%; }
+  .results-stats { gap: 0.5rem; }
+  .top-nav { padding: 0 1rem; }
+  .nav-sub { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+  <div class="nav-logo">⚗ Exploration · Gr.9 · Ch.11</div>
+  <div class="nav-sub">MCQ Question Bank · 20 Questions</div>
+  <a href="chapter11.html" class="nav-notes-btn">📖 Study Notes</a>
+</nav>
+
+<div class="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-dot"></span>
+        Grade 9 · Chapter 11 · Self-Check Quiz
+      </div>
+      <h1 class="hero-title">
+        <span class="line2">Test Your Understanding</span>
+      </h1>
+      <p class="hero-desc">HOTs on the topics you have learned — drawn straight from your Chapter 11 study notes.</p>
+      <div class="hero-badges">
+        <span class="hero-badge badge-blue">📝 20 Questions</span>
+        <span class="hero-badge badge-purple">🎯 Instant Review</span>
+        <span class="hero-badge badge-teal">🔁 Retry Wrong Answers</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ AREA -->
+  <div class="quiz-wrap">
+
+    <!-- QUIZ SCREEN -->
+    <div id="quizScreen" class="screen">
+      <div class="progress-row">
+        <div class="q-counter">Question <strong id="qNum">1</strong> of <span id="qTotal">20</span></div>
+        <div class="score-live" id="answeredLive">0 answered</div>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+      <div class="q-card" id="qCard">
+        <div class="q-tag" id="qTag">Question 1</div>
+        <div class="q-text" id="qText"></div>
+        <div class="opt-list" id="optList"></div>
+        <div class="explain-box" id="explainBox">
+          <div class="explain-label" id="explainLabel"></div>
+          <div class="your-ans" id="yourAnsLine"></div>
+          <div id="explainText"></div>
+        </div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-ghost" id="prevBtn">← Previous</button>
+        <div class="nav-btns-center" id="navCenter"></div>
+        <button class="btn btn-primary" id="nextBtn">Next →</button>
+      </div>
+    </div>
+
+    <!-- RESULTS SCREEN -->
+    <div id="resultsScreen" class="screen hidden">
+      <div class="results-card">
+        <div class="results-ring-wrap">
+          <svg viewBox="0 0 168 168">
+            <defs>
+              <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#4f9eff"/>
+                <stop offset="100%" stop-color="#9b6dff"/>
+              </linearGradient>
+            </defs>
+            <circle class="ring-bg" cx="84" cy="84" r="74"></circle>
+            <circle class="ring-fill" id="ringFill" cx="84" cy="84" r="74"></circle>
+          </svg>
+          <div class="results-pct"><span class="num" id="pctNum">0</span><span class="pct-sign">%</span></div>
+        </div>
+        <div class="results-msg" id="resultsMsg">—</div>
+        <div class="results-sub">Here's how you did on the Chapter 11 self-check.</div>
+        <div class="results-stats">
+          <div class="rstat correct"><div class="v" id="correctCount">0</div><div class="l">Correct</div></div>
+          <div class="rstat incorrect"><div class="v" id="incorrectCount">0</div><div class="l">Incorrect</div></div>
+          <div class="rstat total"><div class="v">20</div><div class="l">Total</div></div>
+        </div>
+        <div class="results-actions">
+          <button class="btn btn-primary" id="reviewBtn">Review Answers</button>
+          <button class="btn" id="retryWrongBtn">Retry Wrong Questions</button>
+          <button class="btn btn-ghost" id="restartBtn">Restart Quiz</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVIEW SCREEN -->
+    <div id="reviewScreen" class="screen hidden">
+      <div class="progress-row">
+        <div class="q-counter">Reviewing <strong id="rNum">1</strong> of <span id="rTotal">20</span></div>
+        <div class="score-live" id="rStatusLive"></div>
+      </div>
+      <div class="q-dots" id="qDots"></div>
+
+      <div class="q-card" id="rCard">
+        <div class="q-tag" id="rTag">Question 1</div>
+        <div class="q-text" id="rText"></div>
+        <div class="opt-list" id="rOptList"></div>
+        <div class="explain-box show" id="rExplainBox">
+          <div class="explain-label" id="rExplainLabel"></div>
+          <div class="your-ans" id="rYourAnsLine"></div>
+          <div id="rExplainText"></div>
+        </div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-ghost" id="rPrevBtn">← Previous</button>
+        <div class="nav-btns-center"><button class="btn" id="backToResultsBtn">Back to Score</button></div>
+        <button class="btn btn-primary" id="rNextBtn">Next →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ──────────────────────────────────────────────────────────
+   CHAPTER 4 MCQ DATA
+   Every question, option, correct answer and explanation is
+   preserved exactly as written in the uploaded document.
+   ────────────────────────────────────────────────────────── */
+const RAW_QUESTIONS = [
+  {
+    text: "Light travels in",
+    options: ["Curved lines", "Straight lines", "Zigzag paths", "Circular paths"],
+    correctIndex: 1,
+    explanation: "In a uniform medium, light propagates in straight lines — this is called rectilinear propagation of light."
+  },
+  {
+    text: "The bouncing back of light from a surface is called",
+    options: ["Refraction", "Reflection", "Dispersion", "Diffraction"],
+    correctIndex: 1,
+    explanation: "Reflection is the return of light into the same medium after striking a surface."
+  },
+  {
+    text: "The angle of incidence is always measured between the incident ray and the",
+    options: ["Mirror surface", "Reflected ray", "Normal", "Horizon"],
+    correctIndex: 2,
+    explanation: "All angles in reflection — incidence and reflection — are measured with respect to the normal at the point of incidence."
+  },
+  {
+    text: "According to the law of reflection, the angle of reflection is",
+    options: ["Greater than the angle of incidence", "Less than the angle of incidence", "Equal to the angle of incidence", "Always 90°"],
+    correctIndex: 2,
+    explanation: "The first law of reflection states that the angle of incidence always equals the angle of reflection."
+  },
+  {
+    text: "A plane mirror forms an image that is",
+    options: ["Real and inverted", "Virtual and erect", "Real and enlarged", "Virtual and inverted"],
+    correctIndex: 1,
+    explanation: "A plane mirror always forms a virtual, erect image of the same size as the object, located as far behind the mirror as the object is in front."
+  },
+  {
+    text: "Lateral inversion means",
+    options: ["Top becomes bottom", "Left and right are interchanged", "Image becomes smaller", "Colours change"],
+    correctIndex: 1,
+    explanation: "Plane mirrors interchange the left and right sides of an image — this is called lateral inversion."
+  },
+  {
+    text: "The minimum number of mirrors required to see the back of your head is",
+    options: ["One", "Two", "Three", "Four"],
+    correctIndex: 1,
+    explanation: "Two plane mirrors placed appropriately allow you to view the back of your head by reflecting the image twice."
+  },
+  {
+    text: "Which mirror is commonly used in vehicle rear-view mirrors?",
+    options: ["Plane mirror", "Concave mirror", "Convex mirror", "Cylindrical mirror"],
+    correctIndex: 2,
+    explanation: "Convex mirrors are used in rear-view mirrors because they provide a wider field of view, allowing drivers to see more of the road behind."
+  },
+  {
+    text: "A concave mirror is used in torches because it",
+    options: ["Scatters light in all directions", "Produces parallel beams of light", "Absorbs light energy", "Produces rainbow colours"],
+    correctIndex: 1,
+    explanation: "Placing the bulb at or near the focus of a concave mirror reflects the light as a nearly parallel beam, projecting it far ahead."
+  },
+  {
+    text: "The focal point of a concave mirror is",
+    options: ["Always virtual", "Located behind the mirror", "The point where parallel rays converge after reflection", "Always at the pole"],
+    correctIndex: 2,
+    explanation: "Parallel rays incident on a concave mirror converge at the principal focus after reflection."
+  },
+  {
+    text: "Which mirror always forms a diminished image?",
+    options: ["Concave mirror", "Plane mirror", "Convex mirror", "None of these"],
+    correctIndex: 2,
+    explanation: "Convex mirrors always form virtual, erect and diminished images, regardless of the object's position."
+  },
+  {
+    text: "The image formed by a concave mirror can be",
+    options: ["Only virtual", "Only real", "Real or virtual depending on object position", "Always erect"],
+    correctIndex: 2,
+    explanation: "A concave mirror forms a real and inverted image when the object is beyond the focus, but a virtual and erect image when the object is between the focus and the mirror."
+  },
+  {
+    text: "A dentist generally uses a",
+    options: ["Convex mirror", "Concave mirror", "Plane mirror", "Glass slab"],
+    correctIndex: 1,
+    explanation: "A concave mirror provides a magnified, erect image of teeth when the object is placed within the focal length."
+  },
+  {
+    text: "Which of the following is NOT a property of the image formed by a plane mirror?",
+    options: ["Virtual", "Same size as object", "Inverted", "Laterally inverted"],
+    correctIndex: 2,
+    explanation: "A plane mirror forms an erect image, not an inverted one. It is virtual, same-sized, and laterally inverted."
+  },
+  {
+    text: "The normal to a mirror surface is drawn",
+    options: ["Parallel to the mirror", "Perpendicular to the mirror", "Along the reflected ray", "Along the incident ray"],
+    correctIndex: 1,
+    explanation: "The normal is always drawn perpendicular to the reflecting surface at the point where the incident ray strikes."
+  },
+  {
+    text: "If the angle of incidence is 35°, the angle between the incident and reflected rays is",
+    options: ["35°", "70°", "90°", "145°"],
+    correctIndex: 1,
+    explanation: "The angle between the incident and reflected rays = angle of incidence + angle of reflection = 35° + 35° = 70°."
+  },
+  {
+    text: "Which mirror is best suited for security surveillance in shops?",
+    options: ["Plane mirror", "Concave mirror", "Convex mirror", "Concave lens"],
+    correctIndex: 2,
+    explanation: "Convex mirrors cover a much larger area in their field of view, making them ideal for shop surveillance."
+  },
+  {
+    text: "Why are the letters 'AMBULANCE' written in reverse on the front of the vehicle?",
+    options: ["For decoration", "To appear correct in drivers' rear-view mirrors", "To reduce glare", "To increase brightness"],
+    correctIndex: 1,
+    explanation: "Due to lateral inversion, the reversed letters appear normal when seen in a rear-view mirror, alerting drivers quickly."
+  },
+  {
+    text: "When light strikes a smooth polished surface, the reflection produced is",
+    options: ["Diffuse reflection", "Regular reflection", "Refraction", "Dispersion"],
+    correctIndex: 1,
+    explanation: "Smooth, polished surfaces reflect light uniformly in one direction — this is called regular (specular) reflection."
+  },
+  {
+    text: "Which statement about reflection is correct?",
+    options: [
+      "Reflection changes the speed of light.",
+      "Reflection follows two laws involving the normal and equal angles.",
+      "Reflection occurs only from mirrors.",
+      "Reflection cannot occur from rough surfaces."
+    ],
+    correctIndex: 1,
+    explanation: "The two laws of reflection apply to all reflecting surfaces — smooth or rough. Rough surfaces cause diffuse reflection, but the laws still hold at each point."
+  }
+];
+
+/* ──────────────────────────────────────────────────────────
+   STATE
+   ────────────────────────────────────────────────────────── */
+let questions = [];          // working set (shuffled options, correctIndex remapped)
+let currentIndex = 0;        // index in `questions` for quiz mode
+let userAnswers = [];        // userAnswers[i] = selected option index or null
+let submitted = false;
+let reviewIndex = 0;
+let reviewSet = [];          // indices into `questions` being reviewed (all, or wrong-only)
+let isRetryMode = false;     // whether current quiz run is a "retry wrong" run
+
+/* Fisher-Yates shuffle, returns new array */
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* Build working question set with randomized option order,
+   remapping correctIndex so the answer stays correct */
+function buildQuestionSet(sourceQuestions) {
+  return sourceQuestions.map(q => {
+    const order = shuffle(q.options.map((_, i) => i)); // shuffled original indices
+    const newOptions = order.map(i => q.options[i]);
+    const newCorrectIndex = order.indexOf(q.correctIndex);
+    return {
+      text: q.text,
+      options: newOptions,
+      correctIndex: newCorrectIndex,
+      explanation: q.explanation
+    };
+  });
+}
+
+/* ──────────────────────────────────────────────────────────
+   DOM REFS
+   ────────────────────────────────────────────────────────── */
+const quizScreen = document.getElementById('quizScreen');
+const resultsScreen = document.getElementById('resultsScreen');
+const reviewScreen = document.getElementById('reviewScreen');
+
+const qNum = document.getElementById('qNum');
+const qTotal = document.getElementById('qTotal');
+const answeredLive = document.getElementById('answeredLive');
+const progressFill = document.getElementById('progressFill');
+const qTag = document.getElementById('qTag');
+const qText = document.getElementById('qText');
+const optList = document.getElementById('optList');
+const explainBox = document.getElementById('explainBox');
+const explainLabel = document.getElementById('explainLabel');
+const yourAnsLine = document.getElementById('yourAnsLine');
+const explainText = document.getElementById('explainText');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const navCenter = document.getElementById('navCenter');
+
+const pctNum = document.getElementById('pctNum');
+const ringFill = document.getElementById('ringFill');
+const resultsMsg = document.getElementById('resultsMsg');
+const correctCount = document.getElementById('correctCount');
+const incorrectCount = document.getElementById('incorrectCount');
+const reviewBtn = document.getElementById('reviewBtn');
+const retryWrongBtn = document.getElementById('retryWrongBtn');
+const restartBtn = document.getElementById('restartBtn');
+
+const rNum = document.getElementById('rNum');
+const rTotal = document.getElementById('rTotal');
+const rStatusLive = document.getElementById('rStatusLive');
+const qDots = document.getElementById('qDots');
+const rTag = document.getElementById('rTag');
+const rText = document.getElementById('rText');
+const rOptList = document.getElementById('rOptList');
+const rExplainLabel = document.getElementById('rExplainLabel');
+const rYourAnsLine = document.getElementById('rYourAnsLine');
+const rExplainText = document.getElementById('rExplainText');
+const rPrevBtn = document.getElementById('rPrevBtn');
+const rNextBtn = document.getElementById('rNextBtn');
+const backToResultsBtn = document.getElementById('backToResultsBtn');
+
+const RING_CIRC = 2 * Math.PI * 74;
+ringFill.style.strokeDasharray = `${RING_CIRC}`;
+ringFill.style.strokeDashoffset = `${RING_CIRC}`;
+
+/* ──────────────────────────────────────────────────────────
+   INIT / RESTART
+   ────────────────────────────────────────────────────────── */
+function initQuiz(sourceQuestions, retryMode) {
+  questions = buildQuestionSet(sourceQuestions);
+  userAnswers = new Array(questions.length).fill(null);
+  currentIndex = 0;
+  submitted = false;
+  isRetryMode = !!retryMode;
+  qTotal.textContent = questions.length;
+  showScreen('quiz');
+  renderQuestion();
+}
+
+function showScreen(name) {
+  quizScreen.classList.toggle('hidden', name !== 'quiz');
+  resultsScreen.classList.toggle('hidden', name !== 'results');
+  reviewScreen.classList.toggle('hidden', name !== 'review');
+}
+
+/* ──────────────────────────────────────────────────────────
+   QUIZ MODE RENDERING
+   ────────────────────────────────────────────────────────── */
+function renderQuestion() {
+  const q = questions[currentIndex];
+  qNum.textContent = currentIndex + 1;
+  qTag.textContent = `Question ${currentIndex + 1}`;
+  qText.textContent = q.text;
+  progressFill.style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
+
+  const answeredCount = userAnswers.filter(a => a !== null).length;
+  answeredLive.textContent = `${answeredCount} of ${questions.length} answered`;
+
+  optList.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+  q.options.forEach((optText, i) => {
+    const div = document.createElement('div');
+    div.className = 'opt';
+    if (userAnswers[currentIndex] === i) div.classList.add('selected');
+    div.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${escapeHtml(optText)}</span>`;
+    div.addEventListener('click', () => selectOption(i));
+    optList.appendChild(div);
+  });
+
+  explainBox.classList.remove('show');
+
+  prevBtn.disabled = currentIndex === 0;
+  const isLast = currentIndex === questions.length - 1;
+  nextBtn.textContent = isLast ? 'Submit Quiz →' : 'Next →';
+  navCenter.textContent = '';
+}
+
+function selectOption(i) {
+  userAnswers[currentIndex] = i; // auto-save selection
+  renderQuestion();
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+prevBtn.addEventListener('click', () => {
+  if (currentIndex > 0) {
+    currentIndex--;
+    renderQuestion();
+  }
+});
+
+nextBtn.addEventListener('click', () => {
+  if (currentIndex < questions.length - 1) {
+    currentIndex++;
+    renderQuestion();
+  } else {
+    submitQuiz();
+  }
+});
+
+/* ──────────────────────────────────────────────────────────
+   SUBMIT / SCORING
+   ────────────────────────────────────────────────────────── */
+function submitQuiz() {
+  submitted = true;
+  let correct = 0;
+  questions.forEach((q, i) => {
+    if (userAnswers[i] === q.correctIndex) correct++;
+  });
+  const incorrect = questions.length - correct;
+  const pct = Math.round((correct / questions.length) * 100);
+
+  correctCount.textContent = correct;
+  incorrectCount.textContent = incorrect;
+  pctNum.textContent = pct;
+
+  const offset = RING_CIRC - (pct / 100) * RING_CIRC;
+  requestAnimationFrame(() => { ringFill.style.strokeDashoffset = offset; });
+
+  let msg = 'Keep Practicing';
+  if (pct >= 90) msg = 'Excellent! 🌟';
+  else if (pct >= 75) msg = 'Very Good! 🎯';
+  else if (pct >= 50) msg = 'Good Effort 👍';
+  else msg = 'Keep Practicing 💪';
+  resultsMsg.textContent = msg;
+
+  retryWrongBtn.classList.toggle('hidden', incorrect === 0);
+
+  showScreen('results');
+}
+
+/* ──────────────────────────────────────────────────────────
+   REVIEW MODE
+   ────────────────────────────────────────────────────────── */
+function enterReview(onlyWrong) {
+  reviewSet = questions.map((_, i) => i).filter(i => !onlyWrong || userAnswers[i] !== questions[i].correctIndex);
+  if (reviewSet.length === 0) reviewSet = questions.map((_, i) => i);
+  reviewIndex = 0;
+  rTotal.textContent = questions.length;
+  buildDots();
+  showScreen('review');
+  renderReview();
+}
+
+function buildDots() {
+  qDots.innerHTML = '';
+  questions.forEach((q, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'q-dot';
+    const isCorrect = userAnswers[i] === q.correctIndex;
+    dot.classList.add(isCorrect ? 'correct' : 'incorrect');
+    dot.textContent = i + 1;
+    dot.addEventListener('click', () => {
+      const pos = reviewSet.indexOf(i);
+      if (pos !== -1) {
+        reviewIndex = pos;
+        renderReview();
+      }
+    });
+    qDots.appendChild(dot);
+  });
+}
+
+function renderReview() {
+  const qi = reviewSet[reviewIndex];
+  const q = questions[qi];
+  const userAns = userAnswers[qi];
+  const isCorrect = userAns === q.correctIndex;
+  const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+  rNum.textContent = reviewIndex + 1;
+  rTag.textContent = `Question ${qi + 1}`;
+  rText.textContent = q.text;
+  rStatusLive.textContent = isCorrect ? '✅ Correct' : '❌ Incorrect';
+  rStatusLive.style.color = isCorrect ? 'var(--neon-teal)' : 'var(--neon-pink)';
+
+  document.querySelectorAll('.q-dot').forEach((d, idx) => {
+    d.classList.toggle('current', idx === qi);
+  });
+
+  rOptList.innerHTML = '';
+  q.options.forEach((optText, i) => {
+    const div = document.createElement('div');
+    div.className = 'opt disabled';
+    if (i === q.correctIndex) div.classList.add('correct-answer');
+    if (i === userAns && userAns !== q.correctIndex) div.classList.add('wrong-answer');
+    let mark = '';
+    if (i === q.correctIndex) mark = '<span class="opt-mark">✅</span>';
+    else if (i === userAns) mark = '<span class="opt-mark">❌</span>';
+    div.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${escapeHtml(optText)}</span>${mark}`;
+    rOptList.appendChild(div);
+  });
+
+  rExplainLabel.textContent = isCorrect ? 'Correct' : 'Explanation';
+  rExplainLabel.style.color = isCorrect ? 'var(--neon-teal)' : 'var(--neon-pink)';
+  rYourAnsLine.innerHTML = userAns === null
+    ? '<strong>Your answer:</strong> Not answered'
+    : `<strong>Your answer:</strong> ${escapeHtml(q.options[userAns])}`;
+  rExplainText.textContent = q.explanation;
+
+  rPrevBtn.disabled = reviewIndex === 0;
+  rNextBtn.disabled = reviewIndex === reviewSet.length - 1;
+}
+
+rPrevBtn.addEventListener('click', () => {
+  if (reviewIndex > 0) { reviewIndex--; renderReview(); }
+});
+rNextBtn.addEventListener('click', () => {
+  if (reviewIndex < reviewSet.length - 1) { reviewIndex++; renderReview(); }
+});
+backToResultsBtn.addEventListener('click', () => showScreen('results'));
+
+/* ──────────────────────────────────────────────────────────
+   RESULTS SCREEN ACTIONS
+   ────────────────────────────────────────────────────────── */
+reviewBtn.addEventListener('click', () => enterReview(false));
+retryWrongBtn.addEventListener('click', () => {
+  const wrongOriginals = questions
+    .map((q, i) => ({ q, i }))
+    .filter(({ q, i }) => userAnswers[i] !== q.correctIndex)
+    .map(({ q }) => ({
+      text: q.text,
+      options: q.options.map((_, idx) => q.options[idx]),
+      correctIndex: q.correctIndex,
+      explanation: q.explanation
+    }));
+  // rebuild from original option text/correct mapping to allow fresh shuffle
+  const wrongSource = wrongOriginals.map(w => ({
+    text: w.text,
+    options: w.options,
+    correctIndex: w.correctIndex,
+    explanation: w.explanation
+  }));
+  initQuiz(wrongSource, true);
+});
+restartBtn.addEventListener('click', () => initQuiz(RAW_QUESTIONS, false));
+
+/* ──────────────────────────────────────────────────────────
+   START
+   ────────────────────────────────────────────────────────── */
+initQuiz(RAW_QUESTIONS, false);
+</script>
+</body>
+</html>
